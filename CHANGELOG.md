@@ -7,11 +7,19 @@ a projekt stosuje [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Changed
+- Zmiana z pakietu NuGet Dynastream.Fit na lokalny DLL
+- Dodano folder `lib/FitSDK/` dla bibliotek zewnętrznych
+- Zaktualizowano dokumentację instalacji (README, QUICKSTART)
+- Dodano szczegółowe instrukcje pobierania FIT SDK
+
 ### Added
-- Możliwość eksportu wyników do CSV
-- Wsparcie dla plików TCX
-- Analiza tętna i kadencji
-- Porównywanie wielu treningów
+- Dokumentacja FIT SDK w `lib/FitSDK/README.md`
+- Sekcja rozwiązywania problemów dla błędów DLL
+- Możliwość eksportu wyników do CSV (planowane)
+- Wsparcie dla plików TCX (planowane)
+- Analiza tętna i kadencji (planowane)
+- Porównywanie wielu treningów (planowane)
 
 ## [1.0.0] - 2025-11-06
 

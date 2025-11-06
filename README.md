@@ -52,23 +52,52 @@ Aplikacja klasyfikuje interwały według 7 stref Coggan:
 
 ## Instalacja
 
-1. Sklonuj repozytorium:
+### Krok 1: Sklonuj repozytorium
 ```bash
 git clone <repository-url>
 cd Ja
 ```
 
-2. Przywróć pakiety NuGet:
+### Krok 2: Pobierz FIT SDK DLL
+
+**WAŻNE:** Aplikacja wymaga lokalnego Dynastream.Fit.dll
+
+1. Pobierz FIT SDK z oficjalnej strony Garmin:
+   - https://developer.garmin.com/fit/download/
+   - Kliknij "Download" przy "FIT SDK"
+
+2. Rozpakuj pobrany plik ZIP
+
+3. Skopiuj `Dynastream.Fit.dll` do katalogu projektu:
+   ```bash
+   # W rozpakowanym FIT SDK znajdź:
+   # FitSDK/cs/Dynastream.Fit.dll
+
+   # Skopiuj do:
+   cp FitSDK/cs/Dynastream.Fit.dll lib/FitSDK/Dynastream.Fit.dll
+   ```
+
+4. Sprawdź czy plik jest we właściwym miejscu:
+   ```bash
+   ls lib/FitSDK/Dynastream.Fit.dll
+   # Powinno wyświetlić: lib/FitSDK/Dynastream.Fit.dll
+   ```
+
+**Szczegółowe instrukcje:** Zobacz `lib/FitSDK/README.md`
+
+### Krok 3: Przywróć pakiety NuGet
 ```bash
 dotnet restore
 ```
 
-3. Zbuduj projekt:
+### Krok 4: Zbuduj projekt
 ```bash
 dotnet build
 ```
 
-4. Uruchom aplikację:
+Jeśli otrzymasz błąd o brakującym DLL, wróć do Kroku 2.
+
+### Krok 5: Uruchom aplikację
 ```bash
 dotnet run --project Ja/Ja.csproj
 ```
@@ -185,6 +214,18 @@ Aplikacja wykryje:
 - Aplikacja nie obsługuje danych z wieloma sportami jednocześnie
 
 ## Rozwiązywanie problemów
+
+### Błąd kompilacji: "Metadata file ... Dynastream.Fit.dll could not be found"
+**Rozwiązanie:**
+1. Pobierz FIT SDK z https://developer.garmin.com/fit/download/
+2. Skopiuj `Dynastream.Fit.dll` do `lib/FitSDK/`
+3. Szczegóły: Zobacz `lib/FitSDK/README.md`
+
+### Błąd runtime: "Could not load file or assembly 'Dynastream.Fit'"
+**Rozwiązanie:**
+1. Sprawdź czy DLL jest w `lib/FitSDK/Dynastream.Fit.dll`
+2. Wyczyść i przebuduj: `dotnet clean && dotnet build`
+3. Jeśli problem nadal występuje, pobierz najnowszą wersję FIT SDK
 
 ### Błąd: "Plik nie zawiera danych mocy"
 - Upewnij się, że plik FIT został nagrany z czujnikiem mocy

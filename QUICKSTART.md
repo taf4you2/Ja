@@ -1,6 +1,6 @@
 # Szybki start - Detektor Interwałów Treningowych
 
-## 5 kroków do pierwszej analizy
+## 6 kroków do pierwszej analizy
 
 ### 1. Zainstaluj środowisko
 
@@ -23,7 +23,24 @@ git clone <repository-url>
 cd Ja
 ```
 
-### 3. Zbuduj projekt
+### 3. Pobierz FIT SDK DLL
+
+**WAŻNE:** Musisz pobrać Dynastream.Fit.dll przed budowaniem!
+
+```bash
+# 1. Pobierz FIT SDK ze strony Garmin:
+#    https://developer.garmin.com/fit/download/
+
+# 2. Rozpakuj i skopiuj DLL:
+cp FitSDK/cs/Dynastream.Fit.dll lib/FitSDK/Dynastream.Fit.dll
+
+# 3. Sprawdź:
+ls lib/FitSDK/Dynastream.Fit.dll
+```
+
+**Szczegóły:** Zobacz `lib/FitSDK/README.md`
+
+### 4. Zbuduj projekt
 
 ```bash
 # Przywróć pakiety
@@ -36,13 +53,13 @@ dotnet build
 dotnet run --project Ja/Ja.csproj
 ```
 
-### 4. Wczytaj plik FIT
+### 5. Wczytaj plik FIT
 
 1. Kliknij **"Wczytaj plik FIT"**
 2. Wybierz plik .fit z dysku
 3. Poczekaj na automatyczną analizę
 
-### 5. Analizuj wyniki
+### 6. Analizuj wyniki
 
 - **Wykres** - wizualizacja mocy przez cały trening
 - **Interwały** - lista wykrytych interwałów (Z3+)
@@ -136,6 +153,29 @@ Cały trening w strefie Z2: Endurance
 ```
 
 ## Rozwiązywanie problemów
+
+### ❌ Błąd kompilacji: "Metadata file ... Dynastream.Fit.dll could not be found"
+
+**Przyczyna:** Brak biblioteki Dynastream.Fit.dll w projekcie
+
+**Rozwiązanie:**
+1. Pobierz FIT SDK z https://developer.garmin.com/fit/download/
+2. Rozpakuj pobrany plik
+3. Skopiuj `FitSDK/cs/Dynastream.Fit.dll` do `lib/FitSDK/Dynastream.Fit.dll`
+4. Sprawdź: `ls lib/FitSDK/Dynastream.Fit.dll`
+5. Uruchom ponownie: `dotnet build`
+
+**Szczegóły:** Zobacz `lib/FitSDK/README.md`
+
+### ❌ Błąd w runtime: "Could not load file or assembly 'Dynastream.Fit'"
+
+**Przyczyna:** DLL nie został skopiowany do katalogu wyjściowego lub jest niekompatybilny
+
+**Rozwiązanie:**
+1. Sprawdź czy DLL jest we właściwym miejscu: `lib/FitSDK/Dynastream.Fit.dll`
+2. Wyczyść projekt: `dotnet clean`
+3. Przebuduj: `dotnet build`
+4. Jeśli problem nadal występuje, pobierz najnowszą wersję FIT SDK
 
 ### ❌ "Plik nie zawiera danych mocy"
 
