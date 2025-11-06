@@ -3,10 +3,184 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Ja"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+        xmlns:vm="clr-namespace:Ja.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Detektor Interwałów Treningowych" Height="900" Width="1400">
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
 
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="350"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Górny panel z kontrolkami -->
+        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="1" Padding="10" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Przycisk wczytywania pliku -->
+                <Button Grid.Row="0" Grid.Column="0"
+                        Command="{Binding LoadFitFileCommand}"
+                        Content="Wczytaj plik FIT"
+                        Width="150" Height="35"
+                        Margin="0,0,10,10"
+                        FontSize="14"/>
+
+                <!-- Nazwa pliku -->
+                <TextBlock Grid.Row="0" Grid.Column="1"
+                           Text="{Binding FileName}"
+                           VerticalAlignment="Center"
+                           FontSize="14" FontWeight="Bold"
+                           Margin="10,0,0,10"/>
+
+                <!-- FTP -->
+                <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
+                    <TextBlock Text="FTP (W):" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="14"/>
+                    <TextBox Text="{Binding Ftp, UpdateSourceTrigger=PropertyChanged}"
+                             Width="80" Height="25"
+                             VerticalContentAlignment="Center"
+                             FontSize="14"/>
+                    <Button Command="{Binding AnalyzeIntervalsCommand}"
+                            Content="Przelicz"
+                            Width="80" Height="25"
+                            Margin="10,0,0,0"
+                            FontSize="12"/>
+                </StackPanel>
+
+                <!-- Informacje o pliku -->
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                           Text="{Binding FileInfo}"
+                           TextWrapping="Wrap"
+                           FontSize="12"
+                           Margin="0,0,0,10"/>
+
+                <!-- Progress -->
+                <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
+                           Text="{Binding ProgressText}"
+                           FontSize="12"
+                           Foreground="DarkBlue"
+                           FontWeight="SemiBold"/>
+            </Grid>
+        </Border>
+
+        <!-- Wykres mocy -->
+        <Border Grid.Row="1" BorderBrush="LightGray" BorderThickness="1" Padding="5" Margin="0,0,0,10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Text="Wykres mocy" FontSize="16" FontWeight="Bold" Margin="5"/>
+
+                <lvc:CartesianChart Grid.Row="1"
+                                    Series="{Binding Series}"
+                                    XAxes="{Binding XAxes}"
+                                    YAxes="{Binding YAxes}"
+                                    Height="300"
+                                    Margin="5"/>
+            </Grid>
+        </Border>
+
+        <!-- Listy interwałów i odpoczynków -->
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Lista interwałów -->
+            <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="1" Padding="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Margin="5,5,5,10">
+                        <Run Text="Interwały treningowe ("/>
+                        <Run Text="{Binding Intervals.Count, Mode=OneWay}"/>
+                        <Run Text=")"/>
+                    </TextBlock>
+
+                    <DataGrid Grid.Row="1"
+                              ItemsSource="{Binding Intervals}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              GridLinesVisibility="All"
+                              AlternatingRowBackground="AliceBlue"
+                              CanUserResizeRows="False"
+                              SelectionMode="Single"
+                              HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Start" Binding="{Binding StartTime}" Width="60"/>
+                            <DataGridTextColumn Header="Koniec" Binding="{Binding EndTime}" Width="60"/>
+                            <DataGridTextColumn Header="Czas" Binding="{Binding DurationFormatted}" Width="100"/>
+                            <DataGridTextColumn Header="Moc (W)" Binding="{Binding AvgPowerWatts, StringFormat=F0}" Width="70"/>
+                            <DataGridTextColumn Header="% FTP" Binding="{Binding AvgPower, StringFormat=F1}" Width="70"/>
+                            <DataGridTextColumn Header="Strefa" Binding="{Binding ZoneName}" Width="*"/>
+                            <DataGridTextColumn Header="Typ" Binding="{Binding Type}" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+
+            <!-- Lista okresów odpoczynku -->
+            <Border Grid.Column="2" BorderBrush="LightGray" BorderThickness="1" Padding="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Margin="5,5,5,10">
+                        <Run Text="Okresy odpoczynku ("/>
+                        <Run Text="{Binding RecoveryPeriods.Count, Mode=OneWay}"/>
+                        <Run Text=")"/>
+                    </TextBlock>
+
+                    <DataGrid Grid.Row="1"
+                              ItemsSource="{Binding RecoveryPeriods}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              GridLinesVisibility="All"
+                              AlternatingRowBackground="LightYellow"
+                              CanUserResizeRows="False"
+                              SelectionMode="Single"
+                              HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Start" Binding="{Binding StartTime}" Width="60"/>
+                            <DataGridTextColumn Header="Koniec" Binding="{Binding EndTime}" Width="60"/>
+                            <DataGridTextColumn Header="Czas" Binding="{Binding DurationFormatted}" Width="100"/>
+                            <DataGridTextColumn Header="Moc (W)" Binding="{Binding AvgPowerWatts, StringFormat=F0}" Width="70"/>
+                            <DataGridTextColumn Header="% FTP" Binding="{Binding AvgPower, StringFormat=F1}" Width="70"/>
+                            <DataGridTextColumn Header="Strefa" Binding="{Binding ZoneName}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
