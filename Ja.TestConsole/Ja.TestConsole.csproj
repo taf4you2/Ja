@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ja\Ja.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Dynastream.Fit DLL - używamy tego samego co w projekcie głównym -->
+    <Reference Include="Dynastream.Fit">
+      <HintPath>..\lib\FitSDK\Dynastream.Fit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

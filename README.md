@@ -147,6 +147,24 @@ Ja/
 └── App.xaml                             # Konfiguracja aplikacji
 ```
 
+## Testowanie parsera FIT
+
+Projekt zawiera testową aplikację konsolową do weryfikacji parsowania plików FIT.
+
+### Uruchomienie testu:
+
+```bash
+dotnet run --project Ja.TestConsole -- ścieżka/do/pliku.fit
+```
+
+**Szczegóły:** Zobacz `Ja.TestConsole/README.md`
+
+Aplikacja testowa wyświetla:
+- Statystyki pliku (moc, tętno, dystans, czas)
+- Walidację danych (czy zawiera moc, czy ma minimalną długość)
+- Szczegóły danych mocy (pierwsze 10 punktów, min/max)
+- Diagnostykę błędów
+
 ## Technologie
 
 - **WPF** - Windows Presentation Foundation

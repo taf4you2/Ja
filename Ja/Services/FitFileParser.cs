@@ -39,52 +39,76 @@ namespace Ja.Services
                     var decoder = new Decode();
                     var mesgBroadcaster = new MesgBroadcaster();
 
+                    // Sprawdzenie czy plik jest poprawnym plikiem FIT
+                    bool isFitFile = decoder.IsFIT(fitSource);
+                    if (!isFitFile)
+                    {
+                        throw new InvalidOperationException("To nie jest prawidłowy plik FIT");
+                    }
+
+                    // Sprawdzenie integralności pliku
+                    bool integrityOk = decoder.CheckIntegrity(fitSource);
+                    if (!integrityOk)
+                    {
+                        throw new InvalidOperationException("Integralność pliku FIT jest naruszona");
+                    }
+
+                    // Reset strumienia po sprawdzeniu
+                    fitSource.Seek(0, SeekOrigin.Begin);
+
                     // Listener dla wiadomości sesji
                     mesgBroadcaster.SessionMesgEvent += (sender, e) =>
                     {
-                        if (e.mesg.GetAvgPower() != null)
-                            fitFileData.AvgPower = e.mesg.GetAvgPower().Value;
+                        SessionMesg sessionMesg = (SessionMesg)e.mesg;
 
-                        if (e.mesg.GetAvgHeartRate() != null)
-                            fitFileData.AvgHeartRate = e.mesg.GetAvgHeartRate().Value;
+                        if (sessionMesg.GetAvgPower() != null)
+                            fitFileData.AvgPower = sessionMesg.GetAvgPower().Value;
 
-                        if (e.mesg.GetAvgCadence() != null)
-                            fitFileData.AvgCadence = e.mesg.GetAvgCadence().Value;
+                        if (sessionMesg.GetAvgHeartRate() != null)
+                            fitFileData.AvgHeartRate = sessionMesg.GetAvgHeartRate().Value;
 
-                        if (e.mesg.GetTotalDistance() != null)
-                            totalDistance = e.mesg.GetTotalDistance().Value;
+                        if (sessionMesg.GetAvgCadence() != null)
+                            fitFileData.AvgCadence = sessionMesg.GetAvgCadence().Value;
+
+                        if (sessionMesg.GetTotalDistance() != null)
+                            totalDistance = sessionMesg.GetTotalDistance().Value;
+
+                        if (sessionMesg.GetStartTime() != null)
+                            startTime = sessionMesg.GetStartTime().GetDateTime();
                     };
 
                     // Listener dla wiadomości rekordów (dane 1Hz)
                     mesgBroadcaster.RecordMesgEvent += (sender, e) =>
                     {
-                        if (startTime == null && e.mesg.GetTimestamp() != null)
-                            startTime = e.mesg.GetTimestamp().GetDateTime();
+                        RecordMesg recordMesg = (RecordMesg)e.mesg;
 
-                        if (e.mesg.GetTimestamp() != null)
-                            endTime = e.mesg.GetTimestamp().GetDateTime();
+                        if (startTime == null && recordMesg.GetTimestamp() != null)
+                            startTime = recordMesg.GetTimestamp().GetDateTime();
 
-                        // Moc
-                        if (e.mesg.GetPower() != null)
-                            powerList.Add(e.mesg.GetPower().Value);
+                        if (recordMesg.GetTimestamp() != null)
+                            endTime = recordMesg.GetTimestamp().GetDateTime();
+
+                        // Moc - ważne: dodajemy każdy rekord, nawet jeśli brak mocy
+                        if (recordMesg.GetPower() != null)
+                            powerList.Add(recordMesg.GetPower().Value);
                         else
                             powerList.Add(0);
 
                         // Tętno
-                        if (e.mesg.GetHeartRate() != null)
-                            heartRateList.Add(e.mesg.GetHeartRate().Value);
+                        if (recordMesg.GetHeartRate() != null)
+                            heartRateList.Add(recordMesg.GetHeartRate().Value);
                         else
                             heartRateList.Add(0);
 
                         // Kadencja
-                        if (e.mesg.GetCadence() != null)
-                            cadenceList.Add(e.mesg.GetCadence().Value);
+                        if (recordMesg.GetCadence() != null)
+                            cadenceList.Add(recordMesg.GetCadence().Value);
                         else
                             cadenceList.Add(0);
 
-                        // Prędkość
-                        if (e.mesg.GetSpeed() != null)
-                            speedList.Add(e.mesg.GetSpeed().Value * 3.6); // m/s -> km/h
+                        // Prędkość (konwersja m/s -> km/h)
+                        if (recordMesg.GetSpeed() != null)
+                            speedList.Add(recordMesg.GetSpeed().Value * 3.6);
                         else
                             speedList.Add(0);
                     };
@@ -92,25 +116,24 @@ namespace Ja.Services
                     // Listener dla ustawień użytkownika (FTP)
                     mesgBroadcaster.UserProfileMesgEvent += (sender, e) =>
                     {
-                        if (e.mesg.GetFtp() != null)
-                            ftp = e.mesg.GetFtp();
+                        UserProfileMesg userProfile = (UserProfileMesg)e.mesg;
+                        if (userProfile.GetFtp() != null)
+                            ftp = userProfile.GetFtp();
                     };
 
                     // Listener dla definicji strefy mocy
                     mesgBroadcaster.ZonesTargetMesgEvent += (sender, e) =>
                     {
-                        if (e.mesg.GetFunctionalThresholdPower() != null)
-                            ftp = e.mesg.GetFunctionalThresholdPower();
+                        ZonesTargetMesg zonesTarget = (ZonesTargetMesg)e.mesg;
+                        if (zonesTarget.GetFunctionalThresholdPower() != null)
+                            ftp = zonesTarget.GetFunctionalThresholdPower();
                     };
 
+                    // WAŻNE: Podpięcie MesgBroadcaster do dekodera
+                    decoder.MesgEvent += mesgBroadcaster.OnMesg;
+
                     // Dekodowanie pliku
-                    if (!decoder.IsFIT(fitSource))
-                        throw new InvalidOperationException("Plik nie jest poprawnym plikiem FIT");
-
-                    if (!decoder.CheckIntegrity(fitSource))
-                        throw new InvalidOperationException("Integralność pliku FIT jest naruszona");
-
-                    decoder.Read(fitSource, mesgBroadcaster);
+                    decoder.Read(fitSource);
                 }
 
                 // Wypełnienie struktury danych
@@ -135,21 +158,34 @@ namespace Ja.Services
                     fitFileData.AvgSpeed = speedList.Where(s => s > 0).DefaultIfEmpty(0).Average();
 
                 // Ustaw FTP (jeśli nie znaleziono w pliku, użyj wartości domyślnej)
-                if (ftp.HasValue)
+                if (ftp.HasValue && ftp.Value > 0)
                 {
                     fitFileData.Ftp = ftp.Value;
                 }
                 else
                 {
                     // Jeśli FTP nie zostało znalezione, oszacuj na podstawie średniej mocy
-                    fitFileData.Ftp = fitFileData.AvgPower > 0 ? fitFileData.AvgPower * 1.05 : 200;
+                    if (fitFileData.AvgPower > 0)
+                    {
+                        // Oszacowanie: FTP ≈ 105% średniej mocy z treningu
+                        fitFileData.Ftp = fitFileData.AvgPower * 1.05;
+                    }
+                    else
+                    {
+                        // Wartość domyślna dla początkujących
+                        fitFileData.Ftp = 200;
+                    }
                 }
 
                 return fitFileData;
             }
             catch (FitException ex)
             {
-                throw new InvalidOperationException($"Błąd podczas parsowania pliku FIT: {ex.Message}", ex);
+                throw new InvalidOperationException($"Błąd FIT: {ex.Message}", ex);
+            }
+            catch (IOException ex)
+            {
+                throw new InvalidOperationException($"Błąd odczytu pliku: {ex.Message}", ex);
             }
         }
 
@@ -158,7 +194,7 @@ namespace Ja.Services
         /// </summary>
         public bool ValidateMinimumDuration(FitFileData data, int minimumSeconds = 120)
         {
-            return data.PowerData.Length >= minimumSeconds;
+            return data.PowerData != null && data.PowerData.Length >= minimumSeconds;
         }
 
         /// <summary>
@@ -169,6 +205,26 @@ namespace Ja.Services
             return data.PowerData != null &&
                    data.PowerData.Length > 0 &&
                    data.PowerData.Any(p => p > 0);
+        }
+
+        /// <summary>
+        /// Wyświetla podstawowe statystyki z pliku FIT (do debugowania)
+        /// </summary>
+        public string GetFileStatistics(FitFileData data)
+        {
+            if (data == null)
+                return "Brak danych";
+
+            var stats = $"Plik: {data.FileName}\n";
+            stats += $"Czas trwania: {data.DurationFormatted}\n";
+            stats += $"Punkty danych: {data.PowerData?.Length ?? 0}\n";
+            stats += $"Średnia moc: {data.AvgPower:F1} W\n";
+            stats += $"FTP: {data.Ftp:F0} W\n";
+            stats += $"Średnie tętno: {data.AvgHeartRate:F0} bpm\n";
+            stats += $"Dystans: {(data.TotalDistance / 1000):F2} km\n";
+            stats += $"Średnia prędkość: {data.AvgSpeed:F1} km/h\n";
+
+            return stats;
         }
     }
 }
