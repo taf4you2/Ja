@@ -1,0 +1,1682 @@
+================================================================================
+                    JA TRAINING - SPECYFIKACJA APLIKACJI
+================================================================================
+
+================================================================================
+WIDOKI APLIKACJI
+================================================================================
+
+================================================================================
+EKRAN STARTOWY (DASHBOARD)
+================================================================================
+
+GORNA SEKCJA (HEADER)
+---------------------
+
+Lewy gorny rog:
+o Logo aplikacji lub nazwa "JA Training"
+o Ikona menu hamburger - po kliknieciu rozwija sie boczne menu nawigacyjne
+
+Prawy gorny rog:
+o Ikona kola zebatego - przejscie do ustawien
+o Zdjecie profilowe uzytkownika (male, okragle) - klikniecie otwiera profil
+
+Pasek tytulowy (center/left):
+o Napis "Dashboard" lub "Przeglad"
+o Pod spodem: aktualna data i dzien tygodnia, np. "Niedziela, 9 listopada 2025"
+
+--------------------------------------------------------------------------------
+CENTRALNA CZ??? G??WNA
+--------------------------------------------------------------------------------
+
+1. PERFORMANCE MANAGEMENT CHART (PMC) - SEKCJA FITNESS/FATIGUE/FORM
+
+Nag??wek sekcji:
+o "Forma treningowa" lub "Performance Management"
+o Ma?a ikona informacyjna ((i)) - tooltip z wyja?nieniem metryk
+o Ikona ustawie? wykresu (?) - po klikni?ciu otwiera opcje dostosowania:
+  - Wyb?r przedzia?u czasu: 6 tygodni / 12 tygodni / 6 miesi?cy / 12 miesi?cy
+  - Pokazuj/ukryj poszczeg?lne linie: CTL / ATL / TSB
+  - Typ wykresu: liniowy / area chart
+  - Skala osi Y: automatyczna / r?czna
+
+Trzy du?e kafelki z warto?ciami (obok siebie, r?wnej szeroko?ci):
+
+Kafelek 1 - FITNESS (CTL - Chronic Training Load):
+o Du?a liczba na g?rze, np. "62" w kolorze niebieskim
+o Pod ni? ma?y napis "Fitness (CTL)"
+o Ma?a strza?ka ? lub ? z warto?ci? zmiany, np. "+2.3" w zielono (wzrost) 
+  lub czerwono (spadek)
+o Subtelne t?o w odcieniu niebieskiego
+
+Kafelek 2 - FATIGUE (ATL - Acute Training Load):
+o Du?a liczba na g?rze, np. "48" w kolorze pomara?czowym/???tym
+o Pod ni? ma?y napis "Fatigue (ATL)"
+o Ma?a strza?ka z warto?ci? zmiany, np. "+5.1"
+o Subtelne t?o w odcieniu pomara?czowym
+
+Kafelek 3 - FORM (TSB - Training Stress Balance):
+o Du?a liczba na g?rze, np. "+14" w kolorze zielonym (pozytywna) 
+  lub czerwonym (negatywna)
+o Pod ni? ma?y napis "Form (TSB)"
+o Wska?nik stanu: "?wie?y" / "Optymalny" / "Przeci??ony"
+o T?o zmienia kolor w zale?no?ci od warto?ci (zielone = dobra forma, 
+  ???te = neutralna, czerwone = przeci??enie)
+
+Wykres liniowy pod kafelkami:
+o Wykres pokazuj?cy ostatnie 6-12 tygodni (konfigurowalny)
+o Trzy linie:
+  - Niebieska linia (Fitness/CTL) - grubsza
+  - Pomara?czowa/r??owa linia (Fatigue/ATL) - cie?sza
+  - Szara/zielona linia (Form/TSB) - mo?e by? kolorem wype?nienia (area chart)
+o O? X: daty/tygodnie
+o O? Y: warto?ci TSS
+o Mo?liwo?? przesuwania wykresu palcem (scroll horizontal)
+o Po najechaniu/dotkni?ciu punktu - tooltip z dok?adnymi warto?ciami dla danego dnia
+o Mo?liwo?? zoom in/out
+
+Ma?y tekst pod wykresem:
+o "Ostatnia aktualizacja: dzisiaj o 14:23"
+o Lub "Brak trening?w w tym okresie"
+
+--------------------------------------------------------------------------------
+
+2. SEKCJA "OSTATNIE TYGODNIE" (WEEKLY TRAINING SUMMARY)
+
+Nag??wek sekcji:
+o "Twoje treningi" lub "Podsumowanie treningowe"
+o Przycisk "Zobacz wszystkie >" po prawej stronie - przej?cie do widoku kalendarza
+o Ikona ustawie? widoku (?) - opcje:
+  - Wyb?r przedzia?u: 7 dni / 4 tygodnie / 12 tygodni / 6 miesi?cy
+  - Sortowanie: od najnowszych / od najstarszych
+  - Widok: kompaktowy / rozszerzony
+
+Selektor przedzia?u czasowego (segmented control):
+o Trzy przyciski: "7 dni" | "4 tygodnie" | "12 tygodni"
+o Aktywny przycisk pod?wietlony
+
+Lista tygodni (karty przewijane pionowo):
+
+Ka?dy tydzie? to karta/kafelek z nast?puj?cymi elementami:
+
+Nag??wek karty:
+o "Tydzie? 1-7 listopada" (zakres dat)
+o Ma?a ikona po prawej: strza?ka > (wskazuje mo?liwo?? klikni?cia)
+
+Lewa strona karty - Statystyki tygodnia:
+o Du?a liczba: "312 TSS" - ca?kowity Training Stress Score
+o Pod ni?: "4 treningi" (liczba sesji)
+o Pod tym: "8h 23min" (ca?kowity czas)
+o Ikona z dystansem: "? 142 km"
+
+Prawa strona karty - Wizualizacja:
+o S?upki dla ka?dego dnia tygodnia (Pn-Nd):
+  - 7 ma?ych pionowych s?upk?w
+  - Wysoko?? s?upka = intensywno?? treningu (TSS)
+  - Kolor s?upka zale?ny od strefy treningowej:
+    * Szary = brak treningu
+    * Zielony = Z1-Z2 (recovery/endurance)
+    * ???ty = Z3-Z4 (tempo/threshold)
+    * Pomara?czowy/Czerwony = Z5+ (VO2max/anaerobic)
+  - Pod s?upkami: litery dni Pn Wt ?r Cz Pt So Nd
+
+Stan tygodnia (badge/tag):
+o Ma?y kolorowy badge w prawym g?rnym rogu karty:
+  - "? Uko?czony" (zielony)
+  - "? W trakcie" (niebieski)
+
+Dodatkowe wska?niki (ma?e ikony z warto?ciami):
+o ? ?rednia moc: "245 W"
+o ? ?rednie t?tno: "152 bpm"
+o ? Przewy?szenie: "1,240 m"
+
+Interakcja:
+o Klikni?cie w kart? tygodnia -> przej?cie do szczeg??owego widoku tygodnia 
+  z list? wszystkich trening?w
+o D?ugie przytrzymanie -> opcje: "Dodaj trening", "Zobacz statystyki", "Eksportuj"
+
+Ilo?? kart:
+o Domy?lnie widoczne 4 ostatnie tygodnie
+o Przewijanie w d?? ?aduje kolejne tygodnie
+o Mo?liwo?? "pull to refresh" na g?rze listy
+
+--------------------------------------------------------------------------------
+DOLNA CZ??? (DODATKOWE SEKCJE)
+--------------------------------------------------------------------------------
+
+3. PRZYCISK "DODAJ TRENING"
+
+Umiejscowienie:
+o Du?y, widoczny przycisk typu FAB (Floating Action Button)
+o Pozycja: prawy dolny r?g ekranu (zawsze widoczny podczas przewijania)
+o Kolor: wyra?ny, kontrastowy (np. niebieski/zielony)
+o Ikona: "+" lub ikona importu pliku
+
+Lub alternatywnie:
+o Wyr??niona sekcja tu? pod nag??wkiem "Twoje treningi"
+o Poziomy przycisk na pe?n? szeroko??
+o Tekst: "? Dodaj nowy trening" lub "? Importuj plik FIT"
+o Po klikni?ciu otwiera dialog wyboru pliku
+
+4. QUICK STATS - SZYBKIE STATYSTYKI
+
+Poziomy przewijany rz?d ma?ych kafelk?w (tu? nad lub pod sekcj? tygodni):
+
+Kafelek "Ten miesi?c":
+o "Listopad 2025"
+o "18 trening?w"
+o "1,247 TSS"
+o Ma?y wykres sparkline pokazuj?cy trend
+
+Kafelek "Bie??cy tydzie?":
+o "Tydzie? 45"
+o "4 treningi"
+o "312 TSS"
+o Pier?cie? post?pu pokazuj?cy % normalnego obci??enia treningowego
+
+Kafelek "FTP":
+o "Aktualny FTP"
+o "285 W"
+o "3.8 W/kg"
+o Data ostatniego testu: "2 tyg. temu"
+
+5. SEKCJA "REKORDY OSOBISTE" (COMPACT VIEW)
+
+Nag??wek:
+o "? Ostatnie rekordy"
+o Przycisk "Zobacz wszystkie >" -> przej?cie do pe?nego widoku rekord?w
+
+Lista 3 ostatnich/najwa?niejszych rekord?w:
+o Format: "5 min Power: 324 W o 3 dni temu"
+o Format: "20 min Power: 295 W o 2 tyg. temu"
+o Format: "1h Power: 245 W o 1 mies. temu"
+o Ma?a ikona ? przy nowych rekordach z ostatnich 7 dni
+
+--------------------------------------------------------------------------------
+BOCZNE MENU NAWIGACYJNE (HAMBURGER MENU)
+--------------------------------------------------------------------------------
+
+Po klikni?ciu ikony ? wysuwane z lewej:
+
+Sekcja G??wna:
+o ? Dashboard (aktualnie tutaj - wyr??nione)
+o ? Kalendarz (widok kalendarzowy)
+o ? Dodaj trening (import pliku FIT)
+
+Analiza:
+o ? Analiza treningu (szczeg??owa analiza wybranego treningu)
+o ? Power Curve (krzywa mocy)
+o ? Rekordy osobiste (PR tracking)
+
+Inne:
+o ? Ustawienia
+o ? Pomoc
+o i O aplikacji
+
+Na dole menu:
+o Wersja aplikacji: "v1.0.0"
+
+--------------------------------------------------------------------------------
+STAN PUSTEGO EKRANU (EMPTY STATE)
+--------------------------------------------------------------------------------
+
+Je?li u?ytkownik nie ma jeszcze ?adnych trening?w:
+o Ilustracja/ikona rowerzysty (prosta grafika)
+o "Witaj w JA Training!"
+o "Dodaj sw?j pierwszy trening, aby zobaczy? analizy"
+o Du?y przycisk "Importuj trening FIT"
+
+--------------------------------------------------------------------------------
+LAYOUT I PROPORCJE
+--------------------------------------------------------------------------------
+
+Podzia? ekranu (w pionie):
+1. Header: ~60-80px
+2. PMC Section: ~400-500px (kafelki + wykres)
+3. Przycisk "Dodaj trening" lub Quick Stats: ~100-150px
+4. Sekcja tygodni: reszta przestrzeni (scrollable)
+5. Rekordy osobiste: ~200px (na dole, przed stopk?)
+
+Szeroko??:
+o Maksymalna szeroko?? contentu: 1200px (na szerokich ekranach - centrowanie)
+o Padding boczny: 16-20px
+o Odst?py mi?dzy sekcjami: 24-32px
+
+Responsywno??:
+o Na szerokich ekranach (>1000px): kafelki PMC i wykres obok siebie
+o Na w?skich (<1000px): wszystko jeden pod drugim
+
+
+================================================================================
+? WIDOK USTAWIE? (SETTINGS VIEW)
+================================================================================
+
+Nazwa profesjonalna: View (widok) lub Screen (ekran). W WPF to b?dzie Window 
+lub UserControl/Page w zale?no?ci od implementacji.
+
+G?RNA SEKCJA (HEADER)
+---------------------
+
+Lewy g?rny r?g:
+o Strza?ka wstecz (<-) lub "< Dashboard" - powr?t do ekranu g??wnego
+o Tekst: "Ustawienia"
+
+Prawy g?rny r?g:
+o Przycisk "Zapisz" lub ikona ? (je?li s? niezapisane zmiany)
+o Opcjonalnie: ikona resetu "?" (przywr?? domy?lne)
+
+--------------------------------------------------------------------------------
+LAYOUT EKRANU USTAWIE? - DWIE KOLUMNY
+--------------------------------------------------------------------------------
+
+Lewa kolumna (200-250px):
+o Lista kategorii
+o Aktywna kategoria pod?wietlona
+
+Prawa kolumna (reszta):
+o Zawarto?? wybranej kategorii
+o Przewijalna je?li za d?uga
+
+--------------------------------------------------------------------------------
+KATEGORIE USTAWIE?
+--------------------------------------------------------------------------------
+
+1. ? PROFIL U?YTKOWNIKA
+
+Sekcja: Dane osobowe
+o Zdj?cie profilowe
+  - Miniatura zdj?cia
+  - Przycisk "Zmie? zdj?cie"
+  - Przycisk "Usu? zdj?cie"
+
+o Imi? i nazwisko
+  - Pole tekstowe: Imi?
+  - Pole tekstowe: Nazwisko
+
+o Data urodzenia
+  - Wyb?r daty (date picker)
+  - Automatyczne obliczanie wieku
+
+o P?e?
+  - Radio buttons: M??czyzna / Kobieta / Inna / Wol? nie podawa?
+
+Sekcja: Dane fizyczne
+o Waga
+  - Pole numeryczne z jednostk?: "__ kg"
+  - Przycisk: "Historia wagi" -> wykres zmian wagi w czasie
+
+o Wzrost
+  - Pole numeryczne z jednostk?: "__ cm"
+
+o T?tno spoczynkowe (RHR - Resting Heart Rate)
+  - Pole numeryczne: "__ bpm"
+
+o Maksymalne t?tno (Max HR)
+  - Pole numeryczne: "__ bpm"
+  - Checkbox: "Oblicz automatycznie (220 - wiek)"
+
+--------------------------------------------------------------------------------
+
+2. ? STREFY TRENINGOWE
+
+Sekcja: Power Zones (Strefy mocy)
+
+o FTP (Functional Threshold Power)
+  - Pole numeryczne: "__ W"
+  - Automatyczne obliczanie W/kg: "3.8 W/kg" (na podstawie wagi)
+  - Data ostatniego testu FTP (date picker)
+  - Przycisk: "Historia FTP" -> wykres zmian FTP w czasie
+
+o Model stref mocy
+  - Dropdown/Radio buttons:
+    * Coggan (7 stref) - domy?lny
+    * Coggan (6 stref)
+    * British Cycling (5 stref)
+    * Custom (w?asne)
+
+o Tabela stref mocy
+  - 7 wierszy (dla ka?dej strefy):
+    * Nazwa strefy (edytowalna)
+    * % FTP od-do (edytowalne dla custom)
+    * Warto?ci w W (automatycznie obliczane)
+    * Kolor strefy (color picker)
+
+  Przyk?ad:
+  Z1: Recovery      | 0-55%   | 0-157 W    | [szary]
+  Z2: Endurance     | 55-75%  | 157-214 W  | [niebieski]
+  Z3: Tempo         | 75-90%  | 214-257 W  | [zielony]
+  Z4: Threshold     | 90-105% | 257-299 W  | [???ty]
+  Z5: VO2max        | 105-120%| 299-342 W  | [pomara?czowy]
+  Z6: Anaerobic     | 120-150%| 342-428 W  | [czerwony]
+  Z7: Neuromuscular | >150%   | >428 W     | [ciemnoczerwony]
+
+Sekcja: Heart Rate Zones (Strefy t?tna)
+
+o Metoda obliczania
+  - Dropdown:
+    * % Max HR
+    * % HRR (Heart Rate Reserve - rezerwa t?tna)
+    * LTHR (Lactate Threshold Heart Rate)
+    * Custom
+
+o LTHR (Lactate Threshold Heart Rate)
+  - Pole numeryczne: "__ bpm"
+  - Data ostatniego testu
+
+o Tabela stref t?tna
+  - 5 lub 7 wierszy (w zale?no?ci od modelu):
+    * Nazwa strefy
+    * % Max HR lub % LTHR (od-do)
+    * Warto?ci w bpm
+    * Kolor strefy
+
+--------------------------------------------------------------------------------
+
+3. ? ZAAWANSOWANE
+
+Sekcja: Algorytmy
+
+o Wykrywanie interwa??w
+  - Czu?o?? wykrywania
+    * Slider: Niska / ?rednia / Wysoka / Bardzo wysoka
+  
+  - Minimalne czasy trwania stref (w sekundach)
+    * Edytowalne pola dla ka?dej strefy:
+      Z7: __ s (domy?lnie 5)
+      Z6: __ s (domy?lnie 10)
+      Z5: __ s (domy?lnie 30)
+      Z4: __ s (domy?lnie 60)
+      Z3: __ s (domy?lnie 120)
+  
+  - Parametry wykrywania zmian mocy
+    * D?ugie okno: __ s (domy?lnie 30)
+    * Kr?tkie okno: __ s (domy?lnie 10)
+    * Pr?g zmiany d?ugi: __ % (domy?lnie 12)
+    * Pr?g zmiany kr?tki: __ % (domy?lnie 25)
+
+o TSS Calculation
+  - Radio buttons:
+    * Standardowy (IF? x czas)
+    * Alternatywny (VI adjusted)
+
+Sekcja: Performance Management Chart (PMC)
+
+o Sta?e czasowe
+  - CTL (Chronic Training Load):
+    * Pole numeryczne: "__ dni" (domy?lnie 42)
+  
+  - ATL (Acute Training Load):
+    * Pole numeryczne: "__ dni" (domy?lnie 7)
+
+o TSB (Training Stress Balance) ranges
+  - ?wie?y (Fresh): > __ (domy?lnie 25)
+  - Optymalny (Optimal): __ do __ (domy?lnie -10 do 25)
+  - Przeci??ony (Overreached): < __ (domy?lnie -30)
+
+Sekcja: Dane i import
+
+o Domy?lny katalog importu
+  - Pole z ?cie?k? + przycisk "Przegl?daj"
+
+o Automatyczne wykrywanie
+  - Checkbox: "Automatycznie analizuj po imporcie"
+  - Checkbox: "Wykrywaj duplikaty podczas importu"
+
+o Usuwanie outlier?w
+  - Checkbox: "Automatycznie usuwaj outliery"
+  - Z-score threshold: __ s (domy?lnie 3)
+
+--------------------------------------------------------------------------------
+
+4. ? DANE
+
+Sekcja: Baza danych
+o Lokalizacja bazy danych
+  - Wy?wietlana ?cie?ka
+  - Przycisk "Zmie? lokalizacj?"
+
+o Rozmiar bazy danych
+  - Informacja: "Aktualna wielko??: 245 MB"
+
+Sekcja: Backup
+o Kopia zapasowa
+  - Lokalizacja: Pole z ?cie?k? + przycisk "Przegl?daj"
+  - Przycisk: "Utw?rz kopi? zapasow? teraz"
+
+o Przywracanie
+  - Przycisk: "Przywr?? baz? danych z kopii zapasowej"
+
+Sekcja: Eksport
+o Przycisk: "Eksportuj wszystkie treningi do CSV"
+o Przycisk: "Eksportuj statystyki"
+
+Sekcja: Czyszczenie
+o Przycisk: "Usu? wszystkie treningi" (z ostrze?eniem)
+o Przycisk: "Resetuj wszystkie ustawienia"
+
+--------------------------------------------------------------------------------
+DODATKOWE ELEMENTY UX
+--------------------------------------------------------------------------------
+
+Wska?niki zmian:
+o Je?li u?ytkownik zmieni warto??, kt?ra nie jest jeszcze zapisana:
+  - Poka? gwiazdk? (*) lub kropk? przy nazwie kategorii
+  - W??cz przycisk "Zapisz" w headerze
+
+Walidacja:
+o B??dy walidacji pokazywane pod polami (np. "FTP musi by? > 0")
+o Czerwone obramowanie nieprawid?owych p?l
+
+Podpowiedzi:
+o Ikony (i) z tooltipami wyja?niaj?cymi trudniejsze poj?cia
+o Przyk?ady warto?ci w szarym tek?cie w polach (placeholder)
+
+Przyciski akcji:
+o "Przywr?? domy?lne" - dla ka?dej sekcji osobno
+o "Resetuj wszystko" - na dole kategorii Zaawansowane
+
+--------------------------------------------------------------------------------
+SZCZEG??Y LAYOUTU
+--------------------------------------------------------------------------------
+
+Lewa kolumna:
+o Szeroko??: 200-250px
+o Padding: 16px
+o Lista kategorii z ikonami
+o Hover effect na kategoriach
+o Aktywna kategoria: pogrubiona czcionka + kolor akcentu + t?o
+
+Prawa kolumna:
+o Padding: 24-32px
+o Maksymalna szeroko?? contentu: 800px
+o Odst?py mi?dzy sekcjami: 32px
+o Odst?py mi?dzy polami: 16px
+
+Nag??wki sekcji:
+o Font size: 16-18px
+o Font weight: 600
+o Kolor: ciemniejszy szary
+o Margin bottom: 16px
+
+Pola formularza:
+o Height: 36-40px
+o Padding: 8-12px
+o Border radius: 4px
+o Border: 1px solid #ddd
+
+
+================================================================================
+? WIDOK KALENDARZA (CALENDAR VIEW)
+================================================================================
+
+G?RNA SEKCJA (HEADER)
+---------------------
+
+Lewy g?rny r?g:
+o Strza?ka wstecz (<-) lub "< Dashboard" - powr?t do ekranu g??wnego
+o Tekst: "Kalendarz"
+
+Prawy g?rny r?g:
+o Ikona ustawie? widoku (?)
+o Przycisk "Dodaj trening" (+)
+
+--------------------------------------------------------------------------------
+NAWIGACJA KALENDARZA
+--------------------------------------------------------------------------------
+
+Pasek nawigacji miesi?ca:
+o Strza?ka w lewo (?) - poprzedni miesi?c
+o Nazwa miesi?ca i rok: "Listopad 2025"
+o Strza?ka w prawo (?) - nast?pny miesi?c
+o Przycisk "Dzisiaj" - szybki powr?t do bie??cego miesi?ca
+
+Selektor widoku:
+o Przyciski/zak?adki: "Miesi?c" | "Tydzie?" | "Lista"
+o Aktywny domy?lnie: "Miesi?c"
+
+--------------------------------------------------------------------------------
+G??WNA CZ??? - WIDOK MIESI?CA
+--------------------------------------------------------------------------------
+
+Siatka kalendarza:
+o Nag??wek z nazwami dni tygodnia: Pn | Wt | ?r | Cz | Pt | So | Nd
+o 5-6 wierszy reprezentuj?cych tygodnie
+o Ka?da kom?rka to jeden dzie?
+
+Kom?rka dnia:
+o Numer dnia w lewym g?rnym rogu
+o Je?li jest trening w tym dniu:
+  - Pasek lub ikona z kolorem strefy dominuj?cej
+  - Skr?cone info: np. "2h 15min" lub "245 TSS"
+  - Je?li wiele trening?w: liczba "2 treningi"
+o Dzisiejsza data: obramowanie lub t?o w kolorze akcentu
+o Dni z poprzedniego/nast?pnego miesi?ca: szare, przyciemnione
+
+Interakcja:
+o Klikni?cie w dzie? z treningiem -> otwiera szczeg??y dnia
+o Klikni?cie w pusty dzie? -> opcja dodania treningu
+o Hover nad dniem z treningiem -> tooltip z szybkim podgl?dem
+
+--------------------------------------------------------------------------------
+WIDOK TYGODNIA
+--------------------------------------------------------------------------------
+
+Layout:
+o Pionowa o? czasu (opcjonalnie, je?li nie mamy godzin trening?w - pomijamy)
+o 7 kolumn dla dni tygodnia
+o Nag??wek ka?dej kolumny: dzie? tygodnia + data (np. "Pn 4.11")
+
+Treningi:
+o Bloki/karty trening?w w odpowiednich dniach
+o Kolor bloku = dominuj?ca strefa
+o Tekst na bloku: czas trwania, TSS, typ treningu
+o Klikni?cie w blok -> szczeg??y treningu
+
+--------------------------------------------------------------------------------
+WIDOK LISTA
+--------------------------------------------------------------------------------
+
+Lista trening?w chronologicznie:
+o Grupowanie po dniach
+o Ka?dy trening jako wiersz/karta z:
+  - Data i godzina (je?li dost?pna)
+  - Miniatura wykresu mocy (opcjonalnie)
+  - Podstawowe statystyki: czas, dystans, ?rednia moc, TSS
+  - Ikona strefy dominuj?cej
+o Przycisk "Poka? wi?cej" na dole
+
+--------------------------------------------------------------------------------
+PANEL BOCZNY (OPCJONALNIE)
+--------------------------------------------------------------------------------
+
+Podsumowanie miesi?ca:
+o Liczba trening?w
+o Ca?kowity czas
+o Ca?kowity TSS
+o Ca?kowity dystans
+o ?rednia moc
+o Wykres s?upkowy TSS w poszczeg?lnych tygodniach miesi?ca
+
+Legenda stref:
+o Lista kolor?w ze znaczeniem stref Z1-Z7
+
+--------------------------------------------------------------------------------
+STAN PUSTY
+--------------------------------------------------------------------------------
+
+Je?li w wybranym okresie brak trening?w:
+o Tekst: "Brak trening?w w tym miesi?cu"
+o Przycisk: "Dodaj trening"
+
+
+================================================================================
+? WIDOK ANALIZY TRENINGU (TRAINING ANALYSIS VIEW)
+================================================================================
+
+G?RNA SEKCJA (HEADER)
+---------------------
+
+Lewy g?rny r?g:
+o Strza?ka wstecz (<-) - powr?t do poprzedniego widoku
+o Tekst: "Analiza treningu"
+
+Centrum:
+o Nazwa pliku lub data treningu: "2025-11-09_evening_ride.fit"
+o Data i godzina: "9 listopada 2025, 17:30"
+
+Prawy g?rny r?g:
+o Ikona eksportu (?)
+o Ikona ustawie? wykresu (?)
+o Menu opcji (?): Usu? trening, Edytuj dane, Eksportuj
+
+--------------------------------------------------------------------------------
+SEKCJA G??WNYCH METRYK
+--------------------------------------------------------------------------------
+
+Karty z kluczowymi statystykami (poziomy rz?d):
+o Czas trwania: 1:45:32
+o Dystans: 45.2 km
+o ?rednia moc: 245 W
+o Normalized Power (NP): 268 W
+o TSS: 124
+o Intensity Factor (IF): 0.94
+o ?rednie t?tno: 152 bpm
+o Work: 1,547 kJ
+
+--------------------------------------------------------------------------------
+G??WNY WYKRES MOCY
+--------------------------------------------------------------------------------
+
+Wykres liniowy:
+o O? X: czas (sekundy lub minuty)
+o O? Y: moc (W)
+o Niebieska linia mocy
+o T?o wykresu pokolorowane wed?ug stref (opcjonalnie)
+o Oznaczenia wykrytych interwa??w (pionowe linie lub zacieniowane obszary)
+
+Dodatkowe linie (opcjonalnie w??czane):
+o T?tno (czerwona linia, druga o? Y)
+o Kadencja (zielona linia)
+o Pr?dko?? (fioletowa linia)
+o Wysoko?? (area chart w tle)
+
+Toolbar wykresu:
+o Przyciski w??czania/wy??czania linii: Moc | T?tno | Kadencja | Pr?dko??
+o Zoom in/out
+o Reset widoku
+o Eksport wykresu jako obraz
+
+Interakcja:
+o Najechanie myszk? -> tooltip z dok?adnymi warto?ciami w danym momencie
+o Zaznaczanie obszaru -> zoom do wybranego fragmentu
+o Klikni?cie w interwa? -> pod?wietlenie i pokazanie szczeg???w
+
+--------------------------------------------------------------------------------
+SEKCJA WYKRYTYCH INTERWA??W
+--------------------------------------------------------------------------------
+
+Nag??wek:
+o "Wykryte interwa?y treningowe"
+o Liczba interwa??w: "5 interwa??w"
+
+Tabela/lista interwa??w:
+
+Kolumny:
+o # - numer interwa?u
+o Czas - start-koniec (np. 05:23 - 10:45)
+o Czas trwania - 05:22 (322s)
+o ?rednia moc - 312 W (109% FTP)
+o Strefa - Z5: VO2max (kolorowy badge)
+o Typ - jump / gradual
+o Akcje - ikona podgl?du na wykresie
+
+Interakcja:
+o Klikni?cie w wiersz -> pod?wietlenie interwa?u na g??wnym wykresie
+o Hover -> pokazanie zakresu na wykresie
+
+--------------------------------------------------------------------------------
+SEKCJA OKRES?W ODPOCZYNKU
+--------------------------------------------------------------------------------
+
+Nag??wek:
+o "Okresy odpoczynku"
+o Liczba: "4 okresy"
+
+Tabela podobna do interwa??w:
+o Czas
+o Czas trwania
+o ?rednia moc
+o Strefa (zazwyczaj Z1-Z2)
+
+--------------------------------------------------------------------------------
+SEKCJA TIME IN ZONES
+--------------------------------------------------------------------------------
+
+Wykres ko?owy lub s?upkowy:
+o Podzia? czasu treningu wed?ug stref
+o Ka?da strefa w swoim kolorze
+o Warto?ci w minutach i procentach
+
+Tabela stref:
+Strefa | Czas      | % czasu | ?rednia moc
+Z1:    | 15:23     | (14%)   | 120 W
+Z2:    | 45:12     | (43%)   | 180 W
+Z3:    | 25:34     | (24%)   | 240 W
+Z4:    | 12:45     | (12%)   | 285 W
+Z5:    | 6:18      | (6%)    | 320 W
+Z6:    | 0:20      | (0%)    | 380 W
+
+--------------------------------------------------------------------------------
+SEKCJA POWER CURVE (MEAN MAXIMAL POWER)
+--------------------------------------------------------------------------------
+
+Wykres:
+o O? X: czas trwania (5s, 10s, 30s, 1min, 5min, 20min, 60min)
+o O? Y: maksymalna ?rednia moc dla danego czasu
+o Linia pokazuj?ca najlepsze wyniki z tego treningu
+o Opcjonalnie: linia z rekordami osobistymi (do por?wnania)
+
+Tabela najlepszych wynik?w:
+Czas   | Moc    | % FTP | Czy rekord?
+5s:    | 856 W  | (300%)| ?
+1min:  | 412 W  | (145%)|
+5min:  | 324 W  | (114%)| ?
+20min: | 295 W  | (104%)|
+
+--------------------------------------------------------------------------------
+DODATKOWE SEKCJE (ZAK?ADKI LUB PRZEWIJANE)
+--------------------------------------------------------------------------------
+
+Mapa (je?li s? dane GPS):
+o Mapa z tras?
+o Heatmap mocy/t?tna na trasie
+o Wykres wysoko?ci pod map?
+
+Szczeg??owe statystyki:
+o Kadencja: ?rednia, maksymalna
+o T?tno: min, max, ?rednie, % Max HR
+o Pr?dko??: ?rednia, maksymalna
+o Przewy?szenie: wzniesienia, zjazdy
+o Temperatura (je?li dost?pna)
+
+Analiza t?tna:
+o Time in HR zones
+o HR Drift
+o PWR:HR ratio (decoupling)
+
+Tabela rekord?w:
+o Lista wszystkich osi?gni?tych rekord?w w tym treningu
+o Por?wnanie z poprzednimi rekordami
+
+--------------------------------------------------------------------------------
+DOLNA SEKCJA
+--------------------------------------------------------------------------------
+
+Notatki do treningu:
+o Pole tekstowe do dodania notatek
+o Odczucia, warunki pogodowe, etc.
+
+Tagi:
+o Mo?liwo?? dodania tag?w: outdoor, indoor, race, intervals, recovery
+
+Ocena treningu:
+o RPE (Rate of Perceived Exertion): skala 1-10
+o Emotikony: ? ? ?
+
+
+================================================================================
+? WIDOK POWER CURVE (POWER CURVE VIEW)
+================================================================================
+
+G?RNA SEKCJA (HEADER)
+---------------------
+
+Lewy g?rny r?g:
+o Strza?ka wstecz (<-) - powr?t do poprzedniego widoku
+o Tekst: "Power Curve"
+
+Prawy g?rny r?g:
+o Ikona ustawie? wykresu (?)
+o Ikona eksportu (?)
+
+--------------------------------------------------------------------------------
+SELEKTOR ZAKRESU CZASOWEGO
+--------------------------------------------------------------------------------
+
+Przyciski/zak?adki:
+o "Ostatnie 30 dni"
+o "Ostatnie 90 dni"
+o "Ostatnie 6 miesi?cy"
+o "Ostatni rok"
+o "Ca?y czas"
+o "Zakres niestandardowy" (date picker)
+
+Aktywny: domy?lnie "Ca?y czas"
+
+--------------------------------------------------------------------------------
+G??WNY WYKRES POWER CURVE
+--------------------------------------------------------------------------------
+
+Wykres liniowy:
+o O? X: czas trwania (5s, 10s, 15s, 30s, 1min, 2min, 3min, 5min, 8min, 
+  10min, 20min, 30min, 60min, 90min)
+o O? Y: moc (W)
+o Gruba niebieska linia: najlepsze wyniki (rekordy)
+o Opcjonalnie: dodatkowe linie do por?wnania
+
+Opcje wy?wietlania:
+o Checkbox: "Poka? % FTP" (druga o? Y lub zamiana warto?ci)
+o Checkbox: "Poka? W/kg"
+o Dropdown skali: Logarytmiczna / Liniowa
+
+Punkty na wykresie:
+o Kropki w miejscach pomiar?w
+o Hover -> tooltip z dok?adnymi danymi: 
+  "5 min: 324 W (114% FTP, 4.3 W/kg) o 15.10.2025"
+
+--------------------------------------------------------------------------------
+TABELA REKORD?W MOCY
+--------------------------------------------------------------------------------
+
+Kolumny:
+o Czas - 5s, 10s, 30s, 1min, 5min, 20min, 60min
+o Moc (W) - warto?? w watach
+o W/kg - moc na kilogram
+o % FTP - procent FTP
+o Data - kiedy osi?gni?ty
+o Trening - link do treningu z tym rekordem
+o Akcje - ikona podgl?du szczeg???w
+
+Sortowanie:
+o Mo?liwo?? sortowania po ka?dej kolumnie
+o Domy?lnie: od najkr?tszego do najd?u?szego czasu
+
+--------------------------------------------------------------------------------
+SEKCJA POR?WNANIA
+--------------------------------------------------------------------------------
+
+Nag??wek:
+o "Por?wnaj okresy"
+
+Interfejs:
+o Przycisk: "+ Dodaj okres do por?wnania"
+o Lista dodanych linii:
+  - Okres 1: Ostatnie 90 dni (kolor: czerwony) ?
+  - Okres 2: Rok 2024 (kolor: zielony) ?
+  - Okres 3: Lipiec 2025 (kolor: fioletowy) ?
+
+Wykres:
+o Wszystkie wybrane okresy na jednym wykresie jako osobne linie
+o Legenda z kolorami
+
+--------------------------------------------------------------------------------
+ANALIZA PROGRESJI
+--------------------------------------------------------------------------------
+
+Wykres czasowy (opcjonalny, poni?ej g??wnego):
+o O? X: czas (miesi?ce/lata)
+o O? Y: moc
+o Wyb?r przedzia?u: dropdown (5min / 20min / 60min)
+o Linia pokazuj?ca jak zmienia? si? rekord w czasie
+o Punkty oznaczaj?ce nowe rekordy
+
+--------------------------------------------------------------------------------
+FILTRY I OPCJE
+--------------------------------------------------------------------------------
+
+Sidebar lub panel g?rny:
+
+o Filtruj po typu treningu:
+  - Checkbox: Outdoor
+  - Checkbox: Indoor
+  - Checkbox: Tylko wy?cigi
+
+o Filtruj po sezonie:
+  - Dropdown: Wszystkie / Wiosna / Lato / Jesie? / Zima
+
+--------------------------------------------------------------------------------
+PRZYCISKI AKCJI
+--------------------------------------------------------------------------------
+
+o "Eksportuj do CSV"
+o "Eksportuj wykres jako obraz"
+o "Drukuj raport"
+
+
+================================================================================
+? WIDOK REKORD?W OSOBISTYCH (PERSONAL RECORDS VIEW)
+================================================================================
+
+G?RNA SEKCJA (HEADER)
+---------------------
+
+Lewy g?rny r?g:
+o Strza?ka wstecz (<-) - powr?t
+o Tekst: "Rekordy osobiste"
+
+Prawy g?rny r?g:
+o Ikona eksportu (?)
+o Ikona filtr?w (?)
+
+--------------------------------------------------------------------------------
+STATYSTYKI OG?LNE
+--------------------------------------------------------------------------------
+
+Karty z podsumowaniem:
+o Ca?kowita liczba rekord?w: 47
+o Nowych w tym miesi?cu: 3
+o Nowych w tym roku: 18
+o Ostatni rekord: 2 dni temu (5 min power)
+
+--------------------------------------------------------------------------------
+ZAK?ADKI KATEGORII
+--------------------------------------------------------------------------------
+
+G??wne zak?adki:
+o "Moc" (aktywna domy?lnie)
+o "T?tno"
+o "Inne"
+
+--------------------------------------------------------------------------------
+SEKCJA: REKORDY MOCY
+--------------------------------------------------------------------------------
+
+Kategorie czasowe (expandable sections):
+
+SPRINTY (< 1 MIN):
+o 5s:  856 W (300% FTP, 11.3 W/kg) o 15.10.2025 o [Link do treningu]
+o 10s: 782 W (274% FTP, 10.4 W/kg) o 22.09.2025 o [Link]
+o 15s: 721 W (253% FTP, 9.6 W/kg)  o 15.10.2025 o [Link]
+o 30s: 598 W (210% FTP, 7.9 W/kg)  o 03.11.2025 o [Link] ?
+
+KR?TKIE INTERWA?Y (1-5 MIN):
+o 1 min: 412 W (145% FTP, 5.5 W/kg) o 28.10.2025 o [Link]
+o 2 min: 387 W (136% FTP, 5.1 W/kg) o 12.10.2025 o [Link]
+o 3 min: 356 W (125% FTP, 4.7 W/kg) o 28.10.2025 o [Link]
+o 5 min: 324 W (114% FTP, 4.3 W/kg) o 15.08.2025 o [Link]
+
+?REDNIE INTERWA?Y (5-20 MIN):
+o 8 min:  312 W (109% FTP, 4.1 W/kg)
+o 10 min: 305 W (107% FTP, 4.0 W/kg)
+o 20 min: 295 W (104% FTP, 3.9 W/kg)
+
+D?UGIE WYSI?KI (> 20 MIN):
+o 30 min: 278 W (98% FTP, 3.7 W/kg)
+o 60 min: 245 W (86% FTP, 3.3 W/kg)
+o 90 min: 228 W (80% FTP, 3.0 W/kg)
+
+Dla ka?dego rekordu:
+o Warto?? w watach (pogrubiona)
+o % FTP i W/kg w nawiasie
+o Data osi?gni?cia
+o Link do treningu z tym rekordem
+o Ikona ? je?li rekord ?wie?y (ostatnie 7 dni)
+o Ikona por?wnania - mo?liwo?? zobaczenia poprzedniego rekordu
+
+--------------------------------------------------------------------------------
+SEKCJA: REKORDY T?TNA
+--------------------------------------------------------------------------------
+
+Kategorie:
+
+MAKSYMALNE WARTO?CI:
+o Maksymalne t?tno: 189 bpm o 22.08.2025
+o ?rednie t?tno (ca?y trening): 165 bpm o 15.10.2025
+
+STREFY T?TNA:
+o Najd?u?szy czas w Z5: 32:15 o 28.10.2025
+o Najd?u?szy czas w Z4: 1:24:32 o 03.11.2025
+
+--------------------------------------------------------------------------------
+SEKCJA: INNE REKORDY
+--------------------------------------------------------------------------------
+
+DYSTANS:
+o Najd?u?szy trening: 142.3 km o 12.09.2025
+o Najwi?ksze przewy?szenie: 2,340 m o 28.08.2025
+
+CZAS:
+o Najd?u?szy czas treningu: 4:23:15 o 12.09.2025
+
+TSS:
+o Najwy?szy TSS: 285 o 28.08.2025
+
+PR?DKO?? (je?li dost?pna):
+o Maksymalna pr?dko??: 67.4 km/h o 15.09.2025
+o Najwy?sza ?rednia pr?dko??: 34.2 km/h o 22.10.2025
+
+KADENCJA:
+o Maksymalna kadencja: 142 rpm o 05.11.2025
+o Najwy?sza ?rednia kadencja: 96 rpm o 28.10.2025
+
+--------------------------------------------------------------------------------
+WYKRES PROGRESJI REKORD?W
+--------------------------------------------------------------------------------
+
+Pod listami rekord?w:
+o Ma?y wykres liniowy pokazuj?cy jak zmienia? si? wybrany rekord w czasie
+o Dropdown wyboru: kt?ry rekord wizualizowa? (5min power / 20min power / FTP)
+o Punkty na wykresie = daty nowych rekord?w
+o Trend line pokazuj?ca og?ln? progresj?
+
+--------------------------------------------------------------------------------
+FILTRY
+--------------------------------------------------------------------------------
+
+Panel filtr?w (sidebar lub rozwija si? z g?ry):
+
+o Zakres dat:
+  - Ostatnie 30 dni / 90 dni / rok / ca?y czas / niestandardowy
+
+o Typ treningu:
+  - Wszystkie / Outdoor / Indoor / Wy?cigi
+
+o Sortowanie:
+  - Po dacie (najnowsze / najstarsze)
+  - Po warto?ci (najwy?sze / najni?sze)
+  - Po kategorii czasu
+
+o Poka? tylko:
+  - Checkbox: Nowe rekordy (ostatnie 30 dni)
+  - Checkbox: Rekordy pobite wi?cej ni? raz
+
+--------------------------------------------------------------------------------
+INTERAKCJE
+--------------------------------------------------------------------------------
+
+Klikni?cie w rekord:
+o Otwiera szczeg??y z:
+  - Historia tego rekordu (poprzednie warto?ci)
+  - Wykres mocy z zaznaczonym fragmentem gdzie osi?gni?ty
+  - Link do pe?nej analizy treningu
+  - Mo?liwo?? dodania notatki do rekordu
+
+D?ugie przytrzymanie/prawy przycisk:
+o Menu: Usu? rekord / Edytuj / Por?wnaj z innymi / Udost?pnij
+
+
+================================================================================
+? WIDOK HISTORII FTP I WAGI (FTP & WEIGHT HISTORY VIEW)
+================================================================================
+
+G?RNA SEKCJA (HEADER)
+---------------------
+
+Lewy g?rny r?g:
+o Strza?ka wstecz (<-) - powr?t do ustawie?
+o Tekst: "Historia FTP i wagi"
+
+Prawy g?rny r?g:
+o Ikona eksportu (?)
+o Przycisk "+ Dodaj pomiar"
+
+--------------------------------------------------------------------------------
+ZAK?ADKI
+--------------------------------------------------------------------------------
+
+Dwie zak?adki u g?ry:
+o "FTP" (aktywna domy?lnie)
+o "Waga"
+
+================================================================================
+ZAK?ADKA: FTP
+================================================================================
+
+AKTUALNA WARTO?? (KARTA NA G?RZE)
+----------------------------------
+
+Du?a karta z bie??cymi danymi:
+o Aktualne FTP: 285 W (du?a liczba)
+o W/kg: 3.8 W/kg (na podstawie aktualnej wagi)
+o Data ostatniego testu: 22.10.2025
+o Zmiana od poprzedniego: +8 W (+2.9%) ? (zielona strza?ka)
+
+--------------------------------------------------------------------------------
+WYKRES HISTORII FTP
+--------------------------------------------------------------------------------
+
+Wykres liniowy:
+o O? X: czas (miesi?ce)
+o O? Y: FTP w watach (lewa o?) + W/kg (prawa o?)
+o Niebieska linia: FTP (W)
+o Zielona linia przerywana: W/kg
+o Punkty na wykresie oznaczaj?ce pomiary
+o Hover -> tooltip: "285 W (3.8 W/kg) o 22.10.2025"
+
+Selektor zakresu czasowego:
+o Przyciski: "6 miesi?cy" | "1 rok" | "2 lata" | "Ca?y czas"
+
+Opcje wykresu:
+o Checkbox: "Poka? W/kg"
+o Checkbox: "Poka? lini? trendu"
+o Checkbox: "Poka? adnotacje" (np. kontuzje, przerwy)
+
+--------------------------------------------------------------------------------
+TABELA POMIAR?W FTP
+--------------------------------------------------------------------------------
+
+Kolumny:
+o Data - 22.10.2025
+o FTP (W) - 285 W
+o Waga - 75.0 kg (w momencie testu)
+o W/kg - 3.8
+o Zmiana - +8 W (+2.9%) od poprzedniego
+o ?r?d?o - Test 20min / Test rampy / Szacowane
+o Notatka - pole tekstowe
+o Akcje - Edytuj | Usu?
+
+Sortowanie:
+o Domy?lnie: od najnowszych
+o Mo?liwo?? sortowania po ka?dej kolumnie
+
+--------------------------------------------------------------------------------
+STATYSTYKI FTP
+--------------------------------------------------------------------------------
+
+Karty z podsumowaniem (poziomy rz?d):
+o Najwy?sze FTP: 295 W (15.08.2025)
+o Najni?sze FTP: 245 W (12.01.2025)
+o ?rednia progresja: +2.3 W/miesi?c
+o Liczba test?w: 8
+
+--------------------------------------------------------------------------------
+PRZYCISK DODAJ POMIAR FTP
+--------------------------------------------------------------------------------
+
+Dialog po klikni?ciu "+ Dodaj pomiar":
+o Data pomiaru (date picker)
+o FTP (W) - pole numeryczne
+o Waga w momencie testu (kg) - pole numeryczne (opcjonalne, pobiera z historii 
+  wagi je?li brak)
+o ?r?d?o: dropdown (Test 20min / Test rampy / Test 8min / Szacowane / Inne)
+o Notatka - pole tekstowe
+o Przyciski: "Zapisz" | "Anuluj"
+
+================================================================================
+ZAK?ADKA: WAGA
+================================================================================
+
+AKTUALNA WARTO?? (KARTA NA G?RZE)
+----------------------------------
+
+Du?a karta z bie??cymi danymi:
+o Aktualna waga: 75.0 kg (du?a liczba)
+o BMI: 22.8 (je?li znany wzrost)
+o Data ostatniego pomiaru: 09.11.2025
+o Zmiana od poprzedniego: -0.5 kg (-0.7%) ? (zielona strza?ka w d??)
+
+--------------------------------------------------------------------------------
+WYKRES HISTORII WAGI
+--------------------------------------------------------------------------------
+
+Wykres liniowy:
+o O? X: czas
+o O? Y: waga w kg
+o Czerwona linia: waga
+o Punkty na wykresie oznaczaj?ce pomiary
+o Hover -> tooltip: "75.0 kg o 09.11.2025"
+
+Selektor zakresu czasowego:
+o Przyciski: "3 miesi?ce" | "6 miesi?cy" | "1 rok" | "Ca?y czas"
+
+Opcje wykresu:
+o Checkbox: "Poka? lini? trendu"
+o Checkbox: "Poka? ?redni? krocz?c? (7 dni)"
+o Checkbox: "Poka? zakres docelowy" (je?li ustawiony cel wagowy)
+
+--------------------------------------------------------------------------------
+TABELA POMIAR?W WAGI
+--------------------------------------------------------------------------------
+
+Kolumny:
+o Data - 09.11.2025
+o Waga (kg) - 75.0 kg
+o Zmiana - -0.5 kg (-0.7%) od poprzedniego
+o BMI - 22.8 (je?li znany wzrost)
+o Notatka - pole tekstowe
+o Akcje - Edytuj | Usu?
+
+Sortowanie:
+o Domy?lnie: od najnowszych
+
+--------------------------------------------------------------------------------
+STATYSTYKI WAGI
+--------------------------------------------------------------------------------
+
+Karty z podsumowaniem:
+o Najwy?sza waga: 78.5 kg (15.01.2025)
+o Najni?sza waga: 73.2 kg (22.07.2025)
+o ?rednia zmiana: -0.3 kg/miesi?c
+o Liczba pomiar?w: 42
+
+--------------------------------------------------------------------------------
+ANALIZA TRENDU (OPCJONALNIE)
+--------------------------------------------------------------------------------
+
+Dodatkowa sekcja pod wykresem:
+o Wykres s?upkowy: zmiana wagi tydzie? do tygodnia
+o Kolor zielony = spadek, czerwony = wzrost
+o Pomaga zobaczy? fluktuacje
+
+--------------------------------------------------------------------------------
+PRZYCISK DODAJ POMIAR WAGI
+--------------------------------------------------------------------------------
+
+Dialog po klikni?ciu "+ Dodaj pomiar":
+o Data pomiaru (date picker) - domy?lnie dzisiaj
+o Waga (kg) - pole numeryczne
+o Notatka - pole tekstowe (opcjonalne)
+o Przyciski: "Zapisz" | "Anuluj"
+
+--------------------------------------------------------------------------------
+WSP?LNE ELEMENTY DLA OBU ZAK?ADEK
+--------------------------------------------------------------------------------
+
+Panel boczny (opcjonalnie):
+o Szybki podgl?d kluczowych metryk
+o Mini wykres drugiej warto?ci (je?li w zak?adce FTP - mini wykres wagi 
+  i odwrotnie)
+
+Korelacja FTP i wagi:
+o Przycisk: "Poka? korelacj? FTP/Waga"
+o Otwiera po??czony widok:
+  - Wykres z dwiema liniami (FTP i waga) w czasie
+  - Scatter plot: waga vs W/kg
+  - Analiza jak zmiany wagi wp?ywa?y na W/kg
+
+
+================================================================================
+ARCHITEKTURA DANYCH I ROZWI?ZANIA TECHNICZNE
+================================================================================
+
+================================================================================
+STRUKTURA BAZY DANYCH SQLITE
+================================================================================
+
+TABELE:
+-------
+
+1. USERS (U?YTKOWNICY)
+o id (PRIMARY KEY)
+o name
+o surname
+o date_of_birth
+o gender
+o weight (aktualna)
+o height
+o resting_heart_rate
+o max_heart_rate
+o profile_picture_path
+o created_at
+o updated_at
+
+2. FTP_HISTORY (HISTORIA FTP)
+o id (PRIMARY KEY)
+o user_id (FOREIGN KEY)
+o ftp_value
+o weight_at_test
+o test_date
+o source (test_20min, ramp_test, estimated, manual)
+o notes
+o created_at
+
+3. WEIGHT_HISTORY (HISTORIA WAGI)
+o id (PRIMARY KEY)
+o user_id (FOREIGN KEY)
+o weight
+o measurement_date
+o notes
+o created_at
+
+4. TRAININGS (TRENINGI - G??WNA TABELA)
+o id (PRIMARY KEY)
+o user_id (FOREIGN KEY)
+o file_name (nazwa oryginalnego pliku)
+o file_path (?cie?ka do zapisanego pliku FIT)
+o training_date
+o start_time
+o end_time
+o duration_seconds
+o distance_meters
+o avg_power
+o normalized_power
+o max_power
+o avg_heart_rate
+o max_heart_rate
+o avg_cadence
+o max_cadence
+o avg_speed
+o elevation_gain
+o elevation_loss
+o tss
+o intensity_factor
+o variability_index
+o work_kj
+o ftp_used (FTP u?yte do oblicze?)
+o notes
+o tags (JSON lub osobna tabela)
+o created_at
+o updated_at
+
+5. TRAINING_INTERVALS (WYKRYTE INTERWA?Y)
+o id (PRIMARY KEY)
+o training_id (FOREIGN KEY)
+o start_second
+o end_second
+o duration_seconds
+o avg_power
+o avg_power_watts
+o zone
+o zone_name
+o interval_type (jump, gradual, recovery)
+o slope
+o created_at
+
+6. TRAINING_RECORDS (REKORDY Z TRENINGU)
+o id (PRIMARY KEY)
+o training_id (FOREIGN KEY)
+o duration_seconds (5, 10, 30, 60, 300, 1200, 3600...)
+o power_watts
+o heart_rate (opcjonalnie)
+o created_at
+
+7. PERSONAL_RECORDS (REKORDY OSOBISTE)
+o id (PRIMARY KEY)
+o user_id (FOREIGN KEY)
+o training_id (FOREIGN KEY - kt?ry trening)
+o record_type (power_5s, power_1min, power_20min, max_hr, longest_distance, etc.)
+o value
+o secondary_value (np. W/kg dla mocy)
+o achieved_at
+o created_at
+
+8. POWER_ZONES (STREFY MOCY)
+o id (PRIMARY KEY)
+o user_id (FOREIGN KEY)
+o zone_number (1-7)
+o zone_name
+o min_percent
+o max_percent
+o color_hex
+o min_duration_seconds
+o created_at
+o updated_at
+
+9. HEART_RATE_ZONES (STREFY T?TNA)
+o id (PRIMARY KEY)
+o user_id (FOREIGN KEY)
+o zone_number
+o zone_name
+o min_percent
+o max_percent
+o color_hex
+o created_at
+o updated_at
+
+10. SETTINGS (USTAWIENIA APLIKACJI)
+o id (PRIMARY KEY)
+o user_id (FOREIGN KEY)
+o setting_key
+o setting_value
+o created_at
+o updated_at
+
+11. PMC_DATA (PERFORMANCE MANAGEMENT CHART - DANE CACHE)
+o id (PRIMARY KEY)
+o user_id (FOREIGN KEY)
+o date
+o ctl (Chronic Training Load)
+o atl (Acute Training Load)
+o tsb (Training Stress Balance)
+o created_at
+
+================================================================================
+OPTYMALIZACJE BAZY DANYCH
+================================================================================
+
+INDEKSY:
+--------
+o CREATE INDEX idx_trainings_user_date ON Trainings(user_id, training_date)
+o CREATE INDEX idx_trainings_date ON Trainings(training_date)
+o CREATE INDEX idx_intervals_training ON Training_Intervals(training_id)
+o CREATE INDEX idx_records_training ON Training_Records(training_id)
+o CREATE INDEX idx_records_duration ON Training_Records(duration_seconds)
+o CREATE INDEX idx_pmc_user_date ON PMC_Data(user_id, date)
+o CREATE INDEX idx_personal_records_type ON Personal_Records(record_type)
+
+AGREGATY - MATERIALIZED VIEWS (CACHE):
+---------------------------------------
+o Tabela z pre-obliczonymi statystykami tygodniowymi/miesi?cznymi
+o UPDATE po ka?dym dodaniu/usuni?ciu treningu
+o Przyspiesza ?adowanie dashboardu
+
+================================================================================
+WORKFLOW IMPORTU TRENINGU
+================================================================================
+
+IMPORT TRENINGU - KROK PO KROKU:
+---------------------------------
+1. U?ytkownik wybiera plik FIT
+2. Parser wczytuje plik do pami?ci (FitFileData)
+3. Sprawdzenie czy trening ju? istnieje (duplikat) po dacie/czasie/d?ugo?ci
+4. Kopiowanie pliku FIT do folderu z treningami
+5. Kalkulacja wszystkich metryk (TSS, IF, NP, VI, etc.)
+6. Wykrywanie interwa??w algorytmem
+7. Wykrywanie rekord?w (power curve)
+8. Zapis do bazy danych:
+   - INSERT do Trainings
+   - INSERT wszystkich interwa??w do Training_Intervals
+   - INSERT rekord?w do Training_Records
+   - UPDATE Personal_Records je?li pobity rekord
+9. Aktualizacja PMC (przeliczenie CTL/ATL/TSB)
+10. Refresh UI
+
+================================================================================
+OBLICZENIA METRYK
+================================================================================
+
+TSS (TRAINING STRESS SCORE):
+----------------------------
+o Formu?a: (seconds x NP x IF) / (FTP x 3600) x 100
+o IF (Intensity Factor) = NP / FTP
+o NP (Normalized Power) = wymaga 30-sekundowej ?redniej krocz?cej, 
+  potem ^4, ?rednia, ^(1/4)
+
+NORMALIZED POWER - ALGORYTM:
+-----------------------------
+1. We? dane mocy surowej
+2. Oblicz 30-sekundow? ?redni? krocz?c? (rolling average)
+3. Podnie? ka?d? warto?? do 4 pot?gi
+4. Oblicz ?redni? z tych warto?ci
+5. Wynik podnie? do pot?gi 1/4
+
+VI (VARIABILITY INDEX):
+-----------------------
+o VI = NP / Average Power
+o Pokazuje jak "g?adki" by? trening (1.0 = idealne tempo, >1.05 = zmienny)
+
+WORK (KJ):
+----------
+o Work = suma wszystkich warto?ci mocy x 1 sekunda / 1000
+o Prosta suma, ale u?yteczna metrika
+
+CTL/ATL/TSB (PERFORMANCE MANAGEMENT CHART):
+--------------------------------------------
+o CTL = exponential weighted moving average TSS z ostatnich 42 dni
+o Formu?a: CTL_today = CTL_yesterday + (TSS_today - CTL_yesterday) / 42
+o ATL = exponential weighted moving average TSS z ostatnich 7 dni
+o Formu?a: ATL_today = ATL_yesterday + (TSS_today - ATL_yesterday) / 7
+o TSB = CTL - ATL
+o Update po ka?dym dodaniu treningu
+o Cache w tabeli PMC_Data dla szybkiego dost?pu
+
+POWER CURVE - ALGORYTM:
+------------------------
+1. Dla ka?dego mo?liwego przedzia?u czasowego 
+   (5s, 10s, 30s, 1min, 5min, 20min, 60min, etc.)
+2. Sliding window przez wszystkie dane mocy treningu
+3. Obliczenie ?redniej dla ka?dego okna
+4. Znalezienie maksymalnej ?redniej dla ka?dego rozmiaru okna
+5. Zapis do Training_Records
+6. Por?wnanie z Personal_Records i update je?li pobity rekord
+
+PRZYK?AD DLA 5-SEKUNDOWEGO OKNA:
+---------------------------------
+o Dane mocy: [250, 260, 270, 280, 290, 300, 310, ...]
+o Okno 1 (0-4s): ?rednia = 270 W
+o Okno 2 (1-5s): ?rednia = 280 W
+o Okno 3 (2-6s): ?rednia = 290 W
+o ...
+o Maksimum ze wszystkich okien = rekord 5s power
+
+================================================================================
+STRATEGIE ?ADOWANIA DANYCH
+================================================================================
+
+DASHBOARD:
+----------
+o Query tylko niezb?dne dane (agregaty, ostatnie 4-12 tygodni)
+o Nie ?aduj szczeg???w trening?w, tylko sumy
+o PMC z cache (tabela PMC_Data)
+
+LISTA TRENING?W:
+----------------
+o Lazy loading - ?aduj 20-50 trening?w na raz
+o Paginacja lub infinite scroll
+o Virtual scrolling dla bardzo d?ugich list (setki trening?w)
+
+SZCZEG??Y TRENINGU:
+-------------------
+o Pe?ne dane mocy tylko gdy otwarty widok analizy
+o Lazy load interwa??w i rekord?w
+o Cache wykres?w je?li cz?sto przegl?dane
+
+POWER CURVE:
+------------
+o ?aduj z Training_Records (ju? obliczone)
+o Grupuj po duration_seconds
+o Znajd? MAX dla ka?dego duration z wybranego zakresu dat
+
+KALENDARZ:
+----------
+o Query trening?w z wybranego miesi?ca
+o Grupuj po dniach
+o Agreguj TSS per dzie?
+
+================================================================================
+CACHE I PERFORMANCE
+================================================================================
+
+CACHE WYKRES?W:
+---------------
+o Thumbnails wykres?w dla listy trening?w
+o Generowanie w tle po imporcie
+o Clear cache option w ustawieniach
+
+BACKGROUND PROCESSING:
+----------------------
+o Ci??kie obliczenia w osobnych taskach (async/await)
+o Progress bar dla d?ugich operacji
+o Mo?liwo?? cancel dla u?ytkownika
+
+LAZY LOADING:
+-------------
+o Lista trening?w: load 20-50 na raz
+o Infinite scroll lub paginacja
+o Load more button
+
+================================================================================
+SETTINGS MANAGEMENT
+================================================================================
+
+HIERARCHIA USTAWIE?:
+--------------------
+1. Default settings (hardcoded w aplikacji)
+2. User settings (baza danych - tabela Settings)
+3. Session settings (tylko w pami?ci, nie zapisywane)
+
+PERSISTENCE:
+------------
+o Zapis do Settings table w bazie
+o Key-value pairs: setting_key, setting_value
+o Przyk?ady kluczy:
+  - "default_ftp"
+  - "theme" (light/dark)
+  - "chart_smoothing_alpha"
+  - "algorithm_sensitivity"
+  - "pmc_ctl_days"
+  - "pmc_atl_days"
+
+================================================================================
+LOGOWANIE I DIAGNOSTYKA
+================================================================================
+
+APPLICATION LOGS:
+-----------------
+o Poziomy: DEBUG, INFO, WARNING, ERROR
+o Timestamp, poziom, wiadomo??, stack trace dla b??d?w
+o Rotacja log?w (max rozmiar pliku)
+
+ERROR HANDLING:
+---------------
+o Try-catch wok?? krytycznych operacji (import, obliczenia, zapis do bazy)
+o User-friendly messages w UI
+o Szczeg??owe logi w pliku dla debugowania
+o Graceful degradation - aplikacja dzia?a nawet przy drobnych b??dach
+
+PRZYK?AD LOGOWANIA:
+-------------------
+o INFO: "Training imported successfully: 2025-11-09_ride.fit"
+o WARNING: "Power data contains 5 outliers, cleaned automatically"
+o ERROR: "Failed to calculate NP: insufficient data points"
+
+================================================================================
+REPOSITORY PATTERN (WARSTWA DOST?PU DO DANYCH)
+================================================================================
+
+SEPARACJA LOGIKI:
+-----------------
+o Repositories - klasy odpowiedzialne za dost?p do bazy
+  - TrainingRepository
+  - UserRepository
+  - FTPHistoryRepository
+  - PowerZoneRepository
+  - etc.
+
+KORZY?CI:
+---------
+o ?atwe testowanie (mock repositories)
+o Zmiana bazy danych (np. SQLite -> PostgreSQL) bez zmian w ViewModelach
+o Centralizacja queries
+o Reusable queries
+
+PRZYK?ADOWE METODY TRAININGREPOSITORY:
+---------------------------------------
+o GetAllTrainings(userId, skip, take) -> Lista trening?w z paginacj?
+o GetTrainingById(id) -> Jeden trening z wszystkimi szczeg??ami
+o GetTrainingsByDateRange(userId, startDate, endDate) -> Filtrowanie
+o InsertTraining(training) -> Dodanie nowego
+o UpdateTraining(training) -> Aktualizacja
+o DeleteTraining(id) -> Usuni?cie
+o GetWeeklySummary(userId, startDate) -> Agregat tygodniowy
+o DuplicateExists(userId, date, duration) -> Sprawdzenie duplikatu
+
+================================================================================
+SERVICE LAYER (LOGIKA BIZNESOWA)
+================================================================================
+
+SERVICES:
+---------
+o MetricsCalculationService - TSS, NP, IF, VI
+o IntervalDetectionService - wywo?uje algorytm, parsuje wyniki
+o PowerCurveService - oblicza power curve
+o PMCService - oblicza i aktualizuje CTL/ATL/TSB
+o RecordDetectionService - wykrywa i aktualizuje rekordy osobiste
+o ImportService - orkiestruje ca?y proces importu
+
+KORZY?CI:
+---------
+o Reusable logic
+o ?atwe testowanie jednostkowe
+o Separacja concerns
+
+================================================================================
+CONNECTION POOLING I TRANSACTION MANAGEMENT
+================================================================================
+
+SQLITE SPECIFICS:
+-----------------
+o WAL mode (Write-Ahead Logging) dla lepszej wydajno?ci
+o Connection string: "Data Source=ja_training.db;Mode=ReadWriteCreate;
+  Cache=Shared;WAL=True"
+o Pragma settings:
+  - PRAGMA journal_mode=WAL
+  - PRAGMA synchronous=NORMAL
+  - PRAGMA foreign_keys=ON
+  - PRAGMA temp_store=MEMORY
+
+TRANSACTIONS:
+-------------
+o Import treningu w jednej transakcji (all-or-nothing)
+o Rollback przy b??dzie
+o BEGIN TRANSACTION -> operations -> COMMIT / ROLLBACK
+
+================================================================================
+CONCURRENT ACCESS
+================================================================================
+
+PROBLEM:
+--------
+o UI thread vs background thread
+o Multiple operations jednocze?nie
+
+ROZWI?ZANIE:
+------------
+o SQLite obs?uguje multiple readers, single writer
+o WAL mode pomaga
+o Lock management przez Entity Framework / Dapper
+o Async/await dla d?ugich operacji
+
+================================================================================
+KONIEC DOKUMENTU
+================================================================================
