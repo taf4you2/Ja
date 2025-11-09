@@ -24,60 +24,132 @@ namespace Ja.ViewModels
         private readonly TrainingImportService _importService;
         private readonly TrainingRepository _trainingRepository;
 
-        [ObservableProperty]
-        private string _currentDateText;
+        private string _currentDateText = string.Empty;
+        public string CurrentDateText
+        {
+            get => _currentDateText;
+            set => SetProperty(ref _currentDateText, value);
+        }
 
-        [ObservableProperty]
         private string _profilePicture = "";
+        public string ProfilePicture
+        {
+            get => _profilePicture;
+            set => SetProperty(ref _profilePicture, value);
+        }
 
         // PMC Metrics
-        [ObservableProperty]
         private double _ctl;
+        public double CTL
+        {
+            get => _ctl;
+            set => SetProperty(ref _ctl, value);
+        }
 
-        [ObservableProperty]
         private double _atl;
+        public double ATL
+        {
+            get => _atl;
+            set => SetProperty(ref _atl, value);
+        }
 
-        [ObservableProperty]
         private double _tsb;
+        public double TSB
+        {
+            get => _tsb;
+            set => SetProperty(ref _tsb, value);
+        }
 
-        [ObservableProperty]
         private string _ctlChange = "";
+        public string CTLChange
+        {
+            get => _ctlChange;
+            set => SetProperty(ref _ctlChange, value);
+        }
 
-        [ObservableProperty]
         private string _atlChange = "";
+        public string ATLChange
+        {
+            get => _atlChange;
+            set => SetProperty(ref _atlChange, value);
+        }
 
-        [ObservableProperty]
         private string _tsbStatus = "";
+        public string TSBStatus
+        {
+            get => _tsbStatus;
+            set => SetProperty(ref _tsbStatus, value);
+        }
 
-        [ObservableProperty]
         private string _ctlChangeColor = "#4CAF50";
+        public string CTLChangeColor
+        {
+            get => _ctlChangeColor;
+            set => SetProperty(ref _ctlChangeColor, value);
+        }
 
-        [ObservableProperty]
         private string _atlChangeColor = "#4CAF50";
+        public string ATLChangeColor
+        {
+            get => _atlChangeColor;
+            set => SetProperty(ref _atlChangeColor, value);
+        }
 
-        [ObservableProperty]
         private string _tsbBackground = "#E8F5E9";
+        public string TSBBackground
+        {
+            get => _tsbBackground;
+            set => SetProperty(ref _tsbBackground, value);
+        }
 
-        [ObservableProperty]
         private string _tsbForeground = "#4CAF50";
+        public string TSBForeground
+        {
+            get => _tsbForeground;
+            set => SetProperty(ref _tsbForeground, value);
+        }
 
-        [ObservableProperty]
         private string _pmcLastUpdate = "";
+        public string PMCLastUpdate
+        {
+            get => _pmcLastUpdate;
+            set => SetProperty(ref _pmcLastUpdate, value);
+        }
 
-        [ObservableProperty]
         private ObservableCollection<ISeries> _pmcSeries = new();
+        public ObservableCollection<ISeries> PMCSeries
+        {
+            get => _pmcSeries;
+            set => SetProperty(ref _pmcSeries, value);
+        }
 
-        [ObservableProperty]
         private Axis[] _pmcXAxes = Array.Empty<Axis>();
+        public Axis[] PMCXAxes
+        {
+            get => _pmcXAxes;
+            set => SetProperty(ref _pmcXAxes, value);
+        }
 
-        [ObservableProperty]
         private Axis[] _pmcYAxes = Array.Empty<Axis>();
+        public Axis[] PMCYAxes
+        {
+            get => _pmcYAxes;
+            set => SetProperty(ref _pmcYAxes, value);
+        }
 
-        [ObservableProperty]
         private ObservableCollection<WeeklySummary> _weeklySummaries = new();
+        public ObservableCollection<WeeklySummary> WeeklySummaries
+        {
+            get => _weeklySummaries;
+            set => SetProperty(ref _weeklySummaries, value);
+        }
 
-        [ObservableProperty]
         private bool _showEmptyState = false;
+        public bool ShowEmptyState
+        {
+            get => _showEmptyState;
+            set => SetProperty(ref _showEmptyState, value);
+        }
 
         public DashboardViewModel()
         {
