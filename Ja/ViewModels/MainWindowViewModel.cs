@@ -289,12 +289,15 @@ namespace Ja.ViewModels
             };
         }
 
-        partial void OnFtpChanged(double value)
-        {
-            if (_currentFileData != null)
-            {
-                AnalyzeIntervalsCommand.Execute(null);
-            }
-        }
+        // Usunięto automatyczne przeliczanie przy zmianie FTP
+        // Użytkownik ma przycisk "Przelicz" do manualnego uruchomienia analizy
+        //
+        // partial void OnFtpChanged(double value)
+        // {
+        //     if (_currentFileData != null)
+        //     {
+        //         AnalyzeIntervalsCommand.Execute(null);
+        //     }
+        // }
     }
 }
