@@ -14,7 +14,7 @@ namespace Ja.Services
     /// </summary>
     public class PowerCurveService
     {
-        private readonly JaDbContext _context;
+        private readonly JaDbContext? _context;
 
         // Standardowe przedziały czasowe dla power curve (w sekundach)
         private readonly int[] _standardDurations = new[]
@@ -25,7 +25,7 @@ namespace Ja.Services
             1800, 3600, 5400, 7200   // Długie wysiłki (30-120 min)
         };
 
-        public PowerCurveService(JaDbContext context)
+        public PowerCurveService(JaDbContext? context)
         {
             _context = context;
         }
@@ -82,6 +82,9 @@ namespace Ja.Services
         /// </summary>
         public async Task SavePowerCurveForTrainingAsync(int trainingId, Dictionary<int, double> powerCurve)
         {
+            if (_context == null)
+                throw new InvalidOperationException("DbContext is required for database operations");
+
             var records = powerCurve.Select(kvp => new TrainingRecord
             {
                 TrainingId = trainingId,
@@ -99,6 +102,9 @@ namespace Ja.Services
         /// </summary>
         public async Task DetectAndUpdatePersonalRecordsAsync(int userId, int trainingId, Dictionary<int, double> powerCurve, double? weight = null)
         {
+            if (_context == null)
+                throw new InvalidOperationException("DbContext is required for database operations");
+
             foreach (var kvp in powerCurve)
             {
                 var duration = kvp.Key;
@@ -141,6 +147,9 @@ namespace Ja.Services
         /// </summary>
         public async Task<Dictionary<int, PowerRecord>> GetPowerCurveForUserAsync(int userId, DateTime? startDate = null, DateTime? endDate = null)
         {
+            if (_context == null)
+                throw new InvalidOperationException("DbContext is required for database operations");
+
             var query = _context.TrainingRecords
                 .Include(tr => tr.Training)
                 .Where(tr => tr.Training.UserId == userId);
@@ -179,6 +188,9 @@ namespace Ja.Services
         /// </summary>
         public async Task<List<PersonalRecord>> GetAllPersonalRecordsAsync(int userId)
         {
+            if (_context == null)
+                throw new InvalidOperationException("DbContext is required for database operations");
+
             return await _context.PersonalRecords
                 .Where(pr => pr.UserId == userId)
                 .Include(pr => pr.Training)
@@ -191,6 +203,9 @@ namespace Ja.Services
         /// </summary>
         public async Task<List<PersonalRecord>> GetPowerRecordsAsync(int userId)
         {
+            if (_context == null)
+                throw new InvalidOperationException("DbContext is required for database operations");
+
             return await _context.PersonalRecords
                 .Where(pr => pr.UserId == userId && pr.RecordType.StartsWith("power_"))
                 .Include(pr => pr.Training)
