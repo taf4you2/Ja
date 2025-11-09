@@ -8,4 +8,18 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Dynastream.Fit.Portable.dll" Version="1.0.1" />
+    <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Dynastream.Fit DLL - pobierz z https://developer.garmin.com/fit/download/ -->
+    <Reference Include="Dynastream.Fit">
+      <HintPath>..\lib\FitSDK\Dynastream.Fit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+
 </Project>

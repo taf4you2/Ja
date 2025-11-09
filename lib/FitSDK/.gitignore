@@ -1,0 +1,7 @@
+# Ignoruj DLL (każdy musi pobrać własną kopię)
+*.dll
+*.pdb
+*.xml
+
+# Zachowaj tylko dokumentację
+!README.md
