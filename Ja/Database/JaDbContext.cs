@@ -34,9 +34,27 @@ namespace Ja.Database
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // Domyślna lokalizacja bazy danych w folderze Documents użytkownika
-                var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                var dbPath = Path.Combine(documentsPath, "JaTraining", "ja_training.db");
+                // Domyślna lokalizacja bazy danych
+                // Próbujemy różne lokalizacje w kolejności preferencji
+                string dbPath;
+
+                // 1. Spróbuj LocalApplicationData (AppData/Local na Windows, ~/.local/share na Linux)
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                if (!string.IsNullOrEmpty(appDataPath) && Directory.Exists(Path.GetDirectoryName(appDataPath)))
+                {
+                    dbPath = Path.Combine(appDataPath, "JaTraining", "ja_training.db");
+                }
+                // 2. Jeśli LocalApplicationData nie istnieje, użyj katalogu domowego użytkownika
+                else
+                {
+                    var homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    if (string.IsNullOrEmpty(homePath))
+                    {
+                        // 3. W ostateczności użyj katalogu bieżącego
+                        homePath = Directory.GetCurrentDirectory();
+                    }
+                    dbPath = Path.Combine(homePath, ".jatraining", "ja_training.db");
+                }
 
                 // Utwórz folder jeśli nie istnieje
                 var directory = Path.GetDirectoryName(dbPath);

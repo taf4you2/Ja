@@ -381,6 +381,40 @@ namespace Ja.Migrations
                 name: "IX_PersonalRecords_TrainingId",
                 table: "PersonalRecords",
                 column: "TrainingId");
+
+            // Dodaj domyślnego użytkownika
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Name", "Surname", "DateOfBirth", "Gender", "Weight", "Height", "RestingHeartRate", "MaxHeartRate", "ProfilePicturePath", "CreatedAt", "UpdatedAt" },
+                values: new object[] { 1, "Jan", "Kowalski", null, "Male", 75.0, 180.0, 55, 185, null, DateTime.UtcNow, DateTime.UtcNow });
+
+            // Dodaj domyślne strefy mocy dla użytkownika
+            migrationBuilder.InsertData(
+                table: "PowerZones",
+                columns: new[] { "UserId", "ZoneNumber", "ZoneName", "MinPercent", "MaxPercent", "ColorHex", "MinDurationSeconds" },
+                values: new object[,]
+                {
+                    { 1, 1, "Recovery", 0, 55, "#808080", 0 },
+                    { 1, 2, "Endurance", 55, 75, "#4169E1", 0 },
+                    { 1, 3, "Tempo", 75, 90, "#32CD32", 120 },
+                    { 1, 4, "Threshold", 90, 105, "#FFD700", 60 },
+                    { 1, 5, "VO2max", 105, 120, "#FF8C00", 30 },
+                    { 1, 6, "Anaerobic", 120, 150, "#FF4500", 10 },
+                    { 1, 7, "Neuromuscular", 150, 999, "#8B0000", 5 }
+                });
+
+            // Dodaj domyślne strefy tętna dla użytkownika
+            migrationBuilder.InsertData(
+                table: "HeartRateZones",
+                columns: new[] { "UserId", "ZoneNumber", "ZoneName", "MinPercent", "MaxPercent", "ColorHex" },
+                values: new object[,]
+                {
+                    { 1, 1, "Recovery", 0, 60, "#808080" },
+                    { 1, 2, "Endurance", 60, 70, "#4169E1" },
+                    { 1, 3, "Tempo", 70, 80, "#32CD32" },
+                    { 1, 4, "Threshold", 80, 90, "#FFD700" },
+                    { 1, 5, "VO2max", 90, 100, "#FF4500" }
+                });
         }
 
         /// <inheritdoc />
