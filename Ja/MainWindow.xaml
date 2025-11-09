@@ -8,10 +8,187 @@
         mc:Ignorable="d"
         Title="JA Training" Height="900" Width="1400" WindowState="Maximized">
     <Window.DataContext>
-        <vm:DashboardViewModel />
+        <vm:MainViewModel />
     </Window.DataContext>
 
     <Grid>
-        <views:DashboardView />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Navigation Sidebar -->
+        <Border Grid.Column="0" Background="#1E1E1E">
+            <StackPanel>
+                <!-- Logo/Brand -->
+                <Border Background="#1976D2" Height="60" Padding="10">
+                    <TextBlock Text="JA" FontSize="24" FontWeight="Bold" Foreground="White"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- Navigation Buttons -->
+                <Button Command="{Binding NavigateToDashboardCommand}" ToolTip="Dashboard"
+                        Height="60" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#2C2C2C"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding CurrentView}" Value="Dashboard">
+                                    <Setter Property="Background" Value="#1976D2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <TextBlock Text="📊" FontSize="24"/>
+                </Button>
+
+                <Button Command="{Binding NavigateToCalendarCommand}" ToolTip="Kalendarz"
+                        Height="60" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#2C2C2C"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding CurrentView}" Value="Calendar">
+                                    <Setter Property="Background" Value="#1976D2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <TextBlock Text="📅" FontSize="24"/>
+                </Button>
+
+                <Button Command="{Binding NavigateToTrainingAnalysisCommand}" ToolTip="Analiza treningu"
+                        Height="60" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#2C2C2C"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding CurrentView}" Value="TrainingAnalysis">
+                                    <Setter Property="Background" Value="#1976D2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <TextBlock Text="📈" FontSize="24"/>
+                </Button>
+
+                <Button Command="{Binding NavigateToPowerCurveCommand}" ToolTip="Krzywa mocy"
+                        Height="60" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#2C2C2C"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding CurrentView}" Value="PowerCurve">
+                                    <Setter Property="Background" Value="#1976D2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <TextBlock Text="⚡" FontSize="24"/>
+                </Button>
+
+                <Button Command="{Binding NavigateToPersonalRecordsCommand}" ToolTip="Rekordy osobiste"
+                        Height="60" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#2C2C2C"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding CurrentView}" Value="PersonalRecords">
+                                    <Setter Property="Background" Value="#1976D2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <TextBlock Text="🏆" FontSize="24"/>
+                </Button>
+
+                <!-- Settings at bottom -->
+                <Button Command="{Binding NavigateToSettingsCommand}" ToolTip="Ustawienia"
+                        Height="60" Background="Transparent" BorderThickness="0" Cursor="Hand"
+                        VerticalAlignment="Bottom" Margin="0,20,0,0">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#2C2C2C"/>
+                                </Trigger>
+                                <DataTrigger Binding="{Binding CurrentView}" Value="Settings">
+                                    <Setter Property="Background" Value="#1976D2"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <TextBlock Text="⚙" FontSize="24"/>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content Area -->
+        <ContentControl Grid.Column="1">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentView}" Value="Dashboard">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <views:DashboardView DataContext="{Binding DashboardViewModel}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentView}" Value="Settings">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <views:SettingsView DataContext="{Binding SettingsViewModel}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentView}" Value="Calendar">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <views:CalendarView DataContext="{Binding CalendarViewModel}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentView}" Value="TrainingAnalysis">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <views:TrainingAnalysisView DataContext="{Binding TrainingAnalysisViewModel}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentView}" Value="PowerCurve">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <views:PowerCurveView DataContext="{Binding PowerCurveViewModel}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentView}" Value="PersonalRecords">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <views:PersonalRecordsView DataContext="{Binding PersonalRecordsViewModel}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
     </Grid>
 </Window>
