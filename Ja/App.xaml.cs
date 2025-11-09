@@ -27,19 +27,44 @@ namespace Ja
                 System.Diagnostics.Debug.WriteLine($"=== INICJALIZACJA BAZY DANYCH ===");
                 System.Diagnostics.Debug.WriteLine($"Ścieżka do bazy: {dbPath}");
 
+                // Sprawdź czy baza istnieje
+                bool databaseExisted = System.IO.File.Exists(dbPath);
+                System.Diagnostics.Debug.WriteLine($"Baza istniała przed migracją: {databaseExisted}");
+
+                // OPCJA 1: Jeśli baza istnieje, usuń ją (tylko do testów!)
+                // Usuń to po pierwszym uruchomieniu gdy wszystko zadziała
+                if (databaseExisted)
+                {
+                    var result = MessageBox.Show(
+                        $"Znaleziono starą bazę danych:\n{dbPath}\n\nCzy chcesz ją usunąć i utworzyć nową z migracjami?\n\n(Wybierz 'Tak' aby usunąć starą bazę i utworzyć nową)",
+                        "JA Training - Stara baza danych",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question
+                    );
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        db.Database.EnsureDeleted();
+                        System.Diagnostics.Debug.WriteLine($"Stara baza została usunięta");
+                    }
+                }
+
                 // Zastosuj migracje
                 db.Database.Migrate();
 
                 System.Diagnostics.Debug.WriteLine($"Migracja zakończona pomyślnie!");
                 System.Diagnostics.Debug.WriteLine($"Baza istnieje: {System.IO.File.Exists(dbPath)}");
 
-                // Opcjonalnie: pokaż MessageBox dla użytkownika
-                MessageBox.Show(
-                    $"Baza danych została zainicjalizowana!\n\nLokalizacja:\n{dbPath}\n\nPlik istnieje: {System.IO.File.Exists(dbPath)}",
-                    "JA Training - Inicjalizacja",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information
-                );
+                // Pokaż MessageBox tylko przy pierwszym utworzeniu
+                if (!databaseExisted)
+                {
+                    MessageBox.Show(
+                        $"Baza danych została utworzona!\n\nLokalizacja:\n{dbPath}",
+                        "JA Training - Inicjalizacja",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information
+                    );
+                }
             }
             catch (Exception ex)
             {
