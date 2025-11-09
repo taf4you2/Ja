@@ -15,9 +15,9 @@ namespace Ja
             base.OnStartup(e);
 
             // Inicjalizacja bazy danych przy starcie aplikacji
-            // Baza zostanie utworzona automatycznie jeśli nie istnieje
+            // Zastosowanie migracji - baza zostanie utworzona jeśli nie istnieje
             var db = ServiceInitializer.DbContext;
-            db.Database.EnsureCreated();
+            db.Database.Migrate();
         }
 
         protected override void OnExit(ExitEventArgs e)
