@@ -29,8 +29,8 @@ namespace Ja.Services
                 if (_dbContext == null)
                 {
                     _dbContext = new JaDbContext();
-                    // Upewniamy się, że baza danych jest utworzona
-                    _dbContext.Database.EnsureCreated();
+                    // Migracje są stosowane w App.xaml.cs OnStartup
+                    // NIE używamy EnsureCreated() bo jest niekompatybilne z migracjami!
                 }
                 return _dbContext;
             }

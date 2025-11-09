@@ -34,15 +34,38 @@ namespace Ja.Database
         {
             if (!optionsBuilder.IsConfigured)
             {
-                // Domyślna lokalizacja bazy danych w folderze Documents użytkownika
-                var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-                var dbPath = Path.Combine(documentsPath, "JaTraining", "ja_training.db");
+                // Domyślna lokalizacja bazy danych
+                string dbPath;
+
+#if DEBUG
+                // W trybie DEBUG: użyj katalogu projektu dla łatwego dostępu
+                var projectPath = Directory.GetCurrentDirectory();
+                dbPath = Path.Combine(projectPath, "Data", "ja_training.db");
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] Ścieżka do bazy danych: {dbPath}");
+#else
+                // W trybie RELEASE: użyj standardowej lokalizacji systemowej
+                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                if (!string.IsNullOrEmpty(appDataPath))
+                {
+                    dbPath = Path.Combine(appDataPath, "JaTraining", "ja_training.db");
+                }
+                else
+                {
+                    var homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                    if (string.IsNullOrEmpty(homePath))
+                    {
+                        homePath = Directory.GetCurrentDirectory();
+                    }
+                    dbPath = Path.Combine(homePath, ".jatraining", "ja_training.db");
+                }
+#endif
 
                 // Utwórz folder jeśli nie istnieje
                 var directory = Path.GetDirectoryName(dbPath);
                 if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
+                    System.Diagnostics.Debug.WriteLine($"Utworzono katalog: {directory}");
                 }
 
                 optionsBuilder.UseSqlite(
@@ -54,6 +77,7 @@ namespace Ja.Database
 #if DEBUG
                 optionsBuilder.EnableSensitiveDataLogging();
                 optionsBuilder.EnableDetailedErrors();
+                optionsBuilder.LogTo(message => System.Diagnostics.Debug.WriteLine(message));
 #endif
             }
         }

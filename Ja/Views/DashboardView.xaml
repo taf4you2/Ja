@@ -1,0 +1,311 @@
+<UserControl x:Class="Ja.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             xmlns:vm="clr-namespace:Ja.ViewModels"
+             xmlns:converters="clr-namespace:Ja.Converters"
+             mc:Ignorable="d"
+             d:DesignHeight="900" d:DesignWidth="1400">
+
+    <UserControl.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+
+    <Grid Background="#F5F5F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Main Content (Scrollable) -->
+        </Grid.RowDefinitions>
+
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <Grid Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Logo & Menu -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="☰" FontSize="24" Width="50" Height="50"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Menu" Margin="0,0,15,0"/>
+                    <TextBlock Text="JA Training" FontSize="24" FontWeight="Bold"
+                               Foreground="#1976D2" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Center: Title & Date -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0,0,0">
+                    <TextBlock Text="Dashboard" FontSize="20" FontWeight="SemiBold"/>
+                    <TextBlock Text="{Binding CurrentDateText}" FontSize="12" Foreground="#757575" Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <!-- Right: Settings & Profile -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="⚙" FontSize="20" Width="40" Height="40"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Ustawienia" Margin="0,0,10,0"
+                            Command="{Binding OpenSettingsCommand}"/>
+                    <Ellipse Width="40" Height="40" Fill="#1976D2" ToolTip="Profil">
+                        <Ellipse.OpacityMask>
+                            <ImageBrush ImageSource="{Binding ProfilePicture}"/>
+                        </Ellipse.OpacityMask>
+                    </Ellipse>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ============================================ -->
+        <!-- MAIN CONTENT - SCROLLABLE -->
+        <!-- ============================================ -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20" MaxWidth="1200">
+
+                <!-- ============================================ -->
+                <!-- PMC SECTION - Performance Management Chart -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- PMC Header -->
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <TextBlock Text="Forma treningowa" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <Button Content="ⓘ" FontSize="14" Width="24" Height="24"
+                                        Background="Transparent" BorderThickness="0"
+                                        ToolTip="Performance Management Chart - wskaźniki formy treningowej"
+                                        Margin="10,0,0,0"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="1" Content="⚙" FontSize="16" Width="30" Height="30"
+                                    Background="Transparent" BorderThickness="0"
+                                    ToolTip="Ustawienia wykresu"/>
+                        </Grid>
+
+                        <!-- Three Metric Cards -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- FITNESS (CTL) Card -->
+                            <Border Grid.Column="0" Background="#E3F2FD" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding CTL, StringFormat='{}{0:F0}'}"
+                                               FontSize="36" FontWeight="Bold" Foreground="#1976D2"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Fitness (CTL)" FontSize="12" Foreground="#757575"
+                                               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    <TextBlock Text="{Binding CTLChange}" FontSize="11"
+                                               Foreground="{Binding CTLChangeColor}"
+                                               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- FATIGUE (ATL) Card -->
+                            <Border Grid.Column="2" Background="#FFF3E0" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding ATL, StringFormat='{}{0:F0}'}"
+                                               FontSize="36" FontWeight="Bold" Foreground="#F57C00"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Fatigue (ATL)" FontSize="12" Foreground="#757575"
+                                               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    <TextBlock Text="{Binding ATLChange}" FontSize="11"
+                                               Foreground="{Binding ATLChangeColor}"
+                                               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- FORM (TSB) Card -->
+                            <Border Grid.Column="4" Background="{Binding TSBBackground}" CornerRadius="8" Padding="20">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding TSB, StringFormat='{}{0:+#;-#;0}'}"
+                                               FontSize="36" FontWeight="Bold"
+                                               Foreground="{Binding TSBForeground}"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Form (TSB)" FontSize="12" Foreground="#757575"
+                                               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                    <TextBlock Text="{Binding TSBStatus}" FontSize="11" FontWeight="SemiBold"
+                                               Foreground="{Binding TSBForeground}"
+                                               HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- PMC Chart -->
+                        <lvc:CartesianChart Series="{Binding PMCSeries}"
+                                            XAxes="{Binding PMCXAxes}"
+                                            YAxes="{Binding PMCYAxes}"
+                                            Height="300"
+                                            Margin="0,0,0,10"/>
+
+                        <!-- Last Update Text -->
+                        <TextBlock Text="{Binding PMCLastUpdate}" FontSize="11" Foreground="#9E9E9E"
+                                   HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- ADD TRAINING BUTTON -->
+                <!-- ============================================ -->
+                <Border Background="#1976D2" CornerRadius="8" Padding="15" Margin="0,0,0,20"
+                        Cursor="Hand">
+                    <Grid>
+                        <Grid.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding AddTrainingCommand}"/>
+                        </Grid.InputBindings>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="➕" FontSize="18" Foreground="White" VerticalAlignment="Center"/>
+                            <TextBlock Text="Dodaj nowy trening" FontSize="16" FontWeight="SemiBold"
+                                       Foreground="White" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- WEEKLY SUMMARY SECTION -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20">
+                    <StackPanel>
+                        <!-- Section Header -->
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <TextBlock Text="Twoje treningi" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <Button Grid.Column="1" Content="Zobacz wszystkie >"
+                                    Background="Transparent" BorderThickness="0" Foreground="#1976D2"
+                                    Command="{Binding ViewAllTrainingsCommand}"/>
+                        </Grid>
+
+                        <!-- Time Range Selector -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            <Border Background="#E3F2FD" CornerRadius="4" Padding="12,6" Margin="0,0,10,0" Cursor="Hand">
+                                <TextBlock Text="7 dni" FontWeight="SemiBold" Foreground="#1976D2"/>
+                            </Border>
+                            <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                    CornerRadius="4" Padding="12,6" Margin="0,0,10,0" Cursor="Hand">
+                                <TextBlock Text="4 tygodnie" Foreground="#757575"/>
+                            </Border>
+                            <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                    CornerRadius="4" Padding="12,6" Cursor="Hand">
+                                <TextBlock Text="12 tygodni" Foreground="#757575"/>
+                            </Border>
+                        </StackPanel>
+
+                        <!-- Weekly Cards List -->
+                        <ItemsControl ItemsSource="{Binding WeeklySummaries}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA" CornerRadius="8" Padding="15" Margin="0,0,0,10"
+                                            BorderBrush="#E0E0E0" BorderThickness="1" Cursor="Hand">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <!-- Left: Stats -->
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding WeekRange}" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding TotalTSS, StringFormat='{}{0:F0} TSS'}"
+                                                               FontSize="20" FontWeight="Bold" Foreground="#1976D2"/>
+                                                    <TextBlock Text="{Binding TrainingCount, StringFormat=' • {0} treningi'}"
+                                                               FontSize="13" Foreground="#757575" VerticalAlignment="Bottom" Margin="10,0,0,2"/>
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                                    <TextBlock Text="{Binding TotalTime}" FontSize="12" Foreground="#757575" Margin="0,0,15,0"/>
+                                                    <TextBlock Text="{Binding TotalDistance, StringFormat='🚴 {0:F0} km'}"
+                                                               FontSize="12" Foreground="#757575"/>
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <!-- Right: Day Bars -->
+                                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <ItemsControl ItemsSource="{Binding DayBars}">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Margin="3,0">
+                                                                <Border Width="30" Height="{Binding BarHeight}"
+                                                                        Background="{Binding BarColor}"
+                                                                        CornerRadius="2" VerticalAlignment="Bottom"
+                                                                        ToolTip="{Binding Tooltip}"/>
+                                                                <TextBlock Text="{Binding DayLabel}" FontSize="9"
+                                                                           Foreground="#9E9E9E" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Empty State -->
+                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
+                                    Margin="0,40,0,40"
+                                    Visibility="{Binding ShowEmptyState, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <TextBlock Text="🚴" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                            <TextBlock Text="Witaj w JA Training!" FontSize="20" FontWeight="SemiBold"
+                                       HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                            <TextBlock Text="Dodaj swój pierwszy trening, aby zobaczyć analizy"
+                                       FontSize="14" Foreground="#757575" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+                            <Button Content="Importuj trening FIT" Padding="20,10" Background="#1976D2"
+                                    Foreground="White" FontSize="14" FontWeight="SemiBold" BorderThickness="0"
+                                    Command="{Binding AddTrainingCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- ============================================ -->
+        <!-- FLOATING ACTION BUTTON (FAB) -->
+        <!-- ============================================ -->
+        <Border Grid.Row="1" Width="60" Height="60" CornerRadius="30"
+                Background="#1976D2"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Margin="0,0,30,30" Cursor="Hand">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding AddTrainingCommand}"/>
+                </Grid.InputBindings>
+                <TextBlock Text="+" FontSize="32" Foreground="White"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
