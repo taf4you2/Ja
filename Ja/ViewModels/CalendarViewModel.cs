@@ -149,26 +149,31 @@ namespace Ja.ViewModels
                     if (dayTrainings.Any())
                     {
                         calendarDay.TotalTSS = dayTrainings.Sum(t => t.TSS ?? 0);
-                        var totalMinutes = dayTrainings.Sum(t => t.Duration ?? 0);
+                        var totalSeconds = dayTrainings.Sum(t => t.DurationSeconds);
+                        var totalMinutes = totalSeconds / 60;
                         var hours = totalMinutes / 60;
                         var minutes = totalMinutes % 60;
                         calendarDay.DurationText = hours > 0 ? $"{hours}h {minutes}min" : $"{minutes}min";
 
-                        // Determine dominant zone color (simplified - use first training's zone)
-                        var firstTraining = dayTrainings.First();
-                        calendarDay.DominantZoneColor = GetZoneColor(firstTraining.DominantZone ?? 2);
+                        // Determine dominant zone color (simplified - use default zone 2 for now)
+                        calendarDay.DominantZoneColor = GetZoneColor(2);
 
                         // Add trainings
                         foreach (var training in dayTrainings)
                         {
+                            var trainingMinutes = training.DurationSeconds / 60;
+                            var trainingName = !string.IsNullOrEmpty(training.FileName)
+                                ? System.IO.Path.GetFileNameWithoutExtension(training.FileName)
+                                : "Trening";
+
                             calendarDay.Trainings.Add(new CalendarTraining
                             {
                                 Id = training.Id,
-                                Name = training.Name ?? "Trening",
+                                Name = trainingName,
                                 StartTime = training.TrainingDate,
-                                Duration = FormatDuration(training.Duration ?? 0),
+                                Duration = FormatDuration(trainingMinutes),
                                 TSS = training.TSS ?? 0,
-                                ZoneColor = GetZoneColor(training.DominantZone ?? 2)
+                                ZoneColor = GetZoneColor(2)
                             });
                         }
                     }
