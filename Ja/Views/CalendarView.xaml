@@ -3,8 +3,95 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d"
              d:DesignHeight="900" d:DesignWidth="1400">
+
+    <UserControl.Resources>
+        <!-- Day Cell Template -->
+        <DataTemplate x:Key="DayCellTemplate">
+            <Border Background="{Binding BackgroundColor}"
+                    BorderBrush="{Binding BorderColor}"
+                    BorderThickness="{Binding BorderThickness}"
+                    CornerRadius="4" Margin="2" Cursor="Hand">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding DataContext.DayClickedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                             CommandParameter="{Binding}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Day Number -->
+                    <TextBlock Grid.Row="0" Text="{Binding DayNumber}"
+                               Foreground="{Binding TextColor}"
+                               FontSize="14" FontWeight="SemiBold"
+                               Margin="8,6,8,4"/>
+
+                    <!-- Training Info -->
+                    <StackPanel Grid.Row="1" Margin="4,0,4,4" Visibility="{Binding HasTrainings, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <!-- Training Indicator Bar -->
+                        <Border Height="4" Background="{Binding DominantZoneColor}"
+                                CornerRadius="2" Margin="0,0,0,4"/>
+
+                        <!-- Duration Text -->
+                        <TextBlock Text="{Binding DurationText}"
+                                   FontSize="11" Foreground="#757575"
+                                   TextWrapping="Wrap" Margin="0,0,0,2"/>
+
+                        <!-- TSS -->
+                        <TextBlock FontSize="10" Foreground="#9E9E9E">
+                            <Run Text="TSS: "/>
+                            <Run Text="{Binding TotalTSS, StringFormat='{}{0:F0}'}"/>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <!-- List Item Template -->
+        <DataTemplate x:Key="ListItemTemplate">
+            <Border Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="16,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Date -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="{Binding StartTime, StringFormat='{}{0:dd MMM}'}"
+                                   FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding StartTime, StringFormat='{}{0:HH:mm}'}"
+                                   FontSize="12" Foreground="#757575"/>
+                    </StackPanel>
+
+                    <!-- Training Info -->
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                            <Border Width="12" Height="12" Background="{Binding ZoneColor}"
+                                    CornerRadius="6" Margin="0,0,8,0"/>
+                            <TextBlock Text="{Binding Duration}" FontSize="12" Foreground="#757575" Margin="0,0,12,0"/>
+                            <TextBlock FontSize="12" Foreground="#757575">
+                                <Run Text="TSS: "/>
+                                <Run Text="{Binding TSS, StringFormat='{}{0:F0}'}"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Arrow -->
+                    <TextBlock Grid.Column="2" Text="›" FontSize="20" Foreground="#BDBDBD"
+                               VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <Grid Background="#F5F5F5">
         <Grid.RowDefinitions>
@@ -30,30 +117,118 @@
         <Border Grid.Row="1" Background="White" Padding="20" Margin="0,0,0,20">
             <Grid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Content="◀" Width="40" Height="40" Margin="0,0,20,0"/>
-                    <TextBlock Text="Listopad 2025" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                    <Button Content="▶" Width="40" Height="40" Margin="20,0,0,0"/>
-                    <Button Content="Dzisiaj" Padding="15,8" Margin="20,0,0,0"/>
+                    <Button Content="◀" Width="40" Height="40" Margin="0,0,20,0"
+                            Command="{Binding PreviousMonthCommand}"/>
+                    <TextBlock Text="{Binding MonthYearText}" FontSize="20" FontWeight="SemiBold"
+                               VerticalAlignment="Center" MinWidth="200" TextAlignment="Center"/>
+                    <Button Content="▶" Width="40" Height="40" Margin="20,0,0,0"
+                            Command="{Binding NextMonthCommand}"/>
+                    <Button Content="Dzisiaj" Padding="15,8" Margin="20,0,0,0"
+                            Command="{Binding GoToTodayCommand}"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Border Background="#E3F2FD" CornerRadius="4" Padding="12,6" Margin="0,0,10,0" Cursor="Hand">
-                        <TextBlock Text="Miesiąc" FontWeight="SemiBold" Foreground="#1976D2"/>
-                    </Border>
-                    <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
-                            CornerRadius="4" Padding="12,6" Margin="0,0,10,0" Cursor="Hand">
-                        <TextBlock Text="Tydzień" Foreground="#757575"/>
-                    </Border>
-                    <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
-                            CornerRadius="4" Padding="12,6" Cursor="Hand">
-                        <TextBlock Text="Lista" Foreground="#757575"/>
-                    </Border>
+                    <Button Padding="0" Background="Transparent" BorderThickness="0" Margin="0,0,10,0"
+                            Command="{Binding SetViewModeCommand}" CommandParameter="Month">
+                        <Border CornerRadius="4" Padding="12,6">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsMonthView}" Value="True">
+                                            <Setter Property="Background" Value="#E3F2FD"/>
+                                            <Setter Property="BorderBrush" Value="#E3F2FD"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="Miesiąc">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#757575"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsMonthView}" Value="True">
+                                                <Setter Property="Foreground" Value="#1976D2"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                    </Button>
+
+                    <Button Padding="0" Background="Transparent" BorderThickness="0" Margin="0,0,10,0"
+                            Command="{Binding SetViewModeCommand}" CommandParameter="Week">
+                        <Border CornerRadius="4" Padding="12,6">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsWeekView}" Value="True">
+                                            <Setter Property="Background" Value="#E3F2FD"/>
+                                            <Setter Property="BorderBrush" Value="#E3F2FD"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="Tydzień">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#757575"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsWeekView}" Value="True">
+                                                <Setter Property="Foreground" Value="#1976D2"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                    </Button>
+
+                    <Button Padding="0" Background="Transparent" BorderThickness="0"
+                            Command="{Binding SetViewModeCommand}" CommandParameter="List">
+                        <Border CornerRadius="4" Padding="12,6">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsListView}" Value="True">
+                                            <Setter Property="Background" Value="#E3F2FD"/>
+                                            <Setter Property="BorderBrush" Value="#E3F2FD"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="Lista">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="#757575"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsListView}" Value="True">
+                                                <Setter Property="Foreground" Value="#1976D2"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- Calendar Grid -->
-        <Border Grid.Row="2" Background="White" Padding="20">
+        <!-- Month View -->
+        <Border Grid.Row="2" Background="White" Padding="20" Visibility="{Binding IsMonthView, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -72,22 +247,38 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="0" Text="Poniedziałek" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="1" Text="Wtorek" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="2" Text="Środa" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="3" Text="Czwartek" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="4" Text="Piątek" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="5" Text="Sobota" HorizontalAlignment="Center" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Column="6" Text="Niedziela" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="0" Text="Poniedziałek" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="12"/>
+                    <TextBlock Grid.Column="1" Text="Wtorek" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="12"/>
+                    <TextBlock Grid.Column="2" Text="Środa" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="12"/>
+                    <TextBlock Grid.Column="3" Text="Czwartek" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="12"/>
+                    <TextBlock Grid.Column="4" Text="Piątek" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="12"/>
+                    <TextBlock Grid.Column="5" Text="Sobota" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="12"/>
+                    <TextBlock Grid.Column="6" Text="Niedziela" HorizontalAlignment="Center" FontWeight="SemiBold" FontSize="12"/>
                 </Grid>
 
                 <!-- Calendar Days Grid -->
-                <Grid Grid.Row="1">
-                    <TextBlock Text="[Kalendarz - siatka dni w budowie]"
-                               FontSize="16" Foreground="#9E9E9E"
-                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Grid>
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding CalendarDays}" ItemTemplate="{StaticResource DayCellTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="7" Rows="6"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
             </Grid>
+        </Border>
+
+        <!-- Week View -->
+        <Border Grid.Row="2" Background="White" Padding="20" Visibility="{Binding IsWeekView, Converter={StaticResource BoolToVisibilityConverter}}">
+            <TextBlock Text="Widok tygodnia - w budowie"
+                       FontSize="18" Foreground="#9E9E9E"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+
+        <!-- List View -->
+        <Border Grid.Row="2" Background="#F5F5F5" Visibility="{Binding IsListView, Converter={StaticResource BoolToVisibilityConverter}}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding ListViewTrainings}" ItemTemplate="{StaticResource ListItemTemplate}"/>
+            </ScrollViewer>
         </Border>
     </Grid>
 </UserControl>
