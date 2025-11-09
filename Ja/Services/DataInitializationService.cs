@@ -194,7 +194,7 @@ namespace Ja.Services
                     System.Diagnostics.Debug.WriteLine($"Dodano domyślną wagę: {initialWeight.Weight} kg");
 
                     // Dodaj domyślne ustawienia aplikacji
-                    await InitializeDefaultSettings(defaultUser.Id);
+                    await InitializeDefaultSettingsAsync(defaultUser.Id);
 
                     System.Diagnostics.Debug.WriteLine("=== INICJALIZACJA ZAKOŃCZONA ===");
                 }
