@@ -3,17 +3,416 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d"
              d:DesignHeight="900" d:DesignWidth="1400">
 
     <Grid Background="#F5F5F5">
-        <Border Background="White" Margin="20" CornerRadius="8" Padding="40">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="🏆" FontSize="64" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-                <TextBlock Text="Rekordy osobiste" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                <TextBlock Text="Tutaj zobaczysz swoje rekordy mocy, tętna, dystansu i prędkości"
-                           FontSize="14" Foreground="#757575" HorizontalAlignment="Center"/>
-            </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Main Content -->
+        </Grid.RowDefinitions>
+
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <Grid Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Title -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="🏆 Rekordy osobiste" FontSize="24" FontWeight="Bold"/>
+                    <TextBlock Text="Twoje najlepsze wyniki w różnych kategoriach" FontSize="12" Foreground="#757575" Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <!-- Right: Action Buttons -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="🔍" FontSize="18" Width="40" Height="40"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Filtry" Margin="0,0,5,0"/>
+                    <Button Content="📤" FontSize="18" Width="40" Height="40"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Eksportuj"/>
+                </StackPanel>
+            </Grid>
         </Border>
+
+        <!-- ============================================ -->
+        <!-- MAIN CONTENT - SCROLLABLE -->
+        <!-- ============================================ -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20" MaxWidth="1400">
+
+                <!-- ============================================ -->
+                <!-- GENERAL STATISTICS -->
+                <!-- ============================================ -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="20" Margin="0,0,5,0">
+                        <StackPanel>
+                            <TextBlock Text="Całkowita liczba rekordów" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="47" FontSize="28" FontWeight="Bold" Foreground="#1976D2"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Background="White" CornerRadius="8" Padding="20" Margin="5,0,5,0">
+                        <StackPanel>
+                            <TextBlock Text="Nowych w tym miesiącu" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="3" FontSize="28" FontWeight="Bold" Foreground="#4CAF50"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="2" Background="White" CornerRadius="8" Padding="20" Margin="5,0,5,0">
+                        <StackPanel>
+                            <TextBlock Text="Nowych w tym roku" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="18" FontSize="28" FontWeight="Bold" Foreground="#F57C00"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="3" Background="White" CornerRadius="8" Padding="20" Margin="5,0,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Ostatni rekord" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="2 dni temu" FontSize="16" FontWeight="SemiBold" Foreground="#9C27B0" Margin="0,0,0,2"/>
+                            <TextBlock Text="5 min power" FontSize="11" Foreground="#757575"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- ============================================ -->
+                <!-- CATEGORY TABS -->
+                <!-- ============================================ -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Border Background="#E3F2FD" CornerRadius="4" Padding="20,10" Margin="0,0,10,0" Cursor="Hand">
+                        <TextBlock Text="Moc" FontWeight="SemiBold" Foreground="#1976D2" FontSize="14"/>
+                    </Border>
+                    <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                            CornerRadius="4" Padding="20,10" Margin="0,0,10,0" Cursor="Hand">
+                        <TextBlock Text="Tętno" Foreground="#757575" FontSize="14"/>
+                    </Border>
+                    <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                            CornerRadius="4" Padding="20,10" Cursor="Hand">
+                        <TextBlock Text="Inne" Foreground="#757575" FontSize="14"/>
+                    </Border>
+                </StackPanel>
+
+                <!-- ============================================ -->
+                <!-- POWER RECORDS - SPRINTS (< 1 MIN) -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="SPRINTY (< 1 MIN)" FontSize="14" FontWeight="Bold" Foreground="#424242" Margin="0,0,0,15"/>
+
+                        <!-- Records List -->
+                        <ItemsControl ItemsSource="{Binding SprintRecords}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA" CornerRadius="4" Padding="15" Margin="0,0,0,10" Cursor="Hand">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#F0F0F0"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding Duration}" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Power, StringFormat='{}{0} W'}" FontSize="16" FontWeight="Bold" Foreground="#1976D2"/>
+                                                <TextBlock FontSize="11" Foreground="#757575">
+                                                    <Run Text="{Binding FTPPercent, StringFormat='({0}% FTP,'}"/>
+                                                    <Run Text="{Binding WattsPerKg, StringFormat='{0:F1} W/kg)'}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" VerticalAlignment="Center">
+                                                <Run Text="📅 " FontSize="12"/>
+                                                <Run Text="{Binding Date, StringFormat='dd.MM.yyyy'}" FontSize="12" Foreground="#757575"/>
+                                            </TextBlock>
+                                            <TextBlock Grid.Column="3" Text="{Binding TrainingLink}" FontSize="12" Foreground="#1976D2"
+                                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                            <Border Grid.Column="4" Background="{Binding NewRecordBadgeBackground}" CornerRadius="12"
+                                                    Padding="8,4" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                    Visibility="{Binding IsNewRecord, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="🏆 Nowy!" FontSize="10" FontWeight="SemiBold" Foreground="{Binding NewRecordBadgeForeground}"/>
+                                            </Border>
+                                            <Button Grid.Column="5" Content="📊" FontSize="14" Background="Transparent" BorderThickness="0"
+                                                    ToolTip="Zobacz historię" Width="30" Height="30" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- POWER RECORDS - SHORT INTERVALS (1-5 MIN) -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="KRÓTKIE INTERWAŁY (1-5 MIN)" FontSize="14" FontWeight="Bold" Foreground="#424242" Margin="0,0,0,15"/>
+
+                        <ItemsControl ItemsSource="{Binding ShortIntervalRecords}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA" CornerRadius="4" Padding="15" Margin="0,0,0,10" Cursor="Hand">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#F0F0F0"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding Duration}" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Power, StringFormat='{}{0} W'}" FontSize="16" FontWeight="Bold" Foreground="#1976D2"/>
+                                                <TextBlock FontSize="11" Foreground="#757575">
+                                                    <Run Text="{Binding FTPPercent, StringFormat='({0}% FTP,'}"/>
+                                                    <Run Text="{Binding WattsPerKg, StringFormat='{0:F1} W/kg)'}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" VerticalAlignment="Center">
+                                                <Run Text="📅 " FontSize="12"/>
+                                                <Run Text="{Binding Date, StringFormat='dd.MM.yyyy'}" FontSize="12" Foreground="#757575"/>
+                                            </TextBlock>
+                                            <TextBlock Grid.Column="3" Text="{Binding TrainingLink}" FontSize="12" Foreground="#1976D2"
+                                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                            <Border Grid.Column="4" Background="#E8F5E9" CornerRadius="12"
+                                                    Padding="8,4" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                    Visibility="{Binding IsNewRecord, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock Text="🏆 Nowy!" FontSize="10" FontWeight="SemiBold" Foreground="#4CAF50"/>
+                                            </Border>
+                                            <Button Grid.Column="5" Content="📊" FontSize="14" Background="Transparent" BorderThickness="0"
+                                                    ToolTip="Zobacz historię" Width="30" Height="30" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- POWER RECORDS - MEDIUM INTERVALS (5-20 MIN) -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,15">
+                    <StackPanel>
+                        <TextBlock Text="ŚREDNIE INTERWAŁY (5-20 MIN)" FontSize="14" FontWeight="Bold" Foreground="#424242" Margin="0,0,0,15"/>
+
+                        <ItemsControl ItemsSource="{Binding MediumIntervalRecords}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA" CornerRadius="4" Padding="15" Margin="0,0,0,10" Cursor="Hand">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding Duration}" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Power, StringFormat='{}{0} W'}" FontSize="16" FontWeight="Bold" Foreground="#1976D2"/>
+                                                <TextBlock FontSize="11" Foreground="#757575">
+                                                    <Run Text="{Binding FTPPercent, StringFormat='({0}% FTP,'}"/>
+                                                    <Run Text="{Binding WattsPerKg, StringFormat='{0:F1} W/kg)'}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" VerticalAlignment="Center">
+                                                <Run Text="📅 " FontSize="12"/>
+                                                <Run Text="{Binding Date, StringFormat='dd.MM.yyyy'}" FontSize="12" Foreground="#757575"/>
+                                            </TextBlock>
+                                            <TextBlock Grid.Column="3" Text="{Binding TrainingLink}" FontSize="12" Foreground="#1976D2"
+                                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                            <Button Grid.Column="5" Content="📊" FontSize="14" Background="Transparent" BorderThickness="0"
+                                                    ToolTip="Zobacz historię" Width="30" Height="30" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- POWER RECORDS - LONG EFFORTS (> 20 MIN) -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="DŁUGIE WYSIŁKI (> 20 MIN)" FontSize="14" FontWeight="Bold" Foreground="#424242" Margin="0,0,0,15"/>
+
+                        <ItemsControl ItemsSource="{Binding LongEffortRecords}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA" CornerRadius="4" Padding="15" Margin="0,0,0,10" Cursor="Hand">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding Duration}" FontSize="14" FontWeight="Bold" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Power, StringFormat='{}{0} W'}" FontSize="16" FontWeight="Bold" Foreground="#1976D2"/>
+                                                <TextBlock FontSize="11" Foreground="#757575">
+                                                    <Run Text="{Binding FTPPercent, StringFormat='({0}% FTP,'}"/>
+                                                    <Run Text="{Binding WattsPerKg, StringFormat='{0:F1} W/kg)'}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <TextBlock Grid.Column="2" VerticalAlignment="Center">
+                                                <Run Text="📅 " FontSize="12"/>
+                                                <Run Text="{Binding Date, StringFormat='dd.MM.yyyy'}" FontSize="12" Foreground="#757575"/>
+                                            </TextBlock>
+                                            <TextBlock Grid.Column="3" Text="{Binding TrainingLink}" FontSize="12" Foreground="#1976D2"
+                                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                            <Button Grid.Column="5" Content="📊" FontSize="14" Background="Transparent" BorderThickness="0"
+                                                    ToolTip="Zobacz historię" Width="30" Height="30" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- RECORD PROGRESSION CHART -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,15">
+                            <TextBlock Text="Wykres progresji rekordów" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <ComboBox Width="150" HorizontalAlignment="Right">
+                                <ComboBoxItem Content="5 min power"/>
+                                <ComboBoxItem Content="20 min power" IsSelected="True"/>
+                                <ComboBoxItem Content="FTP"/>
+                            </ComboBox>
+                        </Grid>
+
+                        <!-- Progression Chart -->
+                        <lvc:CartesianChart Series="{Binding RecordProgressionSeries}"
+                                            XAxes="{Binding RecordProgressionXAxes}"
+                                            YAxes="{Binding RecordProgressionYAxes}"
+                                            Height="300"
+                                            Margin="0,0,0,10"/>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Border Width="16" Height="16" Background="#1976D2" CornerRadius="8" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Punkty na wykresie oznaczają daty nowych rekordów" FontSize="11" Foreground="#9E9E9E" VerticalAlignment="Center" Margin="0,0,15,0"/>
+
+                            <Border Width="30" Height="2" Background="#4CAF50" Margin="0,0,8,0" VerticalAlignment="Center">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="OpacityMask">
+                                            <Setter.Value>
+                                                <LinearGradientBrush>
+                                                    <GradientStop Color="Black" Offset="0"/>
+                                                    <GradientStop Color="Transparent" Offset="0.5"/>
+                                                    <GradientStop Color="Black" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                            <TextBlock Text="Linia trendu pokazuje ogólną progresję" FontSize="11" Foreground="#9E9E9E" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- FILTERS PANEL -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Filtry i opcje" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Date Range Filter -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Zakres dat" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                <RadioButton Content="Ostatnie 30 dni" GroupName="DateRange" Margin="0,0,0,8"/>
+                                <RadioButton Content="Ostatnie 90 dni" GroupName="DateRange" Margin="0,0,0,8"/>
+                                <RadioButton Content="Ostatni rok" GroupName="DateRange" Margin="0,0,0,8"/>
+                                <RadioButton Content="Cały czas" GroupName="DateRange" IsChecked="True" Margin="0,0,0,8"/>
+                                <RadioButton Content="Niestandardowy" GroupName="DateRange"/>
+                            </StackPanel>
+
+                            <!-- Training Type Filter -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Typ treningu" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                <RadioButton Content="Wszystkie" GroupName="TrainingType" IsChecked="True" Margin="0,0,0,8"/>
+                                <RadioButton Content="Outdoor" GroupName="TrainingType" Margin="0,0,0,8"/>
+                                <RadioButton Content="Indoor" GroupName="TrainingType" Margin="0,0,0,8"/>
+                                <RadioButton Content="Wyścigi" GroupName="TrainingType"/>
+                            </StackPanel>
+
+                            <!-- Sorting & Display Options -->
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Text="Sortowanie" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                <RadioButton Content="Po dacie (najnowsze)" GroupName="Sorting" IsChecked="True" Margin="0,0,0,8"/>
+                                <RadioButton Content="Po dacie (najstarsze)" GroupName="Sorting" Margin="0,0,0,8"/>
+                                <RadioButton Content="Po wartości (najwyższe)" GroupName="Sorting" Margin="0,0,0,8"/>
+                                <RadioButton Content="Po kategorii czasu" GroupName="Sorting" Margin="0,0,0,15"/>
+
+                                <TextBlock Text="Pokaż tylko" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,10"/>
+                                <CheckBox Content="Nowe rekordy (ostatnie 30 dni)" Margin="0,0,0,8"/>
+                                <CheckBox Content="Rekordy pobite więcej niż raz"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

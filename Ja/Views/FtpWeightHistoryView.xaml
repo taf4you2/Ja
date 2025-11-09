@@ -1,0 +1,306 @@
+<UserControl x:Class="Ja.Views.FtpWeightHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             mc:Ignorable="d"
+             d:DesignHeight="900" d:DesignWidth="1400">
+
+    <Grid Background="#F5F5F5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Main Content -->
+        </Grid.RowDefinitions>
+
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <Grid Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Back Button & Title -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="← Ustawienia" FontSize="14" Background="Transparent" BorderThickness="0"
+                            ToolTip="Powrót do ustawień" Margin="0,0,15,0" Foreground="#1976D2"/>
+                    <TextBlock Text="Historia FTP i wagi" FontSize="20" FontWeight="SemiBold"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Right: Add Measurement Button -->
+                <Button Grid.Column="2" Content="+ Dodaj pomiar" Background="#1976D2" Foreground="White"
+                        Padding="15,8" BorderThickness="0" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- ============================================ -->
+        <!-- MAIN CONTENT -->
+        <!-- ============================================ -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20" MaxWidth="1200">
+
+                <!-- ============================================ -->
+                <!-- TABS -->
+                <!-- ============================================ -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <Border Background="#E3F2FD" CornerRadius="4" Padding="20,10" Margin="0,0,10,0" Cursor="Hand">
+                        <TextBlock Text="FTP" FontWeight="SemiBold" Foreground="#1976D2" FontSize="14"/>
+                    </Border>
+                    <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                            CornerRadius="4" Padding="20,10" Cursor="Hand">
+                        <TextBlock Text="Waga" Foreground="#757575" FontSize="14"/>
+                    </Border>
+                </StackPanel>
+
+                <!-- ============================================ -->
+                <!-- CURRENT FTP CARD -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="30" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Current FTP -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Aktualne FTP" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="285 W" FontSize="32" FontWeight="Bold" Foreground="#1976D2"/>
+                            <TextBlock Text="Data: 22.10.2025" FontSize="11" Foreground="#9E9E9E" Margin="0,5,0,0"/>
+                        </StackPanel>
+
+                        <!-- W/kg -->
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="W/kg" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="3.8 W/kg" FontSize="32" FontWeight="Bold" Foreground="#4CAF50"/>
+                            <TextBlock Text="Waga: 75.0 kg" FontSize="11" Foreground="#9E9E9E" Margin="0,5,0,0"/>
+                        </StackPanel>
+
+                        <!-- Change from Previous -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Zmiana od poprzedniego" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="↑" FontSize="28" Foreground="#4CAF50" FontWeight="Bold"/>
+                                <TextBlock Text="+8 W" FontSize="28" FontWeight="Bold" Foreground="#4CAF50" Margin="5,0,0,0"/>
+                            </StackPanel>
+                            <TextBlock Text="+2.9%" FontSize="11" Foreground="#4CAF50" Margin="0,5,0,0"/>
+                        </StackPanel>
+
+                        <!-- Test Source -->
+                        <StackPanel Grid.Column="3">
+                            <TextBlock Text="Źródło" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="Test 20min" FontSize="16" FontWeight="SemiBold" Foreground="#424242"/>
+                            <TextBlock Text="Ostatni test" FontSize="11" Foreground="#9E9E9E" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- FTP HISTORY CHART -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- Chart Header -->
+                        <Grid Margin="0,0,0,15">
+                            <TextBlock Text="Historia FTP" FontSize="18" FontWeight="SemiBold"/>
+
+                            <!-- Time Range Selector -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                        CornerRadius="4" Padding="10,5" Margin="0,0,5,0" Cursor="Hand">
+                                    <TextBlock Text="6 miesięcy" FontSize="11" Foreground="#757575"/>
+                                </Border>
+                                <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                        CornerRadius="4" Padding="10,5" Margin="0,0,5,0" Cursor="Hand">
+                                    <TextBlock Text="1 rok" FontSize="11" Foreground="#757575"/>
+                                </Border>
+                                <Border Background="#E3F2FD" CornerRadius="4" Padding="10,5" Margin="0,0,5,0" Cursor="Hand">
+                                    <TextBlock Text="2 lata" FontSize="11" FontWeight="SemiBold" Foreground="#1976D2"/>
+                                </Border>
+                                <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                        CornerRadius="4" Padding="10,5" Cursor="Hand">
+                                    <TextBlock Text="Cały czas" FontSize="11" Foreground="#757575"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Chart Options -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <CheckBox Content="Pokaż W/kg" IsChecked="True" Margin="0,0,15,0"/>
+                            <CheckBox Content="Pokaż linię trendu" IsChecked="False" Margin="0,0,15,0"/>
+                            <CheckBox Content="Pokaż adnotacje" IsChecked="False"/>
+                        </StackPanel>
+
+                        <!-- Chart -->
+                        <lvc:CartesianChart Series="{Binding FTPSeries}"
+                                            XAxes="{Binding FTPXAxes}"
+                                            YAxes="{Binding FTPYAxes}"
+                                            Height="350"
+                                            Margin="0,0,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- FTP STATISTICS CARDS -->
+                <!-- ============================================ -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Highest FTP -->
+                    <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Najwyższe FTP" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="295 W" FontSize="22" FontWeight="Bold" Foreground="#1976D2"/>
+                            <TextBlock Text="15.08.2025" FontSize="10" Foreground="#9E9E9E" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Lowest FTP -->
+                    <Border Grid.Column="2" Background="White" CornerRadius="8" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Najniższe FTP" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="245 W" FontSize="22" FontWeight="Bold" Foreground="#F57C00"/>
+                            <TextBlock Text="12.01.2025" FontSize="10" Foreground="#9E9E9E" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Average Progression -->
+                    <Border Grid.Column="4" Background="White" CornerRadius="8" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Średnia progresja" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="+2.3 W/mies." FontSize="22" FontWeight="Bold" Foreground="#4CAF50"/>
+                            <TextBlock Text="Trend wzrostowy" FontSize="10" Foreground="#9E9E9E" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Number of Tests -->
+                    <Border Grid.Column="6" Background="White" CornerRadius="8" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Liczba testów" FontSize="12" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="8" FontSize="22" FontWeight="Bold" Foreground="#9C27B0"/>
+                            <TextBlock Text="W tym roku" FontSize="10" Foreground="#9E9E9E" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- ============================================ -->
+                <!-- FTP MEASUREMENTS TABLE -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- Table Header -->
+                        <Border Background="#F5F5F5" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                            <TextBlock Text="Pomiary FTP" FontSize="18" FontWeight="SemiBold"/>
+                        </Border>
+
+                        <!-- Table Column Headers -->
+                        <Border Padding="20,12" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="80"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Data" FontSize="12" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="1" Text="FTP (W)" FontSize="12" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="2" Text="Waga (kg)" FontSize="12" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="3" Text="W/kg" FontSize="12" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="4" Text="Zmiana" FontSize="12" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="5" Text="Źródło" FontSize="12" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="6" Text="Notatka" FontSize="12" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="7" Text="Akcje" FontSize="12" FontWeight="SemiBold" Foreground="#424242"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Table Rows -->
+                        <ItemsControl ItemsSource="{Binding FTPMeasurements}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding="20,12" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#F9F9F9"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="80"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding Date, StringFormat='dd.MM.yyyy'}"
+                                                       FontSize="13" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding FTP, StringFormat='{}{0} W'}"
+                                                       FontSize="13" FontWeight="SemiBold" Foreground="#1976D2" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Weight, StringFormat='{}{0:F1} kg'}"
+                                                       FontSize="13" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding WattsPerKg, StringFormat='{}{0:F1}'}"
+                                                       FontSize="13" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="4" Text="{Binding Change}"
+                                                       FontSize="13" Foreground="{Binding ChangeColor}" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="5" Text="{Binding Source}"
+                                                       FontSize="12" Foreground="#757575" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="6" Text="{Binding Notes}"
+                                                       FontSize="12" Foreground="#9E9E9E" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="7" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Button Content="✏" FontSize="12" Background="Transparent" BorderThickness="0"
+                                                        ToolTip="Edytuj" Width="25" Height="25" Foreground="#1976D2" Cursor="Hand"/>
+                                                <Button Content="🗑" FontSize="12" Background="Transparent" BorderThickness="0"
+                                                        ToolTip="Usuń" Width="25" Height="25" Foreground="#F44336" Cursor="Hand" Margin="5,0,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Empty State -->
+                        <Border Padding="40" MinHeight="200">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="📊" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                <TextBlock Text="Brak pomiarów FTP" FontSize="16" FontWeight="SemiBold"
+                                           HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                <TextBlock Text="Dodaj swój pierwszy pomiar FTP, aby śledzić postępy"
+                                           FontSize="12" Foreground="#757575" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

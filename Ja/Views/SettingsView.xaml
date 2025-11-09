@@ -12,126 +12,603 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left Sidebar - Categories -->
+        <!-- ============================================ -->
+        <!-- LEFT SIDEBAR - CATEGORIES -->
+        <!-- ============================================ -->
         <Border Grid.Column="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,1,0">
             <StackPanel Margin="0,20,0,0">
-                <TextBlock Text="⚙ Ustawienia" FontSize="20" FontWeight="Bold" Margin="20,0,20,20"/>
+                <TextBlock Text="⚙ Ustawienia" FontSize="20" FontWeight="Bold" Margin="20,0,20,30"/>
 
-                <Border Background="#E3F2FD" Padding="15,12" Cursor="Hand">
+                <!-- Profile Category -->
+                <Border x:Name="ProfileCategory" Background="#E3F2FD" Padding="15,12" Cursor="Hand">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCategoryCommand}" CommandParameter="Profile"/>
+                    </Border.InputBindings>
                     <TextBlock Text="👤 Profil użytkownika" FontWeight="SemiBold" Foreground="#1976D2"/>
                 </Border>
-                <Border Background="Transparent" Padding="15,12" Cursor="Hand">
+
+                <!-- Power Zones Category -->
+                <Border x:Name="PowerZonesCategory" Background="Transparent" Padding="15,12" Cursor="Hand">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCategoryCommand}" CommandParameter="PowerZones"/>
+                    </Border.InputBindings>
                     <TextBlock Text="⚡ Strefy treningowe" Foreground="#424242"/>
                 </Border>
-                <Border Background="Transparent" Padding="15,12" Cursor="Hand">
+
+                <!-- Advanced Category -->
+                <Border x:Name="AdvancedCategory" Background="Transparent" Padding="15,12" Cursor="Hand">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCategoryCommand}" CommandParameter="Advanced"/>
+                    </Border.InputBindings>
                     <TextBlock Text="🔧 Zaawansowane" Foreground="#424242"/>
                 </Border>
-                <Border Background="Transparent" Padding="15,12" Cursor="Hand">
+
+                <!-- Data Category -->
+                <Border x:Name="DataCategory" Background="Transparent" Padding="15,12" Cursor="Hand">
+                    <Border.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding SelectCategoryCommand}" CommandParameter="Data"/>
+                    </Border.InputBindings>
                     <TextBlock Text="💾 Dane" Foreground="#424242"/>
                 </Border>
             </StackPanel>
         </Border>
 
-        <!-- Right Content Area -->
+        <!-- ============================================ -->
+        <!-- RIGHT CONTENT AREA -->
+        <!-- ============================================ -->
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="40,40,40,40" MaxWidth="800">
-                <TextBlock Text="Profil użytkownika" FontSize="24" FontWeight="Bold" Margin="0,0,0,30"/>
 
-                <!-- Profile Picture Section -->
-                <TextBlock Text="Zdjęcie profilowe" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,30">
-                    <StackPanel>
-                        <Ellipse Width="100" Height="100" Fill="#1976D2" Margin="0,0,0,15"/>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Content="Zmień zdjęcie" Padding="12,6" Margin="0,0,10,0"/>
-                            <Button Content="Usuń zdjęcie" Padding="12,6"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
+                <!-- ============================================ -->
+                <!-- PROFILE SECTION -->
+                <!-- ============================================ -->
+                <StackPanel x:Name="ProfileSection" Visibility="Visible">
+                    <TextBlock Text="Profil użytkownika" FontSize="24" FontWeight="Bold" Margin="0,0,0,30"/>
 
-                <!-- Personal Data Section -->
-                <TextBlock Text="Dane osobowe" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,30">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <StackPanel Grid.Row="0" Margin="0,0,0,15">
-                            <TextBlock Text="Imię" Margin="0,0,0,5"/>
-                            <TextBox Padding="8" Height="36"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="1" Margin="0,0,0,15">
-                            <TextBlock Text="Nazwisko" Margin="0,0,0,5"/>
-                            <TextBox Padding="8" Height="36"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="2" Margin="0,0,0,15">
-                            <TextBlock Text="Data urodzenia" Margin="0,0,0,5"/>
-                            <DatePicker Height="36"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Row="3">
-                            <TextBlock Text="Płeć" Margin="0,0,0,5"/>
-                            <StackPanel Orientation="Horizontal">
-                                <RadioButton Content="Mężczyzna" Margin="0,0,20,0"/>
-                                <RadioButton Content="Kobieta" Margin="0,0,20,0"/>
-                                <RadioButton Content="Inna" Margin="0,0,20,0"/>
-                                <RadioButton Content="Wolę nie podawać"/>
+                    <!-- Profile Picture Section -->
+                    <TextBlock Text="Zdjęcie profilowe" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,30">
+                        <StackPanel>
+                            <Ellipse Width="100" Height="100" Fill="#1976D2" Margin="0,0,0,15"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Content="Zmień zdjęcie" Padding="12,6" Margin="0,0,10,0"/>
+                                <Button Content="Usuń zdjęcie" Padding="12,6"/>
                             </StackPanel>
                         </StackPanel>
-                    </Grid>
-                </Border>
+                    </Border>
 
-                <!-- Physical Data Section -->
-                <TextBlock Text="Dane fizyczne" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,30">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                    <!-- Personal Data Section -->
+                    <TextBlock Text="Dane osobowe" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,30">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <StackPanel Grid.Row="0" Margin="0,0,0,15">
-                            <TextBlock Text="Waga (kg)" Margin="0,0,0,5"/>
+                            <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                                <TextBlock Text="Imię" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding FirstName}" Padding="8" Height="36"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Margin="0,0,0,15">
+                                <TextBlock Text="Nazwisko" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding LastName}" Padding="8" Height="36"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Margin="0,0,0,15">
+                                <TextBlock Text="Data urodzenia" Margin="0,0,0,5"/>
+                                <DatePicker SelectedDate="{Binding DateOfBirth}" Height="36"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3">
+                                <TextBlock Text="Płeć" Margin="0,0,0,5"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="Mężczyzna" GroupName="Gender" Margin="0,0,20,0"/>
+                                    <RadioButton Content="Kobieta" GroupName="Gender" Margin="0,0,20,0"/>
+                                    <RadioButton Content="Inna" GroupName="Gender" Margin="0,0,20,0"/>
+                                    <RadioButton Content="Wolę nie podawać" GroupName="Gender"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Physical Data Section -->
+                    <TextBlock Text="Dane fizyczne" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,30">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                                <TextBlock Text="Waga (kg)" Margin="0,0,0,5"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding Weight}" Padding="8" Height="36"/>
+                                    <Button Grid.Column="1" Content="Historia wagi" Padding="12,6" Margin="10,0,0,0"
+                                            Command="{Binding OpenWeightHistoryCommand}"/>
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Margin="0,0,0,15">
+                                <TextBlock Text="Wzrost (cm)" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding Height}" Padding="8" Height="36"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Margin="0,0,0,15">
+                                <TextBlock Text="Tętno spoczynkowe (bpm)" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding RestingHeartRate}" Padding="8" Height="36"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="3">
+                                <TextBlock Text="Maksymalne tętno (bpm)" Margin="0,0,0,5"/>
+                                <TextBox Text="{Binding MaxHeartRate}" Padding="8" Height="36" Margin="0,0,0,10"/>
+                                <CheckBox Content="Oblicz automatycznie (220 - wiek)" IsChecked="{Binding AutoCalculateMaxHR}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Save Button -->
+                    <Button Content="Zapisz zmiany" Background="#1976D2" Foreground="White"
+                            Padding="20,12" FontSize="14" FontWeight="SemiBold"
+                            BorderThickness="0" HorizontalAlignment="Right"
+                            Command="{Binding SaveProfileCommand}"/>
+                </StackPanel>
+
+                <!-- ============================================ -->
+                <!-- POWER ZONES SECTION -->
+                <!-- ============================================ -->
+                <StackPanel x:Name="PowerZonesSection" Visibility="Collapsed">
+                    <TextBlock Text="Strefy treningowe" FontSize="24" FontWeight="Bold" Margin="0,0,0,30"/>
+
+                    <!-- FTP Section -->
+                    <TextBlock Text="FTP (Functional Threshold Power)" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,30">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                                <TextBlock Text="FTP (W)" Margin="0,0,0,5"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding FTP}" Padding="8" Height="36"/>
+                                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="15,0,0,0">
+                                        <Run Text="{Binding WattsPerKg, StringFormat='{}{0:F1} W/kg'}" FontWeight="SemiBold" Foreground="#1976D2"/>
+                                        <Run Text=" (na podstawie wagi)" Foreground="#757575" FontSize="12"/>
+                                    </TextBlock>
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Margin="0,0,0,15">
+                                <TextBlock Text="Data ostatniego testu FTP" Margin="0,0,0,5"/>
+                                <DatePicker SelectedDate="{Binding LastFTPTestDate}" Height="36"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2">
+                                <Button Content="Historia FTP" Padding="12,8" Background="#1976D2" Foreground="White"
+                                        BorderThickness="0" HorizontalAlignment="Left"
+                                        Command="{Binding OpenFTPHistoryCommand}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Power Zones Model -->
+                    <TextBlock Text="Model stref mocy" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <StackPanel>
+                            <RadioButton Content="Coggan (7 stref)" GroupName="PowerZoneModel" IsChecked="True" Margin="0,0,0,10"/>
+                            <RadioButton Content="Coggan (6 stref)" GroupName="PowerZoneModel" Margin="0,0,0,10"/>
+                            <RadioButton Content="British Cycling (5 stref)" GroupName="PowerZoneModel" Margin="0,0,0,10"/>
+                            <RadioButton Content="Custom (własne)" GroupName="PowerZoneModel"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Power Zones Table -->
+                    <TextBlock Text="Tabela stref mocy" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,30">
+                        <StackPanel>
+                            <!-- Table Header -->
+                            <Border Padding="15,12" Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Z" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                    <TextBlock Grid.Column="1" Text="Nazwa strefy" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                    <TextBlock Grid.Column="2" Text="% FTP" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                    <TextBlock Grid.Column="3" Text="Wartości (W)" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                    <TextBlock Grid.Column="4" Text="Kolor" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Zone Rows -->
+                            <ItemsControl ItemsSource="{Binding PowerZones}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="15,12" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="40"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="120"/>
+                                                    <ColumnDefinition Width="150"/>
+                                                    <ColumnDefinition Width="80"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" Text="{Binding ZoneNumber}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                <TextBox Grid.Column="1" Text="{Binding ZoneName}" Padding="4" Height="28" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <TextBox Grid.Column="2" Text="{Binding PercentRange}" Padding="4" Height="28" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding WattRange}" FontSize="13" Foreground="#757575" VerticalAlignment="Center"/>
+                                                <Border Grid.Column="4" Width="50" Height="28" Background="{Binding ZoneColor}" CornerRadius="4"
+                                                        BorderBrush="#E0E0E0" BorderThickness="1" Cursor="Hand" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Heart Rate Zones Section -->
+                    <TextBlock Text="Strefy tętna (Heart Rate Zones)" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                                <TextBlock Text="Metoda obliczania" Margin="0,0,0,5"/>
+                                <ComboBox Height="36" SelectedIndex="0">
+                                    <ComboBoxItem Content="% Max HR"/>
+                                    <ComboBoxItem Content="% HRR (Heart Rate Reserve)"/>
+                                    <ComboBoxItem Content="LTHR (Lactate Threshold Heart Rate)"/>
+                                    <ComboBoxItem Content="Custom"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1">
+                                <TextBlock Text="LTHR (Lactate Threshold Heart Rate) w bpm" Margin="0,0,0,5"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" Text="{Binding LTHR}" Padding="8" Height="36"/>
+                                    <Button Grid.Column="1" Content="Data ostatniego testu" Padding="12,6" Margin="10,0,0,0"/>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- HR Zones Table -->
+                    <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,30">
+                        <StackPanel>
+                            <!-- Table Header -->
+                            <Border Padding="15,12" Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Z" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                    <TextBlock Grid.Column="1" Text="Nazwa strefy" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                    <TextBlock Grid.Column="2" Text="% Max HR" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                    <TextBlock Grid.Column="3" Text="Wartości (bpm)" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                    <TextBlock Grid.Column="4" Text="Kolor" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- HR Zone Rows (Example) -->
+                            <Border Padding="15,12" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="1" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="1" Text="Recovery" Padding="4" Height="28" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Text="0-60%" Padding="4" Height="28" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="3" Text="0-114 bpm" FontSize="13" Foreground="#757575" VerticalAlignment="Center"/>
+                                    <Border Grid.Column="4" Width="50" Height="28" Background="#BDBDBD" CornerRadius="4"
+                                            BorderBrush="#E0E0E0" BorderThickness="1" Cursor="Hand" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Save Button -->
+                    <Button Content="Zapisz zmiany" Background="#1976D2" Foreground="White"
+                            Padding="20,12" FontSize="14" FontWeight="SemiBold"
+                            BorderThickness="0" HorizontalAlignment="Right"
+                            Command="{Binding SavePowerZonesCommand}"/>
+                </StackPanel>
+
+                <!-- ============================================ -->
+                <!-- ADVANCED SECTION -->
+                <!-- ============================================ -->
+                <StackPanel x:Name="AdvancedSection" Visibility="Collapsed">
+                    <TextBlock Text="Zaawansowane" FontSize="24" FontWeight="Bold" Margin="0,0,0,30"/>
+
+                    <!-- Algorithms Section -->
+                    <TextBlock Text="Algorytmy" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+
+                    <!-- Interval Detection -->
+                    <TextBlock Text="Wykrywanie interwałów" FontSize="16" FontWeight="SemiBold" Margin="0,10,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="Czułość wykrywania" Margin="0,0,0,5"/>
+                            <Slider Minimum="1" Maximum="4" TickFrequency="1" IsSnapToTickEnabled="True"
+                                    Value="{Binding DetectionSensitivity}" Margin="0,5,0,10"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                                <TextBlock Text="Niska" FontSize="11" Foreground="#757575" Width="80"/>
+                                <TextBlock Text="Średnia" FontSize="11" Foreground="#757575" Width="80"/>
+                                <TextBlock Text="Wysoka" FontSize="11" Foreground="#757575" Width="80"/>
+                                <TextBlock Text="Bardzo wysoka" FontSize="11" Foreground="#757575"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Minimalne czasy trwania stref (w sekundach)" FontSize="14" FontWeight="SemiBold" Margin="0,15,0,10"/>
                             <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Z7:" VerticalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="5" Padding="8" Height="36" Margin="0,0,0,10"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Z6:" VerticalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="10" Padding="8" Height="36" Margin="0,0,0,10"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Z5:" VerticalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="30" Padding="8" Height="36" Margin="0,0,0,10"/>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Z4:" VerticalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="60" Padding="8" Height="36" Margin="0,0,0,10"/>
+
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Z3:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Text="120" Padding="8" Height="36"/>
+                            </Grid>
+
+                            <TextBlock Text="Parametry wykrywania zmian mocy" FontSize="14" FontWeight="SemiBold" Margin="0,20,0,10"/>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Długie okno (s):" VerticalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="30" Padding="8" Height="36" Margin="0,0,0,10"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Krótkie okno (s):" VerticalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="10" Padding="8" Height="36" Margin="0,0,0,10"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Próg zmiany długi (%):" VerticalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="12" Padding="8" Height="36" Margin="0,0,0,10"/>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Próg zmiany krótki (%):" VerticalAlignment="Center"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="25" Padding="8" Height="36"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- TSS Calculation -->
+                    <TextBlock Text="TSS Calculation" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,30">
+                        <StackPanel>
+                            <RadioButton Content="Standardowy (IF² × czas)" GroupName="TSSModel" IsChecked="True" Margin="0,0,0,10"/>
+                            <RadioButton Content="Alternatywny (VI adjusted)" GroupName="TSSModel"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Performance Management Chart (PMC) -->
+                    <TextBlock Text="Performance Management Chart (PMC)" FontSize="18" FontWeight="SemiBold" Margin="0,10,0,10"/>
+
+                    <TextBlock Text="Stałe czasowe" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="CTL (Chronic Training Load) - dni:" VerticalAlignment="Center" Margin="0,0,0,15"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="42" Padding="8" Height="36" Margin="0,0,0,15"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="ATL (Acute Training Load) - dni:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="7" Padding="8" Height="36"/>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Text="TSB (Training Stress Balance) zakresy" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,30">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Świeży (Fresh) >" VerticalAlignment="Center" Margin="0,0,0,15"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="25" Padding="8" Height="36" Margin="0,0,0,15"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Optymalny (od-do):" VerticalAlignment="Center" Margin="0,0,0,15"/>
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,0,0,15">
+                                <TextBox Text="-10" Padding="8" Height="36" Width="100"/>
+                                <TextBlock Text=" do " VerticalAlignment="Center" Margin="10,0"/>
+                                <TextBox Text="25" Padding="8" Height="36" Width="100"/>
+                            </StackPanel>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Przeciążony <" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Text="-30" Padding="8" Height="36"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Data and Import -->
+                    <TextBlock Text="Dane i import" FontSize="18" FontWeight="SemiBold" Margin="0,10,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="Domyślny katalog importu" Margin="0,0,0,5"/>
+                            <Grid Margin="0,0,0,15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" Padding="8" Height="36"/>
-                                <Button Grid.Column="1" Content="Historia wagi" Padding="12,6" Margin="10,0,0,0"/>
+                                <TextBox Grid.Column="0" Text="C:\Users\...\Documents\Trainings" Padding="8" Height="36"/>
+                                <Button Grid.Column="1" Content="Przeglądaj" Padding="12,6" Margin="10,0,0,0"/>
+                            </Grid>
+
+                            <CheckBox Content="Automatycznie analizuj po imporcie" IsChecked="True" Margin="0,0,0,10"/>
+                            <CheckBox Content="Wykrywaj duplikaty podczas importu" IsChecked="True" Margin="0,0,0,15"/>
+
+                            <TextBlock Text="Usuwanie outlierów" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,10"/>
+                            <CheckBox Content="Automatycznie usuwaj outliery" IsChecked="True" Margin="0,0,0,10"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Z-score threshold:" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" Text="3" Padding="8" Height="36"/>
                             </Grid>
                         </StackPanel>
+                    </Border>
 
-                        <StackPanel Grid.Row="1" Margin="0,0,0,15">
-                            <TextBlock Text="Wzrost (cm)" Margin="0,0,0,5"/>
-                            <TextBox Padding="8" Height="36"/>
+                    <!-- Save & Reset Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Przywróć domyślne" Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                Padding="15,8" FontSize="14" Margin="0,0,10,0"/>
+                        <Button Content="Zapisz zmiany" Background="#1976D2" Foreground="White"
+                                Padding="20,12" FontSize="14" FontWeight="SemiBold" BorderThickness="0"
+                                Command="{Binding SaveAdvancedCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- ============================================ -->
+                <!-- DATA SECTION -->
+                <!-- ============================================ -->
+                <StackPanel x:Name="DataSection" Visibility="Collapsed">
+                    <TextBlock Text="Dane" FontSize="24" FontWeight="Bold" Margin="0,0,0,30"/>
+
+                    <!-- Database Section -->
+                    <TextBlock Text="Baza danych" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="Lokalizacja bazy danych" Margin="0,0,0,5"/>
+                            <Grid Margin="0,0,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Text="C:\Users\...\AppData\JA_Training\database.db"
+                                         Padding="8" Height="36" IsReadOnly="True"/>
+                                <Button Grid.Column="1" Content="Zmień lokalizację" Padding="12,6" Margin="10,0,0,0"/>
+                            </Grid>
+
+                            <TextBlock Margin="0,10,0,0">
+                                <Run Text="Aktualna wielkość: " FontSize="12" Foreground="#757575"/>
+                                <Run Text="245 MB" FontSize="12" FontWeight="SemiBold" Foreground="#1976D2"/>
+                            </TextBlock>
                         </StackPanel>
+                    </Border>
 
-                        <StackPanel Grid.Row="2" Margin="0,0,0,15">
-                            <TextBlock Text="Tętno spoczynkowe (bpm)" Margin="0,0,0,5"/>
-                            <TextBox Padding="8" Height="36"/>
+                    <!-- Backup Section -->
+                    <TextBlock Text="Kopia zapasowa" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="Lokalizacja kopii zapasowej" Margin="0,0,0,5"/>
+                            <Grid Margin="0,0,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Text="C:\Users\...\Documents\JA_Training_Backups" Padding="8" Height="36"/>
+                                <Button Grid.Column="1" Content="Przeglądaj" Padding="12,6" Margin="10,0,0,0"/>
+                            </Grid>
+
+                            <Button Content="Utwórz kopię zapasową teraz" Background="#1976D2" Foreground="White"
+                                    Padding="15,8" BorderThickness="0" HorizontalAlignment="Left" Margin="0,0,0,15"/>
+
+                            <Separator Margin="0,10,0,15"/>
+
+                            <Button Content="Przywróć bazę danych z kopii zapasowej" Background="#F57C00" Foreground="White"
+                                    Padding="15,8" BorderThickness="0" HorizontalAlignment="Left"/>
                         </StackPanel>
+                    </Border>
 
-                        <StackPanel Grid.Row="3">
-                            <TextBlock Text="Maksymalne tętno (bpm)" Margin="0,0,0,5"/>
-                            <TextBox Padding="8" Height="36" Margin="0,0,0,10"/>
-                            <CheckBox Content="Oblicz automatycznie (220 - wiek)"/>
+                    <!-- Export Section -->
+                    <TextBlock Text="Eksport" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <StackPanel>
+                            <Button Content="Eksportuj wszystkie treningi do CSV" Padding="15,8"
+                                    BorderBrush="#E0E0E0" BorderThickness="1" HorizontalAlignment="Left" Margin="0,0,0,10"/>
+                            <Button Content="Eksportuj statystyki" Padding="15,8"
+                                    BorderBrush="#E0E0E0" BorderThickness="1" HorizontalAlignment="Left"/>
                         </StackPanel>
-                    </Grid>
-                </Border>
+                    </Border>
 
-                <!-- Save Button -->
-                <Button Content="Zapisz zmiany" Background="#1976D2" Foreground="White"
-                        Padding="20,12" FontSize="14" FontWeight="SemiBold"
-                        BorderThickness="0" HorizontalAlignment="Right"/>
+                    <!-- Cleaning Section -->
+                    <TextBlock Text="Czyszczenie" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                    <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="⚠️ UWAGA: Te operacje są nieodwracalne!" FontSize="12" FontWeight="SemiBold"
+                                       Foreground="#F44336" Margin="0,0,0,15"/>
+
+                            <Button Content="Usuń wszystkie treningi" Background="#F44336" Foreground="White"
+                                    Padding="15,8" BorderThickness="0" HorizontalAlignment="Left" Margin="0,0,0,10"/>
+                            <Button Content="Resetuj wszystkie ustawienia" Background="#F44336" Foreground="White"
+                                    Padding="15,8" BorderThickness="0" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
             </StackPanel>
         </ScrollViewer>
     </Grid>

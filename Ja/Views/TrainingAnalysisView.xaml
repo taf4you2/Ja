@@ -3,17 +3,558 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d"
              d:DesignHeight="900" d:DesignWidth="1400">
 
     <Grid Background="#F5F5F5">
-        <Border Background="White" Margin="20" CornerRadius="8" Padding="40">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="📊" FontSize="64" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-                <TextBlock Text="Analiza treningu" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                <TextBlock Text="Wybierz trening z kalendarza, aby zobaczyć szczegółową analizę"
-                           FontSize="14" Foreground="#757575" HorizontalAlignment="Center"/>
-            </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Main Content -->
+        </Grid.RowDefinitions>
+
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <Grid Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Back Button -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="← Powrót" FontSize="14" Background="Transparent" BorderThickness="0"
+                            ToolTip="Powrót do kalendarza" Margin="0,0,15,0" Foreground="#1976D2"/>
+                </StackPanel>
+
+                <!-- Center: File Name & Date -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding FileName}" FontSize="18" FontWeight="SemiBold"/>
+                    <TextBlock FontSize="12" Foreground="#757575" Margin="0,2,0,0">
+                        <Run Text="{Binding TrainingDate, StringFormat='dd MMMM yyyy'}"/>
+                        <Run Text=", "/>
+                        <Run Text="{Binding StartTime, StringFormat='HH:mm'}"/>
+                    </TextBlock>
+                </StackPanel>
+
+                <!-- Right: Action Buttons -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="📤" FontSize="18" Width="40" Height="40"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Eksportuj" Margin="0,0,5,0"/>
+                    <Button Content="⚙" FontSize="18" Width="40" Height="40"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Ustawienia wykresu" Margin="0,0,5,0"/>
+                    <Button Content="⋮" FontSize="18" Width="40" Height="40"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Więcej opcji"/>
+                </StackPanel>
+            </Grid>
         </Border>
+
+        <!-- ============================================ -->
+        <!-- MAIN CONTENT - SCROLLABLE -->
+        <!-- ============================================ -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20" MaxWidth="1400">
+
+                <!-- ============================================ -->
+                <!-- KEY METRICS CARDS -->
+                <!-- ============================================ -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Duration -->
+                    <Border Grid.Row="0" Grid.Column="0" Background="White" CornerRadius="8" Padding="20" Margin="0,0,5,5">
+                        <StackPanel>
+                            <TextBlock Text="Czas trwania" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Duration}" FontSize="24" FontWeight="Bold" Foreground="#1976D2"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Distance -->
+                    <Border Grid.Row="0" Grid.Column="1" Background="White" CornerRadius="8" Padding="20" Margin="5,0,5,5">
+                        <StackPanel>
+                            <TextBlock Text="Dystans" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Distance, StringFormat='{}{0:F1} km'}" FontSize="24" FontWeight="Bold" Foreground="#1976D2"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Average Power -->
+                    <Border Grid.Row="0" Grid.Column="2" Background="White" CornerRadius="8" Padding="20" Margin="5,0,5,5">
+                        <StackPanel>
+                            <TextBlock Text="Średnia moc" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding AvgPower, StringFormat='{}{0} W'}" FontSize="24" FontWeight="Bold" Foreground="#F57C00"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Normalized Power -->
+                    <Border Grid.Row="0" Grid.Column="3" Background="White" CornerRadius="8" Padding="20" Margin="5,0,0,5">
+                        <StackPanel>
+                            <TextBlock Text="Normalized Power (NP)" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding NormalizedPower, StringFormat='{}{0} W'}" FontSize="24" FontWeight="Bold" Foreground="#F57C00"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- TSS -->
+                    <Border Grid.Row="1" Grid.Column="0" Background="White" CornerRadius="8" Padding="20" Margin="0,5,5,0">
+                        <StackPanel>
+                            <TextBlock Text="TSS" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding TSS, StringFormat='{}{0:F0}'}" FontSize="24" FontWeight="Bold" Foreground="#9C27B0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Intensity Factor -->
+                    <Border Grid.Row="1" Grid.Column="1" Background="White" CornerRadius="8" Padding="20" Margin="5,5,5,0">
+                        <StackPanel>
+                            <TextBlock Text="Intensity Factor (IF)" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding IntensityFactor, StringFormat='{}{0:F2}'}" FontSize="24" FontWeight="Bold" Foreground="#9C27B0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Average Heart Rate -->
+                    <Border Grid.Row="1" Grid.Column="2" Background="White" CornerRadius="8" Padding="20" Margin="5,5,5,0">
+                        <StackPanel>
+                            <TextBlock Text="Średnie tętno" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding AvgHeartRate, StringFormat='{}{0} bpm'}" FontSize="24" FontWeight="Bold" Foreground="#E91E63"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Work -->
+                    <Border Grid.Row="1" Grid.Column="3" Background="White" CornerRadius="8" Padding="20" Margin="5,5,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Work" FontSize="11" Foreground="#757575" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Work, StringFormat='{}{0:F0} kJ'}" FontSize="24" FontWeight="Bold" Foreground="#4CAF50"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- ============================================ -->
+                <!-- MAIN POWER CHART -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- Chart Header -->
+                        <Grid Margin="0,0,0,15">
+                            <TextBlock Text="Wykres mocy" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+                            <!-- Chart Toggles -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <CheckBox Content="Moc" IsChecked="True" Margin="0,0,15,0" Foreground="#1976D2"/>
+                                <CheckBox Content="Tętno" IsChecked="False" Margin="0,0,15,0" Foreground="#E91E63"/>
+                                <CheckBox Content="Kadencja" IsChecked="False" Margin="0,0,15,0" Foreground="#4CAF50"/>
+                                <CheckBox Content="Prędkość" IsChecked="False" Margin="0,0,15,0" Foreground="#9C27B0"/>
+                                <Button Content="🔍 Zoom" Background="Transparent" BorderThickness="0" Padding="8,4" Margin="10,0,0,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Power Chart -->
+                        <lvc:CartesianChart Series="{Binding PowerChartSeries}"
+                                            XAxes="{Binding PowerChartXAxes}"
+                                            YAxes="{Binding PowerChartYAxes}"
+                                            Height="400"
+                                            Margin="0,0,0,10"/>
+
+                        <!-- Chart Info -->
+                        <TextBlock Text="Kliknij i przeciągnij, aby przybliżyć fragment wykresu"
+                                   FontSize="11" Foreground="#9E9E9E" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- DETECTED INTERVALS SECTION -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- Section Header -->
+                        <Grid Margin="0,0,0,15">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Wykryte interwały treningowe" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <Border Background="#E3F2FD" CornerRadius="12" Padding="8,4" Margin="15,0,0,0">
+                                    <TextBlock Text="{Binding IntervalCount, StringFormat='{}{0} interwałów'}"
+                                               FontSize="11" FontWeight="SemiBold" Foreground="#1976D2"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Intervals Table -->
+                        <Border BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4">
+                            <StackPanel>
+                                <!-- Table Header -->
+                                <Border Background="#FAFAFA" Padding="12,10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="120"/>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="#" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                        <TextBlock Grid.Column="1" Text="Czas" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                        <TextBlock Grid.Column="2" Text="Czas trw." FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                        <TextBlock Grid.Column="3" Text="Średnia moc" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                        <TextBlock Grid.Column="4" Text="Strefa" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                        <TextBlock Grid.Column="5" Text="Typ" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                        <TextBlock Grid.Column="6" Text="Akcje" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Intervals Rows -->
+                                <ItemsControl ItemsSource="{Binding Intervals}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Padding="12,10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Background" Value="#F9F9F9"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="40"/>
+                                                        <ColumnDefinition Width="120"/>
+                                                        <ColumnDefinition Width="100"/>
+                                                        <ColumnDefinition Width="120"/>
+                                                        <ColumnDefinition Width="150"/>
+                                                        <ColumnDefinition Width="100"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock Grid.Column="0" Text="{Binding Number}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding TimeRange}" FontSize="12" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="2" Text="{Binding Duration}" FontSize="12" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="3" VerticalAlignment="Center">
+                                                        <Run Text="{Binding AvgPower, StringFormat='{}{0} W'}" FontWeight="SemiBold"/>
+                                                        <Run Text="{Binding FTPPercent, StringFormat='({0}% FTP)'}" FontSize="11" Foreground="#757575"/>
+                                                    </TextBlock>
+                                                    <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
+                                                        <Border Width="16" Height="16" Background="{Binding ZoneColor}" CornerRadius="8" Margin="0,0,8,0"/>
+                                                        <TextBlock Text="{Binding ZoneName}" FontSize="12"/>
+                                                    </StackPanel>
+                                                    <Border Grid.Column="5" Background="{Binding TypeBadgeColor}" CornerRadius="4" Padding="6,3" HorizontalAlignment="Left">
+                                                        <TextBlock Text="{Binding Type}" FontSize="10" FontWeight="SemiBold" Foreground="White"/>
+                                                    </Border>
+                                                    <Button Grid.Column="6" Content="👁 Pokaż na wykresie" FontSize="11"
+                                                            Background="Transparent" BorderThickness="0" Foreground="#1976D2"
+                                                            HorizontalAlignment="Left" Cursor="Hand"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- RECOVERY PERIODS SECTION -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- Section Header -->
+                        <Grid Margin="0,0,0,15">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Okresy odpoczynku" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <Border Background="#E8F5E9" CornerRadius="12" Padding="8,4" Margin="15,0,0,0">
+                                    <TextBlock Text="{Binding RecoveryCount, StringFormat='{}{0} okresów'}"
+                                               FontSize="11" FontWeight="SemiBold" Foreground="#4CAF50"/>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Recovery Periods (Simple List) -->
+                        <ItemsControl ItemsSource="{Binding RecoveryPeriods}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA" CornerRadius="4" Padding="12" Margin="0,0,0,8">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding TimeRange}" FontSize="12" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Duration}" FontSize="12" VerticalAlignment="Center"/>
+                                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                                <TextBlock Text="Średnia moc: " FontSize="12" Foreground="#757575"/>
+                                                <TextBlock Text="{Binding AvgPower, StringFormat='{}{0} W'}" FontSize="12" FontWeight="SemiBold"/>
+                                                <TextBlock Text=" • " FontSize="12" Foreground="#757575" Margin="10,0"/>
+                                                <Border Width="12" Height="12" Background="{Binding ZoneColor}" CornerRadius="6" Margin="0,0,5,0"/>
+                                                <TextBlock Text="{Binding ZoneName}" FontSize="12"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- TIME IN ZONES SECTION -->
+                <!-- ============================================ -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Pie Chart -->
+                    <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Czas w strefach" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+                            <lvc:PieChart Series="{Binding TimeInZonesSeries}"
+                                          Height="300"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Zones Table -->
+                    <Border Grid.Column="2" Background="White" CornerRadius="8" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Szczegóły stref" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+
+                            <ItemsControl ItemsSource="{Binding ZoneBreakdown}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="0,8" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <Border Grid.Column="0" Width="20" Height="20" Background="{Binding ZoneColor}"
+                                                        CornerRadius="10" Margin="0,0,10,0"/>
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock Text="{Binding ZoneName}" FontSize="13" FontWeight="SemiBold"/>
+                                                    <TextBlock Text="{Binding AvgPower, StringFormat='Średnia: {0} W'}"
+                                                               FontSize="11" Foreground="#757575"/>
+                                                </StackPanel>
+                                                <TextBlock Grid.Column="2" Text="{Binding Time}" FontSize="13" FontWeight="SemiBold"
+                                                           Margin="10,0" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="3" Text="{Binding Percentage, StringFormat='({0}%)'}"
+                                                           FontSize="12" Foreground="#757575" VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- ============================================ -->
+                <!-- POWER CURVE (MEAN MAXIMAL POWER) SECTION -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,15">
+                            <TextBlock Text="Power Curve (Mean Maximal Power)" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <CheckBox Content="Pokaż rekordy osobiste" HorizontalAlignment="Right" IsChecked="True"/>
+                        </Grid>
+
+                        <!-- Power Curve Chart -->
+                        <lvc:CartesianChart Series="{Binding PowerCurveSeries}"
+                                            XAxes="{Binding PowerCurveXAxes}"
+                                            YAxes="{Binding PowerCurveYAxes}"
+                                            Height="300"
+                                            Margin="0,0,0,15"/>
+
+                        <!-- Best Results Table -->
+                        <TextBlock Text="Najlepsze wyniki" FontSize="14" FontWeight="SemiBold" Margin="0,10,0,10"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Background="#FAFAFA" Padding="15,10" Margin="0,0,5,0" CornerRadius="4">
+                                <StackPanel>
+                                    <TextBlock Text="5s" FontSize="11" Foreground="#757575" Margin="0,0,0,3"/>
+                                    <TextBlock Text="{Binding Power5s, StringFormat='{}{0} W'}" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Power5sPercent, StringFormat='({0}% FTP)'}" FontSize="10" Foreground="#757575"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Background="#FAFAFA" Padding="15,10" Margin="5,0,5,0" CornerRadius="4">
+                                <StackPanel>
+                                    <TextBlock Text="1min" FontSize="11" Foreground="#757575" Margin="0,0,0,3"/>
+                                    <TextBlock Text="{Binding Power1min, StringFormat='{}{0} W'}" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Power1minPercent, StringFormat='({0}% FTP)'}" FontSize="10" Foreground="#757575"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Background="#FAFAFA" Padding="15,10" Margin="5,0,5,0" CornerRadius="4">
+                                <StackPanel>
+                                    <TextBlock Text="5min" FontSize="11" Foreground="#757575" Margin="0,0,0,3"/>
+                                    <TextBlock Text="{Binding Power5min, StringFormat='{}{0} W'}" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Power5minPercent, StringFormat='({0}% FTP)'}" FontSize="10" Foreground="#757575"/>
+                                    <TextBlock Text="🏆 Nowy rekord!" FontSize="9" FontWeight="SemiBold" Foreground="#4CAF50" Margin="0,3,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="3" Background="#FAFAFA" Padding="15,10" Margin="5,0,0,0" CornerRadius="4">
+                                <StackPanel>
+                                    <TextBlock Text="20min" FontSize="11" Foreground="#757575" Margin="0,0,0,3"/>
+                                    <TextBlock Text="{Binding Power20min, StringFormat='{}{0} W'}" FontSize="18" FontWeight="Bold"/>
+                                    <TextBlock Text="{Binding Power20minPercent, StringFormat='({0}% FTP)'}" FontSize="10" Foreground="#757575"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- ADDITIONAL STATS -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Szczegółowe statystyki" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Cadence Stats -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,10,15">
+                                <TextBlock Text="Kadencja" FontSize="13" FontWeight="SemiBold" Foreground="#424242" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="Średnia: " FontSize="12" Foreground="#757575" Width="80"/>
+                                    <TextBlock Text="{Binding AvgCadence, StringFormat='{}{0} rpm'}" FontSize="12" FontWeight="SemiBold"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Maksymalna: " FontSize="12" Foreground="#757575" Width="80"/>
+                                    <TextBlock Text="{Binding MaxCadence, StringFormat='{}{0} rpm'}" FontSize="12" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Heart Rate Stats -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="10,0,10,15">
+                                <TextBlock Text="Tętno" FontSize="13" FontWeight="SemiBold" Foreground="#424242" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="Min: " FontSize="12" Foreground="#757575" Width="80"/>
+                                    <TextBlock Text="{Binding MinHeartRate, StringFormat='{}{0} bpm'}" FontSize="12" FontWeight="SemiBold"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="Max: " FontSize="12" Foreground="#757575" Width="80"/>
+                                    <TextBlock Text="{Binding MaxHeartRate, StringFormat='{}{0} bpm'}" FontSize="12" FontWeight="SemiBold"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="% Max HR: " FontSize="12" Foreground="#757575" Width="80"/>
+                                    <TextBlock Text="{Binding AvgPercentMaxHR, StringFormat='{}{0}%'}" FontSize="12" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Speed Stats -->
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="10,0,0,15">
+                                <TextBlock Text="Prędkość" FontSize="13" FontWeight="SemiBold" Foreground="#424242" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="Średnia: " FontSize="12" Foreground="#757575" Width="80"/>
+                                    <TextBlock Text="{Binding AvgSpeed, StringFormat='{}{0:F1} km/h'}" FontSize="12" FontWeight="SemiBold"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Maksymalna: " FontSize="12" Foreground="#757575" Width="80"/>
+                                    <TextBlock Text="{Binding MaxSpeed, StringFormat='{}{0:F1} km/h'}" FontSize="12" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Elevation -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="Przewyższenie" FontSize="13" FontWeight="SemiBold" Foreground="#424242" Margin="0,0,0,8"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="Wzniesienia: " FontSize="12" Foreground="#757575" Width="80"/>
+                                    <TextBlock Text="{Binding ElevationGain, StringFormat='{}{0:F0} m'}" FontSize="12" FontWeight="SemiBold"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Zjazdy: " FontSize="12" Foreground="#757575" Width="80"/>
+                                    <TextBlock Text="{Binding ElevationLoss, StringFormat='{}{0:F0} m'}" FontSize="12" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- VI -->
+                            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10,0,10,0">
+                                <TextBlock Text="Variability Index (VI)" FontSize="13" FontWeight="SemiBold" Foreground="#424242" Margin="0,0,0,8"/>
+                                <TextBlock Text="{Binding VariabilityIndex, StringFormat='{}{0:F2}'}" FontSize="20" FontWeight="Bold" Foreground="#1976D2"/>
+                                <TextBlock FontSize="11" Foreground="#757575">
+                                    <Run Text="{Binding VIDescription}"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- NOTES SECTION -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Notatki do treningu" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                        <TextBox Text="{Binding Notes}" AcceptsReturn="True" TextWrapping="Wrap"
+                                 MinHeight="100" Padding="10" FontSize="13"
+                                 BorderBrush="#E0E0E0" BorderThickness="1"/>
+
+                        <TextBlock Text="Tagi" FontSize="14" FontWeight="SemiBold" Margin="0,15,0,8"/>
+                        <ItemsControl ItemsSource="{Binding Tags}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#E3F2FD" CornerRadius="12" Padding="10,5" Margin="0,0,8,8">
+                                        <TextBlock Text="{Binding}" FontSize="12" Foreground="#1976D2"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="Ocena treningu (RPE)" FontSize="14" FontWeight="SemiBold" Margin="0,15,0,8"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="😊 😐 😞" FontSize="24" Margin="0,0,20,0"/>
+                            <Slider Minimum="1" Maximum="10" Value="{Binding RPE}" Width="200" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding RPE, StringFormat='{}{0}/10'}" FontSize="16" FontWeight="SemiBold"
+                                       Margin="15,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

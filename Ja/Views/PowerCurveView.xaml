@@ -3,17 +3,365 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
              mc:Ignorable="d"
              d:DesignHeight="900" d:DesignWidth="1400">
 
     <Grid Background="#F5F5F5">
-        <Border Background="White" Margin="20" CornerRadius="8" Padding="40">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="⚡" FontSize="64" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-                <TextBlock Text="Krzywa mocy" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                <TextBlock Text="Tutaj zobaczysz swoją krzywą mocy dla różnych okresów czasu"
-                           FontSize="14" Foreground="#757575" HorizontalAlignment="Center"/>
-            </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <!-- Header -->
+            <RowDefinition Height="*"/>
+            <!-- Main Content -->
+        </Grid.RowDefinitions>
+
+        <!-- ============================================ -->
+        <!-- HEADER -->
+        <!-- ============================================ -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <Grid Margin="20,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: Title -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="Power Curve" FontSize="24" FontWeight="Bold"/>
+                    <TextBlock Text="Krzywa mocy - najlepsze średnie wyniki" FontSize="12" Foreground="#757575" Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <!-- Right: Action Buttons -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="⚙" FontSize="18" Width="40" Height="40"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Ustawienia wykresu" Margin="0,0,5,0"/>
+                    <Button Content="📤" FontSize="18" Width="40" Height="40"
+                            Background="Transparent" BorderThickness="0"
+                            ToolTip="Eksportuj"/>
+                </StackPanel>
+            </Grid>
         </Border>
+
+        <!-- ============================================ -->
+        <!-- MAIN CONTENT - SCROLLABLE -->
+        <!-- ============================================ -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20" MaxWidth="1400">
+
+                <!-- ============================================ -->
+                <!-- TIME RANGE SELECTOR -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Zakres czasowy" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Border Background="#E3F2FD" CornerRadius="4" Padding="15,8" Margin="0,0,10,0" Cursor="Hand">
+                                <TextBlock Text="Ostatnie 30 dni" FontWeight="SemiBold" Foreground="#1976D2"/>
+                            </Border>
+                            <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                    CornerRadius="4" Padding="15,8" Margin="0,0,10,0" Cursor="Hand">
+                                <TextBlock Text="Ostatnie 90 dni" Foreground="#757575"/>
+                            </Border>
+                            <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                    CornerRadius="4" Padding="15,8" Margin="0,0,10,0" Cursor="Hand">
+                                <TextBlock Text="Ostatnie 6 miesięcy" Foreground="#757575"/>
+                            </Border>
+                            <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                    CornerRadius="4" Padding="15,8" Margin="0,0,10,0" Cursor="Hand">
+                                <TextBlock Text="Ostatni rok" Foreground="#757575"/>
+                            </Border>
+                            <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                    CornerRadius="4" Padding="15,8" Margin="0,0,10,0" Cursor="Hand">
+                                <TextBlock Text="Cały czas" Foreground="#757575"/>
+                            </Border>
+                            <Border Background="Transparent" BorderBrush="#E0E0E0" BorderThickness="1"
+                                    CornerRadius="4" Padding="15,8" Cursor="Hand">
+                                <TextBlock Text="📅 Zakres niestandardowy" Foreground="#757575"/>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- MAIN POWER CURVE CHART -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- Chart Header -->
+                        <Grid Margin="0,0,0,15">
+                            <TextBlock Text="Wykres krzywej mocy" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+
+                            <!-- Chart Options -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <CheckBox Content="Pokaż % FTP" IsChecked="False" Margin="0,0,15,0"/>
+                                <CheckBox Content="Pokaż W/kg" IsChecked="True" Margin="0,0,15,0"/>
+                                <ComboBox Width="150">
+                                    <ComboBoxItem Content="Skala liniowa" IsSelected="True"/>
+                                    <ComboBoxItem Content="Skala logarytmiczna"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- Power Curve Chart -->
+                        <lvc:CartesianChart Series="{Binding PowerCurveSeries}"
+                                            XAxes="{Binding PowerCurveXAxes}"
+                                            YAxes="{Binding PowerCurveYAxes}"
+                                            Height="400"
+                                            Margin="0,0,0,15"/>
+
+                        <!-- Chart Legend -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Border Width="30" Height="4" Background="#1976D2" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Twoje rekordy" FontSize="12" Foreground="#757575" Margin="0,0,20,0" VerticalAlignment="Center"/>
+
+                            <Border Width="30" Height="4" Background="#4CAF50" Margin="0,0,8,0" VerticalAlignment="Center">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="OpacityMask">
+                                            <Setter.Value>
+                                                <LinearGradientBrush>
+                                                    <GradientStop Color="Black" Offset="0"/>
+                                                    <GradientStop Color="Transparent" Offset="0.5"/>
+                                                    <GradientStop Color="Black" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Border.Style>
+                            </Border>
+                            <TextBlock Text="Ostatnie 90 dni (porównanie)" FontSize="12" Foreground="#757575" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- POWER RECORDS TABLE -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="0" Margin="0,0,0,20">
+                    <StackPanel>
+                        <!-- Table Header -->
+                        <Border Background="#F5F5F5" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                            <Grid>
+                                <TextBlock Text="Tabela rekordów mocy" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <Button Content="🔄 Sortuj" Background="Transparent" BorderThickness="0" Foreground="#1976D2"
+                                        HorizontalAlignment="Right" Padding="10,5"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Column Headers -->
+                        <Border Padding="20,12" Background="#FAFAFA" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="80"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="Czas" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="1" Text="Moc (W)" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="2" Text="W/kg" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="3" Text="% FTP" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="4" Text="Data" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="5" Text="Trening" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                                <TextBlock Grid.Column="6" Text="Akcje" FontSize="11" FontWeight="SemiBold" Foreground="#424242"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Records Rows -->
+                        <ItemsControl ItemsSource="{Binding PowerRecords}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding="20,12" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#F9F9F9"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="80"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" Text="{Binding DurationLabel}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Power, StringFormat='{}{0} W'}" FontSize="13" FontWeight="Bold"
+                                                       Foreground="#1976D2" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding WattsPerKg, StringFormat='{}{0:F1}'}" FontSize="13" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding PercentFTP, StringFormat='{}{0}%'}" FontSize="13" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="4" Text="{Binding Date, StringFormat='dd.MM.yyyy'}" FontSize="12" Foreground="#757575" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="5" Text="{Binding TrainingName}" FontSize="12" Foreground="#1976D2"
+                                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Cursor="Hand"/>
+                                            <Button Grid.Column="6" Content="👁" FontSize="14" Background="Transparent" BorderThickness="0"
+                                                    ToolTip="Zobacz szczegóły" Width="30" Height="30" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Pagination or Load More -->
+                        <Border Padding="20" Background="#FAFAFA">
+                            <Button Content="Pokaż więcej" Background="Transparent" BorderThickness="0" Foreground="#1976D2"
+                                    FontWeight="SemiBold" HorizontalAlignment="Center" Padding="20,8"/>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- COMPARISON SECTION -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,15">
+                            <TextBlock Text="Porównaj okresy" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <Button Content="+ Dodaj okres do porównania" Background="#1976D2" Foreground="White"
+                                    Padding="15,8" BorderThickness="0" HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <!-- Comparison List -->
+                        <ItemsControl ItemsSource="{Binding ComparisonPeriods}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#FAFAFA" CornerRadius="4" Padding="15" Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Width="30" Height="4" Background="{Binding LineColor}"
+                                                    Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding PeriodName}" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <Button Grid.Column="2" Content="✕" FontSize="16" Background="Transparent" BorderThickness="0"
+                                                    Foreground="#F44336" Width="30" Height="30" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Empty State -->
+                        <Border Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4"
+                                Padding="40" MinHeight="150">
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="📊" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                                <TextBlock Text="Dodaj okresy do porównania" FontSize="14" Foreground="#757575"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="Możesz porównać swoją krzywą mocy z różnych okresów czasu"
+                                           FontSize="12" Foreground="#9E9E9E" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- PROGRESSION ANALYSIS -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,15">
+                            <TextBlock Text="Analiza progresji" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <ComboBox Width="150" HorizontalAlignment="Right">
+                                <ComboBoxItem Content="5 min power"/>
+                                <ComboBoxItem Content="20 min power" IsSelected="True"/>
+                                <ComboBoxItem Content="60 min power"/>
+                            </ComboBox>
+                        </Grid>
+
+                        <!-- Progression Chart -->
+                        <lvc:CartesianChart Series="{Binding ProgressionSeries}"
+                                            XAxes="{Binding ProgressionXAxes}"
+                                            YAxes="{Binding ProgressionYAxes}"
+                                            Height="300"
+                                            Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Wykres pokazuje jak zmieniał się wybrany rekord w czasie (20 min power)"
+                                   FontSize="11" Foreground="#9E9E9E" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- FILTERS & OPTIONS -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Filtry" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Training Type Filter -->
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Typ treningu" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                <CheckBox Content="Wszystkie" IsChecked="True" Margin="0,0,0,8"/>
+                                <CheckBox Content="Outdoor" Margin="0,0,0,8"/>
+                                <CheckBox Content="Indoor" Margin="0,0,0,8"/>
+                                <CheckBox Content="Tylko wyścigi"/>
+                            </StackPanel>
+
+                            <!-- Season Filter -->
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Filtruj po sezonie" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                <ComboBox Height="36">
+                                    <ComboBoxItem Content="Wszystkie" IsSelected="True"/>
+                                    <ComboBoxItem Content="Wiosna"/>
+                                    <ComboBoxItem Content="Lato"/>
+                                    <ComboBoxItem Content="Jesień"/>
+                                    <ComboBoxItem Content="Zima"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Sorting -->
+                            <StackPanel Grid.Column="4">
+                                <TextBlock Text="Sortowanie" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                <RadioButton Content="Po dacie (najnowsze)" GroupName="Sort" IsChecked="True" Margin="0,0,0,8"/>
+                                <RadioButton Content="Po dacie (najstarsze)" GroupName="Sort" Margin="0,0,0,8"/>
+                                <RadioButton Content="Po wartości (najwyższe)" GroupName="Sort" Margin="0,0,0,8"/>
+                                <RadioButton Content="Po kategorii czasu" GroupName="Sort"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- ============================================ -->
+                <!-- ACTION BUTTONS -->
+                <!-- ============================================ -->
+                <Border Background="White" CornerRadius="8" Padding="20" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="Eksport i akcje" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="📄 Eksportuj do CSV" Padding="15,10" Margin="0,0,10,0"
+                                    BorderBrush="#E0E0E0" BorderThickness="1"/>
+                            <Button Content="📊 Eksportuj wykres jako obraz" Padding="15,10" Margin="0,0,10,0"
+                                    BorderBrush="#E0E0E0" BorderThickness="1"/>
+                            <Button Content="🖨 Drukuj raport" Padding="15,10"
+                                    BorderBrush="#E0E0E0" BorderThickness="1"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>
