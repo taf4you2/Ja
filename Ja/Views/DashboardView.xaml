@@ -295,8 +295,7 @@
         <Border Grid.Row="1" Width="60" Height="60" CornerRadius="30"
                 Background="#1976D2"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                Margin="0,0,30,30" Cursor="Hand"
-                Effect="{StaticResource DropShadow}">
+                Margin="0,0,30,30" Cursor="Hand">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
             </Border.Effect>
