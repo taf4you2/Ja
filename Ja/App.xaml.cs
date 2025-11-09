@@ -57,7 +57,8 @@ namespace Ja
 
                 // Inicjalizuj domyślnego użytkownika przy pierwszym uruchomieniu
                 var initService = ServiceInitializer.DataInitializationService;
-                initService.InitializeDefaultUserIfNeededAsync().Wait();
+                // Użyj synchronicznej wersji aby uniknąć problemów z async/await
+                initService.InitializeDefaultUserIfNeeded();
 
                 // Pokaż MessageBox tylko przy pierwszym utworzeniu
                 if (!databaseExisted)
