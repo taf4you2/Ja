@@ -35,32 +35,37 @@ namespace Ja.Database
             if (!optionsBuilder.IsConfigured)
             {
                 // Domyślna lokalizacja bazy danych
-                // Próbujemy różne lokalizacje w kolejności preferencji
                 string dbPath;
 
-                // 1. Spróbuj LocalApplicationData (AppData/Local na Windows, ~/.local/share na Linux)
+#if DEBUG
+                // W trybie DEBUG: użyj katalogu projektu dla łatwego dostępu
+                var projectPath = Directory.GetCurrentDirectory();
+                dbPath = Path.Combine(projectPath, "Data", "ja_training.db");
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] Ścieżka do bazy danych: {dbPath}");
+#else
+                // W trybie RELEASE: użyj standardowej lokalizacji systemowej
                 var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                if (!string.IsNullOrEmpty(appDataPath) && Directory.Exists(Path.GetDirectoryName(appDataPath)))
+                if (!string.IsNullOrEmpty(appDataPath))
                 {
                     dbPath = Path.Combine(appDataPath, "JaTraining", "ja_training.db");
                 }
-                // 2. Jeśli LocalApplicationData nie istnieje, użyj katalogu domowego użytkownika
                 else
                 {
                     var homePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                     if (string.IsNullOrEmpty(homePath))
                     {
-                        // 3. W ostateczności użyj katalogu bieżącego
                         homePath = Directory.GetCurrentDirectory();
                     }
                     dbPath = Path.Combine(homePath, ".jatraining", "ja_training.db");
                 }
+#endif
 
                 // Utwórz folder jeśli nie istnieje
                 var directory = Path.GetDirectoryName(dbPath);
                 if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                 {
                     Directory.CreateDirectory(directory);
+                    System.Diagnostics.Debug.WriteLine($"Utworzono katalog: {directory}");
                 }
 
                 optionsBuilder.UseSqlite(
@@ -72,6 +77,7 @@ namespace Ja.Database
 #if DEBUG
                 optionsBuilder.EnableSensitiveDataLogging();
                 optionsBuilder.EnableDetailedErrors();
+                optionsBuilder.LogTo(message => System.Diagnostics.Debug.WriteLine(message));
 #endif
             }
         }
