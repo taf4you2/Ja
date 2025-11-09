@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Ja.Database.Entities;
 using Ja.Models;
+using Ja.Repositories;
 using Ja.Services;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
@@ -116,7 +118,7 @@ namespace Ja.ViewModels
             try
             {
                 var today = DateTime.Today;
-                var pmcData = await Task.Run(() => _pmcService.GetPMCData(userId, today.AddDays(-90), today));
+                var pmcData = await _pmcService.GetPMCDataAsync(userId, today.AddDays(-90), today);
 
                 if (pmcData != null && pmcData.Any())
                 {
@@ -182,7 +184,7 @@ namespace Ja.ViewModels
             }
         }
 
-        private void CreatePMCChart(IEnumerable<Database.Entities.PMCData> pmcData)
+        private void CreatePMCChart(IEnumerable<PMCData> pmcData)
         {
             var orderedData = pmcData.OrderBy(p => p.Date).ToList();
 
@@ -247,8 +249,7 @@ namespace Ja.ViewModels
                 var today = DateTime.Today;
                 var startDate = today.AddDays(-28); // Last 4 weeks
 
-                var trainings = await Task.Run(() =>
-                    _trainingRepository.GetTrainingsByDateRange(userId, startDate, today));
+                var trainings = await _trainingRepository.GetTrainingsByDateRangeAsync(userId, startDate, today);
 
                 if (!trainings.Any())
                 {
@@ -318,7 +319,7 @@ namespace Ja.ViewModels
             }
         }
 
-        private string GetZoneColor(Database.Entities.Training training)
+        private string GetZoneColor(Training training)
         {
             if (training.AvgPower == null || training.FtpUsed == null || training.FtpUsed == 0)
                 return "#9E9E9E";
@@ -352,8 +353,12 @@ namespace Ja.ViewModels
             {
                 try
                 {
-                    // Import training
-                    await _importService.ImportTrainingAsync(1, openFileDialog.FileName);
+                    // Parse FIT file first
+                    var fitParser = new FitFileParser();
+                    var fitData = fitParser.ParseFitFile(openFileDialog.FileName);
+
+                    // Import training with parsed data
+                    await _importService.ImportTrainingAsync(fitData, 1, openFileDialog.FileName);
 
                     // Reload dashboard
                     await LoadDashboardDataAsync();
