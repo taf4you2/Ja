@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Ja.Models;
@@ -70,9 +71,24 @@ namespace Ja.ViewModels
             set => SetProperty(ref _listViewTrainings, value);
         }
 
+        // Commands
+        public ICommand PreviousMonthCommand { get; }
+        public ICommand NextMonthCommand { get; }
+        public ICommand GoToTodayCommand { get; }
+        public ICommand SetViewModeCommand { get; }
+        public ICommand DayClickedCommand { get; }
+
         public CalendarViewModel()
         {
             _trainingRepository = ServiceInitializer.TrainingRepository;
+
+            // Initialize commands
+            PreviousMonthCommand = new RelayCommand(PreviousMonth);
+            NextMonthCommand = new RelayCommand(NextMonth);
+            GoToTodayCommand = new RelayCommand(GoToToday);
+            SetViewModeCommand = new RelayCommand<string>(SetViewMode);
+            DayClickedCommand = new RelayCommand<CalendarDay>(DayClicked);
+
             UpdateMonthDisplay();
             _ = LoadCalendarDataAsync();
         }
@@ -205,38 +221,36 @@ namespace Ja.ViewModels
             return hours > 0 ? $"{hours}h {mins}min" : $"{mins}min";
         }
 
-        [RelayCommand]
         private void PreviousMonth()
         {
             CurrentMonth = CurrentMonth.AddMonths(-1);
         }
 
-        [RelayCommand]
         private void NextMonth()
         {
             CurrentMonth = CurrentMonth.AddMonths(1);
         }
 
-        [RelayCommand]
         private void GoToToday()
         {
             CurrentMonth = DateTime.Today;
         }
 
-        [RelayCommand]
-        private void SetViewMode(string mode)
+        private void SetViewMode(string? mode)
         {
-            ViewMode = mode;
-            if (mode == "List")
+            if (mode != null)
             {
-                _ = LoadCalendarDataAsync();
+                ViewMode = mode;
+                if (mode == "List")
+                {
+                    _ = LoadCalendarDataAsync();
+                }
             }
         }
 
-        [RelayCommand]
-        private void DayClicked(CalendarDay day)
+        private void DayClicked(CalendarDay? day)
         {
-            if (day.HasTrainings)
+            if (day != null && day.HasTrainings)
             {
                 // TODO: Navigate to training analysis or show day details
                 System.Diagnostics.Debug.WriteLine($"Clicked day: {day.Date:yyyy-MM-dd}, Trainings: {day.TrainingCount}");
