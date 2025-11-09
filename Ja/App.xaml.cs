@@ -55,11 +55,15 @@ namespace Ja
                 System.Diagnostics.Debug.WriteLine($"Migracja zakończona pomyślnie!");
                 System.Diagnostics.Debug.WriteLine($"Baza istnieje: {System.IO.File.Exists(dbPath)}");
 
+                // Inicjalizuj domyślnego użytkownika przy pierwszym uruchomieniu
+                var initService = ServiceInitializer.DataInitializationService;
+                initService.InitializeDefaultUserIfNeededAsync().Wait();
+
                 // Pokaż MessageBox tylko przy pierwszym utworzeniu
                 if (!databaseExisted)
                 {
                     MessageBox.Show(
-                        $"Baza danych została utworzona!\n\nLokalizacja:\n{dbPath}",
+                        $"Baza danych została utworzona!\n\nLokalizacja:\n{dbPath}\n\nUtworzono domyślnego użytkownika z podstawowymi ustawieniami.",
                         "JA Training - Inicjalizacja",
                         MessageBoxButton.OK,
                         MessageBoxImage.Information

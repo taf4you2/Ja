@@ -57,6 +57,19 @@ namespace Ja.Database.Entities
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
+        // Computed properties (not stored in database)
+        /// <summary>
+        /// Minimalna moc w watach (obliczana dynamicznie)
+        /// </summary>
+        [NotMapped]
+        public int MinWatts { get; set; }
+
+        /// <summary>
+        /// Maksymalna moc w watach (obliczana dynamicznie)
+        /// </summary>
+        [NotMapped]
+        public int MaxWatts { get; set; }
+
         // Navigation property
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; } = null!;

@@ -1,281 +1,289 @@
-# Detektor Interwałów Treningowych
+# JA Training - Aplikacja do Analizy Treningów Kolarskich
 
-Aplikacja desktopowa WPF do automatycznego wykrywania i analizy interwałów treningowych z plików FIT.
+Aplikacja desktopowa WPF do zarządzania, analizy i wizualizacji treningów kolarskich z plików FIT.
 
 ## Opis
 
-Aplikacja implementuje zaawansowany 10-stopniowy algorytm wykrywania interwałów treningowych w danych z treningów kolarskich i biegowych. Algorytm wykorzystuje:
+**JA Training** to kompleksowa aplikacja desktopowa dla kolarzy, umożliwiająca:
+- Import i analizę treningów z plików FIT (Garmin, Wahoo, inne urządzenia)
+- Automatyczne wykrywanie interwałów treningowych
+- Śledzenie formy treningowej (PMC - Performance Management Chart)
+- Zarządzanie rekordami osobistymi
+- Analizę krzywej mocy (Power Curve)
+- Monitorowanie historii FTP i wagi
 
-- Usuwanie outlierów metodą Z-score
-- Wygładzanie danych metodą EMA (Exponential Moving Average)
-- Dwuetapowe wykrywanie punktów zmian (długie interwały + krótkie sprinty)
-- Detekcję stopniowego narastania mocy (podjazdy, testy rampowe)
-- Klasyfikację do 7 stref treningowych według modelu Coggan
-- Automatyczne wykrywanie okresów odpoczynku
+## Główne Funkcje
 
-## Funkcje
+### 📊 Dashboard
+- **Performance Management Chart (PMC)** - wizualizacja formy treningowej
+  - CTL (Chronic Training Load) - fitness długoterminowy
+  - ATL (Acute Training Load) - zmęczenie
+  - TSB (Training Stress Balance) - forma treningowa
+- Podsumowania tygodniowe - szybki przegląd ostatnich 4 tygodni
+- Wizualizacja TSS dla poszczególnych dni
+- Stan pustego ekranu dla nowych użytkowników
 
-### Główne funkcje:
-- ✅ Wczytywanie plików FIT
-- ✅ Automatyczne wykrywanie interwałów treningowych
-- ✅ Klasyfikacja do stref treningowych (Z1-Z7)
-- ✅ Wykrywanie okresów odpoczynku
-- ✅ Wizualizacja danych mocy na wykresie
-- ✅ Konfigurowalne FTP (Functional Threshold Power)
-- ✅ Szczegółowe informacje o każdym interwale
+### 📅 Kalendarz Treningów
+- Widok miesięczny, tygodniowy i listowy
+- Kolorowe oznaczenia stref treningowych
+- Szybki podgląd treningów w poszczególnych dniach
+- Filtrowanie i wyszukiwanie treningów
 
-### Wykrywane typy interwałów:
-- **Jump** - nagłe skoki mocy (standardowe interwały)
-- **Gradual** - stopniowe narastanie mocy (podjazdy, testy rampowe)
-- **Recovery** - okresy odpoczynku między interwałami
+### 📈 Analiza Treningu
+- Automatyczne wykrywanie interwałów treningowych (algorytm 10-stopniowy)
+- Wykres mocy z oznaczonymi interwałami
+- Time in Zones - rozkład czasu w strefach treningowych
+- Power Curve - maksymalne moce dla różnych przedziałów czasowych
+- Wykrywanie i klasyfikacja interwałów:
+  - **Jump** - nagłe skoki mocy
+  - **Gradual** - stopniowe narastanie (podjazdy, testy)
+- Analiza okresów odpoczynku
 
-## Strefy treningowe
+### ⚡ Power Curve
+- Krzywa mocy dla wybranych okresów (30/90/180/365 dni)
+- Porównanie rekordów z różnych okresów
+- Wykres progresji rekordów w czasie
+- Tabela rekordów dla standardowych przedziałów (5s, 1min, 5min, 20min, 60min)
 
-Aplikacja klasyfikuje interwały według 7 stref Coggan:
+### 🏆 Rekordy Osobiste
+- Śledzenie rekordów mocy dla wszystkich przedziałów czasowych
+- Automatyczne wykrywanie i aktualizacja rekordów
+- Historia rekordów
+- Kategoryzacja: sprinty, krótkie interwały, długie wysiłki
 
-| Strefa | Nazwa | Zakres % FTP | Charakterystyka |
-|--------|-------|--------------|-----------------|
-| Z1 | Recovery | < 55% | Regeneracja |
-| Z2 | Endurance | 55-75% | Wytrzymałość tlenowa |
-| Z3 | Tempo | 75-90% | Tempo maratońskie |
-| Z4 | Threshold | 90-105% | Próg mleczanowy |
-| Z5 | VO2max | 105-120% | Moc tlenowa |
-| Z6 | Anaerobic | 120-150% | Moc beztlenowa |
-| Z7 | Neuromuscular | > 150% | Sprinty maksymalne |
+### ⚙️ Ustawienia
+#### Profil Użytkownika
+- Dane osobowe (imię, nazwisko, data urodzenia, płeć)
+- Parametry fizyczne (waga, wzrost)
+- Parametry tętna (RHR, Max HR)
 
-## Wymagania systemowe
+#### Strefy Treningowe
+- **Power Zones** (Strefy mocy)
+  - FTP (Functional Threshold Power) z historią
+  - Obliczanie W/kg
+  - Model Coggan (7 stref) - domyślny
+  - Konfigurowalne zakresy % FTP
+  - Kolory stref
 
-- Windows 10/11
-- .NET 8.0 Runtime
-- 4 GB RAM (zalecane 8 GB)
-- Rozdzielczość ekranu: 1400x900 lub wyższa
+- **Heart Rate Zones** (Strefy tętna)
+  - Konfigurowalne modele (% Max HR, % HRR, LTHR)
+  - 5-7 stref w zależności od modelu
+
+#### Zaawansowane
+- Parametry algorytmu wykrywania interwałów
+- Konfiguracja TSS i PMC
+- Zarządzanie danymi i backup
+
+## Strefy Treningowe (Model Coggan)
+
+| Strefa | Nazwa | Zakres % FTP | Kolor | Min. czas |
+|--------|-------|--------------|-------|-----------|
+| Z1 | Recovery | 0-55% | Szary | 0s |
+| Z2 | Endurance | 55-75% | Niebieski | 0s |
+| Z3 | Tempo | 75-90% | Zielony | 120s |
+| Z4 | Threshold | 90-105% | Żółty | 60s |
+| Z5 | VO2max | 105-120% | Pomarańczowy | 30s |
+| Z6 | Anaerobic | 120-150% | Czerwony | 10s |
+| Z7 | Neuromuscular | >150% | Ciemnoczerwony | 5s |
+
+## Technologia
+
+### Stack Technologiczny
+- **.NET 8.0** - platforma aplikacji
+- **WPF (Windows Presentation Foundation)** - interfejs użytkownika
+- **Entity Framework Core** - ORM dla SQLite
+- **SQLite** - baza danych
+- **CommunityToolkit.Mvvm** - MVVM framework
+- **LiveCharts2** - wizualizacja danych
+- **Dynastream.Fit** - parsowanie plików FIT
+
+### Architektura
+- **MVVM Pattern** - separacja logiki i UI
+- **Repository Pattern** - warstwa dostępu do danych
+- **Service Layer** - logika biznesowa
+- **Dependency Injection** - zarządzanie zależnościami
+
+### Baza Danych
+- **SQLite** z migracjami Entity Framework Core
+- Optymalizowane indeksy dla wydajności
+- WAL mode dla lepszej współbieżności
+- Cache PMC dla szybkiego dostępu
+
+## Wymagania Systemowe
+
+- **OS**: Windows 10/11 (64-bit)
+- **.NET Runtime**: .NET 8.0 Desktop Runtime
+- **RAM**: 4 GB (zalecane 8 GB)
+- **Miejsce na dysku**: 500 MB
+- **Rozdzielczość**: Minimum 1280x720 (zalecane 1920x1080)
 
 ## Instalacja
 
-### Krok 1: Sklonuj repozytorium
+### Wymagania wstępne
+1. Zainstaluj [.NET 8.0 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)
+2. Pobierz Dynastream.Fit SDK z [developer.garmin.com/fit](https://developer.garmin.com/fit/download/)
+3. Umieść `Dynastream.Fit.dll` w folderze `lib/FitSDK/`
+
+### Kompilacja ze źródeł
 ```bash
-git clone <repository-url>
+# Sklonuj repozytorium
+git clone https://github.com/taf4you2/Ja.git
 cd Ja
-```
 
-### Krok 2: Pobierz FIT SDK DLL
-
-**WAŻNE:** Aplikacja wymaga lokalnego Dynastream.Fit.dll
-
-1. Pobierz FIT SDK z oficjalnej strony Garmin:
-   - https://developer.garmin.com/fit/download/
-   - Kliknij "Download" przy "FIT SDK"
-
-2. Rozpakuj pobrany plik ZIP
-
-3. Skopiuj `Dynastream.Fit.dll` do katalogu projektu:
-   ```bash
-   # W rozpakowanym FIT SDK znajdź:
-   # FitSDK/cs/Dynastream.Fit.dll
-
-   # Skopiuj do:
-   cp FitSDK/cs/Dynastream.Fit.dll lib/FitSDK/Dynastream.Fit.dll
-   ```
-
-4. Sprawdź czy plik jest we właściwym miejscu:
-   ```bash
-   ls lib/FitSDK/Dynastream.Fit.dll
-   # Powinno wyświetlić: lib/FitSDK/Dynastream.Fit.dll
-   ```
-
-**Szczegółowe instrukcje:** Zobacz `lib/FitSDK/README.md`
-
-### Krok 3: Przywróć pakiety NuGet
-```bash
+# Zainstaluj zależności i skompiluj
 dotnet restore
-```
-
-### Krok 4: Zbuduj projekt
-```bash
 dotnet build
-```
 
-Jeśli otrzymasz błąd o brakującym DLL, wróć do Kroku 2.
-
-### Krok 5: Uruchom aplikację
-```bash
+# Uruchom aplikację
 dotnet run --project Ja/Ja.csproj
 ```
 
-## Użycie
+### Pierwsze uruchomienie
+Przy pierwszym uruchomieniu aplikacja:
+1. Utworzy bazę danych SQLite w folderze `Data/`
+2. Zastosuje wszystkie migracje
+3. Utworzy domyślnego użytkownika z przykładowymi danymi:
+   - Imię: Jan Kowalski
+   - FTP: 250 W
+   - Waga: 75 kg
+   - Domyślne strefy treningowe (Coggan)
 
-### Krok 1: Wczytaj plik FIT
-1. Kliknij przycisk **"Wczytaj plik FIT"**
-2. Wybierz plik .fit z dysku
-3. Aplikacja automatycznie wczyta dane i wykryje FTP
+## Użytkowanie
 
-### Krok 2: Dostosuj FTP (opcjonalnie)
-1. Sprawdź wykryte FTP w prawym górnym rogu
-2. Jeśli wartość jest nieprawidłowa, wprowadź swoją wartość FTP
-3. Kliknij **"Przelicz"** aby ponownie przeanalizować interwały
+### Import treningu
+1. Kliknij przycisk **"+ Dodaj trening"** w Dashboard lub prawym dolnym rogu
+2. Wybierz plik FIT z dysku
+3. Aplikacja automatycznie:
+   - Sparsuje plik FIT
+   - Obliczy wszystkie metryki (TSS, NP, IF, VI, Work)
+   - Wykryje interwały treningowe
+   - Wykryje rekordy osobiste
+   - Zaktualizuje PMC (CTL/ATL/TSB)
 
-### Krok 3: Analizuj wyniki
-- **Wykres mocy** - wizualizacja danych mocy przez cały trening
-- **Interwały treningowe** - lista wszystkich wykrytych interwałów (strefa Z3 i wyższe)
-- **Okresy odpoczynku** - lista przerw między interwałami
+### Analiza treningu
+1. W Dashboard kliknij na wybrany tydzień lub przejdź do Kalendarza
+2. Kliknij na wybrany trening
+3. Zobacz szczegółową analizę:
+   - Wykres mocy z interwałami
+   - Time in Zones
+   - Power Curve
+   - Tabela interwałów
+   - Okresy odpoczynku
 
-### Informacje o interwale:
-- **Start/Koniec** - czas rozpoczęcia i zakończenia (mm:ss)
-- **Czas** - czas trwania interwału
-- **Moc (W)** - średnia moc w watach
-- **% FTP** - średnia moc jako procent FTP
-- **Strefa** - klasyfikacja strefowa
-- **Typ** - rodzaj interwału (jump/gradual)
+### Zarządzanie FTP
+1. Przejdź do **Ustawień** → **Strefy**
+2. Wprowadź nowe FTP
+3. Ustaw datę testu
+4. Kliknij **"Dodaj FTP do historii"**
+5. Wszystkie strefy zostaną automatycznie przeliczone
 
-## Struktura projektu
+### Zarządzanie wagą
+1. Przejdź do **Ustawień** → **Profil**
+2. Wprowadź aktualną wagę
+3. Kliknij **"Dodaj wagę do historii"**
+4. W/kg zostanie automatycznie przeliczone dla wszystkich rekordów
+
+## Algorytm Wykrywania Interwałów
+
+Aplikacja wykorzystuje zaawansowany 10-stopniowy algorytm:
+
+1. **Walidacja danych** - sprawdzenie poprawności danych wejściowych
+2. **Usuwanie outlierów** - metoda Z-score (threshold: 3.0σ)
+3. **Wygładzanie** - Exponential Moving Average (α=0.3)
+4. **Obliczanie średnich kroczących** - okna długie (30s) i krótkie (10s)
+5. **Wykrywanie punktów zmian** - progi 12% (długie) i 25% (krótkie)
+6. **Filtrowanie krótkich skoków** - minimalne czasy dla stref
+7. **Łączenie bliskich punktów** - maksymalny gap 15s
+8. **Filtrowanie krótkich interwałów** - minimalne czasy per strefa
+9. **Wykrywanie interwałów stopniowych** - analiza trendu (slope)
+10. **Wykrywanie okresów odpoczynku** - między interwałami
+
+## Performance Management Chart (PMC)
+
+### Wzory
+- **CTL** (Chronic Training Load): `CTL_today = CTL_yesterday + (TSS_today - CTL_yesterday) / 42`
+- **ATL** (Acute Training Load): `ATL_today = ATL_yesterday + (TSS_today - ATL_yesterday) / 7`
+- **TSB** (Training Stress Balance): `TSB = CTL - ATL`
+
+### Interpretacja TSB
+- **TSB > 25**: Świeży (dobra forma, możliwy wyścig)
+- **TSB -10 do 25**: Optymalny (balans treningowy)
+- **TSB < -30**: Przeciążony (ryzyko przetrenowania)
+
+## Metryki Treningowe
+
+### TSS (Training Stress Score)
+`TSS = (seconds × NP × IF) / (FTP × 3600) × 100`
+
+### NP (Normalized Power)
+1. Oblicz 30-sekundową średnią kroczącą
+2. Podnieś każdą wartość do 4. potęgi
+3. Oblicz średnią
+4. Wynik podnieś do potęgi 1/4
+
+### IF (Intensity Factor)
+`IF = NP / FTP`
+
+### VI (Variability Index)
+`VI = NP / Average Power`
+
+## Struktura Projektu
 
 ```
 Ja/
-├── Algorithms/
-│   └── IntervalDetectionAlgorithm.cs    # Główny algorytm wykrywania
-├── Models/
-│   ├── FitFileData.cs                   # Model danych z pliku FIT
-│   ├── TrainingInterval.cs              # Model interwału treningowego
-│   ├── RecoveryPeriod.cs                # Model okresu odpoczynku
-│   └── PowerDataPoint.cs                # Model punktu danych dla wykresu
-├── Services/
-│   └── FitFileParser.cs                 # Serwis parsowania plików FIT
-├── ViewModels/
-│   └── MainWindowViewModel.cs           # ViewModel dla głównego okna
-├── Views/
-│   └── MainWindow.xaml                  # Główne okno aplikacji
-└── App.xaml                             # Konfiguracja aplikacji
+├── Algorithms/          # Algorytmy (wykrywanie interwałów)
+├── Converters/          # WPF value converters
+├── Database/
+│   ├── Entities/        # Entity Framework entities
+│   └── Migrations/      # EF Core migrations
+├── Models/              # View models (POCO)
+├── Repositories/        # Warstwa dostępu do danych
+├── Services/            # Logika biznesowa
+├── ViewModels/          # MVVM ViewModels
+└── Views/               # XAML views
 ```
-
-## Testowanie parsera FIT
-
-Projekt zawiera testową aplikację konsolową do weryfikacji parsowania plików FIT.
-
-### Uruchomienie testu:
-
-```bash
-dotnet run --project Ja.TestConsole -- ścieżka/do/pliku.fit
-```
-
-**Szczegóły:** Zobacz `Ja.TestConsole/README.md`
-
-Aplikacja testowa wyświetla:
-- Statystyki pliku (moc, tętno, dystans, czas)
-- Walidację danych (czy zawiera moc, czy ma minimalną długość)
-- Szczegóły danych mocy (pierwsze 10 punktów, min/max)
-- Diagnostykę błędów
-
-## Technologie
-
-- **WPF** - Windows Presentation Foundation
-- **.NET 8.0** - Framework aplikacji
-- **CommunityToolkit.Mvvm** - Wzorzec MVVM
-- **Dynastream.Fit** - Parsowanie plików FIT
-- **LiveCharts2** - Wykresy i wizualizacja danych
-
-## Algorytm - szczegóły techniczne
-
-### 10 kroków algorytmu:
-
-1. **Usuwanie outlierów** - Metoda Z-score (próg: 3σ)
-2. **Wygładzanie danych** - EMA z α=0.2
-3. **Normalizacja** - Konwersja do % FTP
-4. **Wykrywanie zmian** - Dwuetapowe (30s/12% + 10s/25%)
-5. **Tworzenie segmentów** - Podział na fragmenty
-6. **Detekcja stopniowych zmian** - Analiza gradientu (okno 90s, min 10%/min)
-7. **Łączenie segmentów** - Sortowanie i grupowanie
-8. **Klasyfikacja stref** - Przypisanie do Z1-Z7
-9. **Weryfikacja** - Wypełnianie luk, usuwanie nakładek, walidacja czasów
-10. **Filtrowanie** - Finalna selekcja i wykrywanie odpoczynków
-
-### Parametry algorytmu:
-
-| Parametr | Wartość | Opis |
-|----------|---------|------|
-| Z-score threshold | 3 | Próg dla outlierów |
-| EMA alpha | 0.2 | Współczynnik wygładzania |
-| Long interval window | 30s | Okno dla długich interwałów |
-| Long interval threshold | 12% | Próg zmiany dla długich interwałów |
-| Short interval window | 10s | Okno dla krótkich sprintów |
-| Short interval threshold | 25% | Próg zmiany dla sprintów |
-| Gradual window | 90s | Okno analizy stopniowych zmian |
-| Gradual min slope | 10%/min | Minimalny gradient |
-| Min segment duration | 10s | Minimalna długość segmentu |
-| Recovery min duration | 30s | Minimalna długość odpoczynku |
-
-## Przykłady użycia
-
-### 1. Trening interwałowy 4x4min
-Aplikacja wykryje:
-- 4 interwały o czasie ~4 minuty każdy
-- Klasyfikację do strefy Z4-Z5 (Threshold/VO2max)
-- 3 okresy odpoczynku między interwałami
-- Średnią moc dla każdego interwału
-
-### 2. Test rampowy
-Aplikacja wykryje:
-- Stopniowe narastanie mocy (typ: gradual)
-- Podział na segmenty według stref
-- Gradient wzrostu mocy (% FTP/minutę)
-
-### 3. Trening sprinterski 10x10s
-Aplikacja wykryje:
-- 10 krótkich sprintów (typ: jump)
-- Klasyfikację do strefy Z6-Z7 (Anaerobic/Neuromuscular)
-- Okresy regeneracji między sprintami
-
-## Ograniczenia
-
-- Minimalna długość treningu: 2 minuty
-- Wymagane dane mocy w pliku FIT
-- Częstotliwość próbkowania: 1 Hz
-- Aplikacja nie obsługuje danych z wieloma sportami jednocześnie
-
-## Rozwiązywanie problemów
-
-### Błąd kompilacji: "Metadata file ... Dynastream.Fit.dll could not be found"
-**Rozwiązanie:**
-1. Pobierz FIT SDK z https://developer.garmin.com/fit/download/
-2. Skopiuj `Dynastream.Fit.dll` do `lib/FitSDK/`
-3. Szczegóły: Zobacz `lib/FitSDK/README.md`
-
-### Błąd runtime: "Could not load file or assembly 'Dynastream.Fit'"
-**Rozwiązanie:**
-1. Sprawdź czy DLL jest w `lib/FitSDK/Dynastream.Fit.dll`
-2. Wyczyść i przebuduj: `dotnet clean && dotnet build`
-3. Jeśli problem nadal występuje, pobierz najnowszą wersję FIT SDK
-
-### Błąd: "Plik nie zawiera danych mocy"
-- Upewnij się, że plik FIT został nagrany z czujnikiem mocy
-- Sprawdź czy plik nie jest uszkodzony
-
-### Błąd: "Plik jest zbyt krótki"
-- Trening musi trwać minimum 2 minuty
-- Sprawdź czy plik został poprawnie zapisany
-
-### Niewłaściwe wykrywanie interwałów
-- Sprawdź czy FTP jest ustawione prawidłowo
-- Dla nietypowych treningów może być potrzebne dostosowanie parametrów algorytmu
 
 ## Rozwój
 
-### Planowane funkcje:
-- [ ] Eksport wyników do CSV/Excel
-- [ ] Generowanie raportów PDF
-- [ ] Porównywanie treningów
-- [ ] Analiza trendu wydolności
-- [ ] Optymalizacja AVX2 dla szybszego przetwarzania
-- [ ] Wsparcie dla więcej typów plików (TCX, GPX)
+### Planowane funkcje
+- [ ] Export treningów do CSV/TCX
+- [ ] Import z innych formatów (GPX, TCX)
+- [ ] Plany treningowe
+- [ ] Porównanie treningów
+- [ ] Multi-user support
+- [ ] Cloud sync
+- [ ] Mobile companion app
+
+### Znane ograniczenia
+- Brak obsługi pływania i biegania (focus na kolarstwie)
+- Tylko pojedynczy użytkownik
+- Brak synchronizacji z chmurą
 
 ## Licencja
 
-MIT License - szczegóły w pliku LICENSE
+Ten projekt jest udostępniony na licencji MIT. Zobacz plik [LICENSE](LICENSE) dla szczegółów.
 
-## Autor
+## Autorzy
 
-Training Interval Detection Algorithm
-Implementacja: WPF Application
+- **Jacek Antoniewicz** - Główny deweloper
 
-## Kontakt
+## Podziękowania
 
-Zgłaszanie błędów: [Issues](https://github.com/your-repo/issues)
+- Garmin/Dynastream za FIT SDK
+- Społeczność TrainingPeaks za dokumentację PMC
+- Andrew Coggan za model stref treningowych
+
+## Wsparcie
+
+Jeśli napotkasz problemy lub masz pytania:
+1. Sprawdź [Issues](https://github.com/taf4you2/Ja/issues)
+2. Utwórz nowy Issue z opisem problemu
+3. Dołącz logi z folderu `Logs/`
+
+## Changelog
+
+Zobacz [CHANGELOG.md](CHANGELOG.md) dla historii zmian.
+
+## Contributing
+
+Zobacz [CONTRIBUTING.md](CONTRIBUTING.md) dla wytycznych dotyczących współpracy.

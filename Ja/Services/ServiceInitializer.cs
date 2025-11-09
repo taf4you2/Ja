@@ -14,6 +14,8 @@ namespace Ja.Services
         private static JaDbContext? _dbContext;
         private static UserRepository? _userRepository;
         private static TrainingRepository? _trainingRepository;
+        private static FTPHistoryRepository? _ftpHistoryRepository;
+        private static WeightHistoryRepository? _weightHistoryRepository;
         private static MetricsCalculationService? _metricsService;
         private static PowerCurveService? _powerCurveService;
         private static PMCService? _pmcService;
@@ -116,6 +118,46 @@ namespace Ja.Services
         }
 
         /// <summary>
+        /// Repozytorium historii FTP
+        /// </summary>
+        public static FTPHistoryRepository FTPHistoryRepository
+        {
+            get
+            {
+                _ftpHistoryRepository ??= new FTPHistoryRepository(DbContext);
+                return _ftpHistoryRepository;
+            }
+        }
+
+        /// <summary>
+        /// Repozytorium historii wagi
+        /// </summary>
+        public static WeightHistoryRepository WeightHistoryRepository
+        {
+            get
+            {
+                _weightHistoryRepository ??= new WeightHistoryRepository(DbContext);
+                return _weightHistoryRepository;
+            }
+        }
+
+        /// <summary>
+        /// Serwis inicjalizacji danych
+        /// </summary>
+        public static DataInitializationService DataInitializationService
+        {
+            get
+            {
+                return new DataInitializationService(
+                    DbContext,
+                    UserRepository,
+                    FTPHistoryRepository,
+                    WeightHistoryRepository
+                );
+            }
+        }
+
+        /// <summary>
         /// Czyszczenie zasobów przy zamykaniu aplikacji
         /// Powinno być wywołane w App.OnExit()
         /// </summary>
@@ -125,6 +167,8 @@ namespace Ja.Services
             _dbContext = null;
             _userRepository = null;
             _trainingRepository = null;
+            _ftpHistoryRepository = null;
+            _weightHistoryRepository = null;
             _metricsService = null;
             _powerCurveService = null;
             _pmcService = null;
